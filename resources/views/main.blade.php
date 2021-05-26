@@ -16,6 +16,13 @@
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
+    <link href='{{ asset("assets/fullcalendar/core/main.css") }}' rel='stylesheet' />
+    <link href='{{ asset("assets/fullcalendar/daygrid/main.css") }}' rel='stylesheet' />
+    <link href='{{ asset("assets/fullcalendar/timegrid/main.css") }}' rel='stylesheet' />
+    <link href='{{ asset("assets/fullcalendar/list/main.css") }}' rel='stylesheet' />
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <title>Comercial</title>
 </head>
 
@@ -49,6 +56,16 @@
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }} "></script>
     <!-- Smooth Scrollbar JavaScript -->
     <script src="{{ asset('assets/js/smooth-scrollbar.js') }} "></script>
+
+    <script src="{{ asset('assets/js/lottie.js') }}"></script>
+    <script src="{{ asset('assets/js/core.js') }}"></script>
+    <script src="{{ asset('assets/js/charts.js') }}"></script>
+    <script src="{{ asset('assets/js/animated.js') }}"></script>
+    <script src="{{ asset('assets/js/kelly.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+     
+
+
     <!-- Chart Custom JavaScript -->
     <script src="{{ asset('assets/js/chart-custom.js') }} "></script>
     <!-- Custom JavaScript -->

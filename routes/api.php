@@ -14,15 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
+Route::post('/login', 'Auth\AuthController@login')->name('login');
+Route::post('/logout', 'Auth\AuthController@logout');
 
 //Main prefix routes v1
-Route::group(['prefix' => 'v1'], function(){
+Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function(){
 		
 		Route::group(['namespace' => 'Users'], function(){
+
+			Route::resource('/users', 'UsersController');
+			Route::post('/users-trash', 'UsersController@trash');
+
 			Route::resource('/collaborators', 'ColaboradoresController');
 			Route::post('/collaborators-trash', 'ColaboradoresController@trash');
 		});

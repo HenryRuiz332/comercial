@@ -9,20 +9,20 @@ setup()
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-import Loader from './base_components/base/Loader.vue'
+import Loader from './core/base/Loader.vue'
 Vue.component('loader', Loader)
 
-import VCustomTitle from './global_components/VCustomTitle.vue'
-Vue.component('v-custom-title', VCustomTitle)
+// import VCustomTitle from './global_components/VCustomTitle.vue'
+// Vue.component('v-custom-title', VCustomTitle)
 
-import VCustomCard from './global_components/VCustomCard.vue'
-Vue.component('v-custom-card', VCustomCard)
+// import VCustomCard from './global_components/VCustomCard.vue'
+// Vue.component('v-custom-card', VCustomCard)
 
-import VClienteComponent from './global_components/VClienteComponent.vue'
-Vue.component('v-cliente-component', VClienteComponent)
+// import VClienteComponent from './global_components/VClienteComponent.vue'
+// Vue.component('v-cliente-component', VClienteComponent)
 
-import VCustomMenuCalendar from './global_components/VCustomMenuCalendar.vue'
-Vue.component('v-custom-menu-calendar', VCustomMenuCalendar)
+// import VCustomMenuCalendar from './global_components/VCustomMenuCalendar.vue'
+// Vue.component('v-custom-menu-calendar', VCustomMenuCalendar)
 
 window.axios = require('axios')
 

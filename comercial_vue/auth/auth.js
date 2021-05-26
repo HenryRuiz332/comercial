@@ -8,13 +8,13 @@ export default {
 	},
 
 	signin: function (user) {
-		axios.post('api/login', user).then(response => {
+		axios.post('get/login', user).then(response => {
 			this.setLocalStorage(response.data)
 			this.dispatchUser(response.data.user)
 			this.user.authenticated = true
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
-			window.location.href = '/'
-     		//  router.push('/')
+			// window.location.href = '/'
+     		router.push('/dashboard')
 		}).catch(error => {
 			 console.log(error)
 			//this.$toast.error('Acceso denegado')
@@ -35,7 +35,7 @@ export default {
 	},
 
 	logout: function () {
-		axios.post('api/logout').then(response => {
+		axios.post('get/logout').then(response => {
 			localStorage.removeItem('id_token')
 			localStorage.removeItem('user_name')
 			localStorage.removeItem('user_email')
@@ -43,6 +43,7 @@ export default {
 			localStorage.removeItem('user_id')
 			store.dispatch('setAuth', false)
 			store.dispatch('setUser', this.setDefault())
+			
 			router.push('/login')
 		}).catch(error => {
 			console.log(error)

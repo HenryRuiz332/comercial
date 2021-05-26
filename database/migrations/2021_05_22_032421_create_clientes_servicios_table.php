@@ -41,7 +41,7 @@ class CreateClientesServiciosTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
 
-            $table->foreign('colabordor_id')->references('id')->on('colaboradores')
+            $table->foreign('colaborador_id')->references('id')->on('colaboradores')
             ->onUpdate('cascade')
             ->onDelete('cascade');
 
