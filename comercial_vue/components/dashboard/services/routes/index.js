@@ -1,15 +1,15 @@
-import Users from '../Index'
-// import ListaClientes from '../partials/ListaClientes'
+import Servicios from '../Index'
+import ServiciosContratados from '../ServiciosContratados'
 
 const routes = [
-   ...route('/servicios', Users, {
+   ...route('/servicios', Servicios, {
       Auth: true,
       
    }),
-  //  ...route(`/lista-clientes`, ListaClientes, {
-  //    Auth: true,
+   ...route(`/servicios-contratados`, ServiciosContratados, {
+     Auth: true,
     
-  // }),
+  }),
 ]
 
 function route(path, component = Default, meta = {}) {

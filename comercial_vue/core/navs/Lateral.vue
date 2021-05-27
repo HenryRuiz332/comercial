@@ -47,16 +47,16 @@
                     class="iq-waves-effect collapsed"  
                     data-toggle="collapse" 
                     aria-expanded="false">
-                    <i class="ri-mail-line"></i>
+                    <i class="fa fa-file"></i>
                     <span>Servicios</span>
                     <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                 </a>
                 <ul id="servicios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                     <li>
-                        <router-link to="/servicios"><i class="fa fa-list"></i>Lista de Servicios</router-link>
+                        <router-link to="/servicios-contratados"><i class="fa fa-list"></i>Servcios Contratados</router-link>
                     </li>
                     <li>
-                        <router-link to="/tipos-servicios"><i class="ri-edit-line"></i>Tipos de Servicios</router-link>
+                        <router-link to="/servicios"><i class="ri-edit-line"></i>Tipos de Servicios</router-link>
                     </li>
                 </ul>
              </li>
@@ -87,7 +87,7 @@
                     class="iq-waves-effect collapsed"  
                     data-toggle="collapse" 
                     aria-expanded="false">
-                    <i class="fa fa-user-tie"></i>
+                    <i class="fa fa-user"></i>
                         <span>Colaboradores</span>
                         <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                 </a>

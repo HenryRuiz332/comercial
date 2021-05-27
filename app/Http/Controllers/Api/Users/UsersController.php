@@ -8,8 +8,7 @@ use App\Http\Resources\Users\UsersCollection;
 use App\Http\Resources\Users\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Pagination\LengthAwarePaginator ;
-use Illuminate\Support\Arr;
+use App\Traits\Paginate;
 use Illuminate\Support\Str;
 use DB;
 
@@ -17,24 +16,7 @@ use DB;
 class UsersController extends Controller
 {
 
-    public function createPaginator($request,$items,$perPage){
-        $perPage = 8;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = $perPage;
-
-        $items = array_reverse( Arr::sort($items , function ($value) {
-            return $value['created_at'];
-        }));
-        $currentItems = array_slice($items, $perPage * ($currentPage - 1), $perPage);
-
-        $itemsPaginated = new LengthAwarePaginator($currentItems, count($items), $perPage, $currentPage,[
-            'path' => $request->url(),
-            'pageName' => 'page',
-        ]);
-        return $itemsPaginated;
-
-    }
-
+    
     /**
      * Display a listing of the resource.
      *
@@ -44,12 +26,12 @@ class UsersController extends Controller
     {
         $users = null;
         if ($request->isMethod("get")) {
-            $users = new UsersCollection(User::orderBy('id', 'desc')->paginate(10));
+            $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador')->orderBy('id', 'desc')->paginate(10));
             
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'users' =>  $this->createPaginator($request, $users->items(), 8)
+                'users' => Paginate::createPaginator($request, $users->items(), 8),
             ]);
         }else{
             return response()->json([

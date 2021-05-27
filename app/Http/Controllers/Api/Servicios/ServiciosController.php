@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Servicios\ServiciosCollection;
 use App\Http\Resources\Servicios\ServicioResource;
 use App\Models\Servicios\Servicio;
+use DB;
+use App\Traits\Paginate;
 
 class ServiciosController extends Controller
 {
@@ -23,7 +25,7 @@ class ServiciosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'productos' => $services
+                'services' =>  Paginate::createPaginator($request, $services->items(), 8),
             ]);
         }else{
             return response()->json([
@@ -46,7 +48,7 @@ class ServiciosController extends Controller
             try {
                 $service = new Servicio;
                 $service->nombre = $request->nombre;
-                $service->telefono = $request->telefono;
+               
                 $service->saveOrfail();   
             } catch (\Throwable $th) {
 
@@ -58,7 +60,7 @@ class ServiciosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $service
+                'services' => $service
             ]);
 
         }else{
@@ -95,20 +97,17 @@ class ServiciosController extends Controller
     public function update(Request $request, $id)
     {
         $service = null;
-        if ($request->isMethod("post")) {
-            try {
-                $service =  Servicio::findOrFail();
+        if ($request->isMethod("put")) {
+           
+                $service =  Servicio::findOrFail($id);
                 $service->nombre = $request->nombre;
-                $service->telefono = $request->telefono;
+               
                 $service->update();   
-            } catch (\Throwable $th) {
-
-            }
-
+           
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $service
+                'service' => $service
             ]);
 
         }else{

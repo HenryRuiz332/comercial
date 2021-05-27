@@ -192,7 +192,7 @@
                },
                saveObjCollaborator () {
                     this.$Progress.start()
-                         this.infoCrud = 'Guardado '
+                         
                     this.infoLoader = 'Guardando...'
                     axios.post(this.$apiUrl + `/collaborators`, this.editarObj).then(response => {
                          if (response.status == 200) {

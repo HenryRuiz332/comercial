@@ -7,7 +7,7 @@
                       <div class="top-logo">
                          <a href="index.html" class="logo">
                          <img src="/assets/images/logo.gif" class="img-fluid" alt="">
-                         <span>vito</span>
+                         <span>Comercial</span>
                          </a>
                       </div>
                    </div>
@@ -18,9 +18,9 @@
                              <router-link to="/dashboard" class="nav-link font-weight-bold search-box-toggle"><i class="ri-home-4-line"></i></router-link>
                          </li>
                          <li><router-link to="/productos" class="nav-link"><i class="fa fa-cubes"></i></router-link></li>
-                         <li><router-link to="/servicios" class="nav-link"><i class="da fa-user-shield"></i></router-link></li>
+                         <li><router-link to="/servicios" class="nav-link"><i class="fa fa-file"></i></router-link></li>
                          <li><router-link to="/clientes" class="nav-link"><i class="fa fa-users"></i></router-link></li>
-                         <li><router-link to="/colaboradores" class="nav-link router-link-exact-active router-link-active"><i class="fas fa-user-cog"></i></router-link></li>
+                         <li><router-link to="/colaboradores" class="nav-link router-link-exact-active router-link-active"><i class="fa fa-user"></i></router-link></li>
                         
                       </ul>
                       <!-- <div class="iq-search-bar">
@@ -57,7 +57,7 @@
                       </div>
                       <div class="collapse navbar-collapse" id="navbarSupportedContent">
                          <ul class="navbar-nav ml-auto navbar-list">
-                            <li class="nav-item">
+                           <!--  <li class="nav-item">
                                <a class="search-toggle iq-waves-effect language-title" href="#"><img src="/assets/images/small/flag-01.png" alt="img-flaf" class="img-fluid mr-1" style="height: 16px; width: 16px;" /> English <i class="ri-arrow-down-s-line"></i></a>
                                <div class="iq-sub-dropdown">
                                   <a class="iq-sub-card" href="#"><img src="/assets/images/small/flag-02.png" alt="img-flaf" class="img-fluid mr-2" />French</a>
@@ -67,9 +67,9 @@
                                   <a class="iq-sub-card" href="#"><img src="/assets/images/small/flag-06.png" alt="img-flaf" class="img-fluid mr-2" />Japanese</a>
 
                                </div>
-                            </li>
+                            </li> -->
                             
-                            <li class="nav-item">
+                           <!--  <li class="nav-item">
                                <a href="#" class="search-toggle iq-waves-effect">
                                   <div id="lottie-beil"></div>
                                   <span class="bg-danger dots"></span>
@@ -202,7 +202,7 @@
                                      </div>
                                   </div>
                                </div>
-                            </li>
+                            </li> -->
                          </ul>
                       </div>
                       <ul class="navbar-list">
@@ -221,7 +221,7 @@
                                         <h5 class="mb-0 text-white line-height">Hello Nik jone</h5>
                                         <span class="text-white font-size-12">Available</span>
                                      </div>
-                                     <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
+                                     <!-- <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                                         <div class="media align-items-center">
                                            <div class="rounded iq-card-icon iq-bg-primary">
                                               <i class="ri-file-user-line"></i>
@@ -253,8 +253,8 @@
                                               <p class="mb-0 font-size-12">Manage your account parameters.</p>
                                            </div>
                                         </div>
-                                     </a>
-                                     <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                                     </a> -->
+                                  <!--    <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
                                         <div class="media align-items-center">
                                            <div class="rounded iq-card-icon iq-bg-primary">
                                               <i class="ri-lock-line"></i>
@@ -264,7 +264,7 @@
                                               <p class="mb-0 font-size-12">Control your privacy parameters.</p>
                                            </div>
                                         </div>
-                                     </a>
+                                     </a> -->
                                      <div class="d-inline-block w-100 text-center p-3">
                                         <a class="bg-primary iq-sign-btn" @click="doLogout" role="button">
                                             Sign out<i class="ri-login-box-line ml-2"></i></a>
@@ -306,5 +306,6 @@
                 auth.logout()
             },
         }
+       
     }
 </script>

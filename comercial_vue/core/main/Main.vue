@@ -8,10 +8,10 @@
                  <!-- Sidebar  -->
                <div class="iq-sidebar" v-if="$route.path !== '/login'">
                     <div class="iq-sidebar-logo d-flex justify-content-between">
-                       <a href="index.html">
+                       <router-link to="/dashboard">
                        <img src="images/logo.gif" class="img-fluid" alt="">
-                       <span>Vito d</span>
-                       </a>
+                       <span>Comercial</span>
+                       </router-link>
                        <div class="iq-menu-bt-sidebar">
                              <div class="iq-menu-bt align-self-center">
                                 <div class="wrapper-menu">

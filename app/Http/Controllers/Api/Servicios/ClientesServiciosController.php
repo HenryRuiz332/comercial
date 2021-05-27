@@ -7,30 +7,18 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Servicios\ClientesServiciosCollection;
 use App\Http\Resources\Servicios\ClienteServicioResource;
 use App\Models\Servicios\ClienteServicio;
-use Illuminate\Pagination\LengthAwarePaginator ;
-use Illuminate\Support\Arr;
+use DB;
+use App\Traits\Paginate;
+use App\Models\User;
+use App\Models\Users\Colaborador;
+use App\Models\Servicios\Servicio;
+use App\Models\Productos\Producto;
 
 
 class ClientesServiciosController extends Controller
 {
 
-	public function createPaginator($request,$items,$perPage){
-        $perPage = 8;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = $perPage;
-
-        $items = array_reverse( Arr::sort($items , function ($value) {
-            return $value['created_at'];
-        }));
-        $currentItems = array_slice($items, $perPage * ($currentPage - 1), $perPage);
-
-        $itemsPaginated = new LengthAwarePaginator($currentItems, count($items), $perPage, $currentPage,[
-            'path' => $request->url(),
-            'pageName' => 'page',
-        ]);
-        return $itemsPaginated;
-
-    }
+	
 
     /**
      * Display a listing of the resource.
@@ -43,15 +31,18 @@ class ClientesServiciosController extends Controller
         $clientsServices = null;
         if ($request->isMethod("get")) {
           	$clientsServices = new ClientesServiciosCollection(ClienteServicio::orderBy('id', 'desc')
-          		->with('cliente', 'servicio', 'productos', 'colaboradores')
+          		->with('cliente', 'servicio', 'producto', 'colaborador')
           		->paginate(10));
 
-          	
+          	$clients = User::get(['id', 'nombre']);
+            $services = Servicio::get(['id', 'nombre']);
         
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'clientsServices' =>  $this->createPaginator($request, $clientsServices->items(), 8)
+                'clientsServices' =>  Paginate::createPaginator($request, $clientsServices->items(), 8),
+                'services' => $services,
+                'clients' => $clients
             ]);
         }else{
             return response()->json([
@@ -59,6 +50,18 @@ class ClientesServiciosController extends Controller
                 'message' => 'Get Request Error'
             ]);  
         }
+    }
+
+    public function indexAux(Request $request){
+        $products = Producto::get(['id', 'nombre']);
+        $collaborators = Colaborador::get(['id', 'nombre']);
+        return response()->json([
+                'status' => 2000,
+                'message' => 'Data Succesfull',
+                'products' => $products,
+                'collaborators' => $collaborators
+
+        ]);  
     }
 
     /**
@@ -73,8 +76,18 @@ class ClientesServiciosController extends Controller
         if ($request->isMethod("post")) {
             try {
                 $service = new ClienteServicio;
-                $service->nombre = $request->nombre;
-                $service->telefono = $request->telefono;
+                $service->user_id = $request->user_id;
+                $service->servicio_id = $request->servicio_id;
+                $service->producto_id = $request->producto_id;
+                $service->colaborador_id = $request->colaborador_id;
+                $service->gasto = $request->gasto;
+
+                $service->nota_gasto = $request->nota_gasto;
+
+                $service->beneficio = $request->beneficio;
+                $service->comision = $request->comision;
+                $service->aviso_permanencia = $request->aviso_permanencia;
+                $service->notas = $request->notas;
                 $service->saveOrfail();   
             } catch (\Throwable $th) {
 
@@ -109,7 +122,7 @@ class ClientesServiciosController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Resource Successfull',
-            'Servicio' => $service
+            'service' => $service
         ]);  
     }
 
@@ -123,11 +136,21 @@ class ClientesServiciosController extends Controller
     public function update(Request $request, $id)
     {
         $service = null;
-        if ($request->isMethod("post")) {
+        if ($request->isMethod("put")) {
             try {
-                $service =  ClienteServicio::findOrFail();
-                $service->nombre = $request->nombre;
-                $service->telefono = $request->telefono;
+                $service =  ClienteServicio::findOrFail($id);
+                $service->user_id = $request->user_id;
+                $service->servicio_id = $request->servicio_id;
+                $service->producto_id = $request->producto_id;
+                $service->colaborador_id = $request->colaborador_id;
+                $service->gasto = $request->gasto;
+
+                $service->nota_gasto = $request->nota_gasto;
+
+                $service->beneficio = $request->beneficio;
+                $service->comision = $request->comision;
+                $service->aviso_permanencia = $request->aviso_permanencia;
+                $service->notas = $request->notas;
                 $service->update();   
             } catch (\Throwable $th) {
 
@@ -136,7 +159,7 @@ class ClientesServiciosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $service
+                'service' => $service
             ]);
 
         }else{

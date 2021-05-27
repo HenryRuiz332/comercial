@@ -67,15 +67,105 @@
                                                        :editIndexObj="editIndexObj"
                                                        :formTitle="formTitle"
                                                        :editMode="editMode"></form-crud>
-                   
+                                                       
+                                                       <v-btn
+                                                          color="#9E7AF3"
+                                                          @click="paso = 2">
+                                                          Servicios Contratados
+                                                        </v-btn>
                                              </v-stepper-content>
 
                                              <v-stepper-step
                                                   v-if="editMode == true"
                                                   :complete="paso > 2"
+                                                  color="#9E7AF3"
                                                   step="2">
                                                   Servicios Contratados
                                              </v-stepper-step>
+
+
+                                             <v-stepper-content step="2" >
+                                                  <v-row style="height:100%">
+                                                       <v-col cols="12" xs="12" sm="12" md="4" lg="4" xL="4" v-for="servicio,i in editarObj.cliente_servicio" :key="i">
+                                                            <template>
+                                                              <v-card
+                                                                class="mx-auto"
+                                                                max-width="344">
+                                                                
+
+                                                                <v-card-title>
+                                                                  
+                                                                </v-card-title>
+
+                                                                <v-card-subtitle>
+                                                                 <span>
+                                                                      Servicio: {{servicio.servicio.nombre}}
+                                                                 </span><br>
+
+                                                                 <span>
+                                                                      Producto : {{servicio.producto.nombre}}
+                                                                 </span>
+                                                                      <br>
+                                                                
+                                                                 <span>
+                                                                      Colaborador: {{servicio.colaborador.nombre}}
+                                                                 </span>
+                                                                       <br>
+                                                                </v-card-subtitle>
+
+                                                                <v-card-actions>
+                                                                  <v-btn
+                                                                    color="orange lighten-2"
+                                                                    text>
+                                                                    Detalles
+                                                                  </v-btn>
+
+                                                                  <v-spacer></v-spacer>
+
+                                                                  <v-btn
+                                                                    icon
+                                                                    @click="show = !show">
+                                                                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                                                                  </v-btn>
+                                                                </v-card-actions>
+
+                                                                <v-expand-transition>
+                                                                  <div v-show="show">
+                                                                    <v-divider></v-divider>
+
+                                                                    <v-card-text>
+                                                                      
+                                                                    </v-card-text>
+                                                                  </div>
+                                                                </v-expand-transition>
+                                                              </v-card>
+                                                            </template>
+
+                                                           
+                                                       </v-col>
+                                                       
+                                                  </v-row>
+                                                  <v-row>
+                                                        <div>
+                                                            <v-btn
+                                                                 x-smal
+                                                                 color="#9E7AF3"
+                                                                 text
+                                                                 @click="paso=1">
+                                                                      Editar Usuario
+                                                            </v-btn>
+                                                            <v-btn
+                                                                 x-smal
+                                                                 color="#9E7AF3"
+                                                                 text
+                                                                 @click="close">
+                                                                      Cerrar
+                                                            </v-btn>
+                                                       </div>
+                                                  </v-row>
+                   
+                                             </v-stepper-content>
+
                                         </v-stepper>
                                    
                               </v-dialog>
@@ -103,11 +193,7 @@
                          </v-btn>
                    </template>
                    <template v-slot:no-data>
-                         <v-btn
-                              color="primary"
-                              @click="ini">
-                              
-                         </v-btn>
+                         <span>No hay datos disponibles</span>
                    </template>
                    <tfoot></tfoot>
           </v-data-table>
@@ -129,6 +215,7 @@
                'info-crud' : Info
           },
           data: () => ({
+               show: false,
                nameComponent : 'Cliente',
                snackbarInfoCrud: false,
                infoCrud: '',
@@ -241,6 +328,7 @@
                          if (response.status == 200) {
                               this.infoCrud = 'Guardado Exitosamente'
                               this.snackbarInfoCrud = true
+                              this.getUsers()
                               this.users.unshift(response.data.user)
                               this.close()
                               this.$Progress.finish()

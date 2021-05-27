@@ -25,12 +25,12 @@ class ClienteServicio extends Model
     	return $this->hasOne(Servicio::class, "id", "servicio_id");
     }
 
-    public function productos(){
-    	return $this->hasMany(Producto::class, "id", "producto_id");
+    public function producto(){
+    	return $this->hasOne(Producto::class, "id", "producto_id");
     }
 
-    public function colaboradores(){
-        return $this->hasMany(Colaborador::class, "id", "colaborador_id");
+    public function colaborador(){
+        return $this->hasOne(Colaborador::class, "id", "colaborador_id");
     }
 
 }

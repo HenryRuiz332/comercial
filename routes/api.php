@@ -52,6 +52,8 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 		Route::group(['namespace' => 'Servicios'], function(){
 			Route::resource('/clients-services', 'ClientesServiciosController');
 			Route::post('/clients-services-trash/{id}', 'ClientesServiciosController@trash');
+
+			Route::get('/clients-services-aux/', 'ClientesServiciosController@indexAux');
 		});
 
 

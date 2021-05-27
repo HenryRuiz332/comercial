@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Servicios\ClienteServicio;
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Softdeletes;
@@ -41,6 +44,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function clienteServicio(){
+        return $this->hasMany(ClienteServicio::class, 'user_id');
+    } 
+
 }
 
 
