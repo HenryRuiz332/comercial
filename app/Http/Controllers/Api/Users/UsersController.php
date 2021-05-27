@@ -169,6 +169,9 @@ class UsersController extends Controller
         ]);  
     }
 
+
+
+   
     /**
      * Remove the specified resource from storage.
      *
@@ -183,4 +186,7 @@ class UsersController extends Controller
             'message' => 'Delete Resource'
         ]);  
     }
+
+
+
 }

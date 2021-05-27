@@ -1,15 +1,15 @@
 import Products from '../Index'
-// import ListaClientes from '../partials/ListaClientes'
+import TiposProductos from '../TiposProductos'
 
 const routes = [
    ...route('/productos', Products, {
       Auth: true,
       
    }),
-  //  ...route(`/lista-clientes`, ListaClientes, {
-  //    Auth: true,
+   ...route(`/tipos-productos`, TiposProductos, {
+     Auth: true,
     
-  // }),
+  }),
 ]
 
 function route(path, component = Default, meta = {}) {

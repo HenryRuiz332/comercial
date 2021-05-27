@@ -1,6 +1,6 @@
 <template>
     <v-container>
-
+        
         <div id="content-page" class="content-page">
             <div class="container-fluid">
                <div class="row">

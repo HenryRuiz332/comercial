@@ -1,14 +1,14 @@
 <template>
      <div>
-          <crud-colaboradores></crud-colaboradores>
+          <crud-tipos-productos-component></crud-tipos-productos-component>
      </div>
 </template>
 
 <script>
-     import CrudColaboradoresComponent from "./partials/CrudColaboradoresComponent"
+     import CrudTiposProductosComponent from "./partials/CrudTiposProductosComponent"
      export default {
           components:{
-               'crud-colaboradores' : CrudColaboradoresComponent
+               'crud-tipos-productos-component' : CrudTiposProductosComponent
           },
           data: () => ({
               

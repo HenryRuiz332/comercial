@@ -4,12 +4,12 @@
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
           <v-data-table
           :headers="objectsTabe"
-          :items="users"
+          :items="collaborators"
           :search="search"
           class="elevation-1"
           show-select
           v-model="crud">
-                    
+                     
                     <template v-slot:top>
                          <v-toolbar
                               flat>
@@ -22,18 +22,16 @@
                               </v-divider>
                               <controls-crud 
                                    :openDialogControl="openDialog" 
-                                   :getFuntion="getUsers"
+                                   :getFuntion="getCollaborators"
                                    :nameComponent="nameComponent">
                                    
                               </controls-crud>
                               <v-spacer></v-spacer>
 
                               <v-dialog
+                                   max-width="50%"
                                    v-model="dialog"
-                                  
                                    persistent
-                                   fullscreen
-                                   hide-overlay
                                    transition="dialog-bottom-transition">
                                         <template v-slot:activator="{ on, attrs }">
                                              
@@ -45,39 +43,16 @@
                                                        
                                              </v-text-field>
                                             
-                                        </template>
-                                        <v-stepper
-                                             v-model="paso"
-                                             vertical>
-                                             <v-stepper-step
-                                                  :complete="paso > 1"
-                                                  color="#9E7AF3"
-                                                  step="1">
-                                                  <small>{{ formTitle }}</small>
-                                             </v-stepper-step>
-
-                                             <v-stepper-content step="1">
-                                                  
-                                                  <form-crud 
-                                                       :updateObjUser="updateObjUser"
-                                                       :saveObjUser="saveObjUser"
-                                                       :closeDialog="closeDialog"
-                                                       :close="close"
-                                                       :editarObj="editarObj"
-                                                       :editIndexObj="editIndexObj"
-                                                       :formTitle="formTitle"
-                                                       :editMode="editMode"></form-crud>
-                   
-                                             </v-stepper-content>
-
-                                             <v-stepper-step
-                                                  v-if="editMode == true"
-                                                  :complete="paso > 2"
-                                                  step="2">
-                                                  Servicios Contratados
-                                             </v-stepper-step>
-                                        </v-stepper>
-                                   
+                                        </template>   
+                                             <form-crud 
+                                                  :updateObjCollaborator="updateObjCollaborator"
+                                                  :saveObjCollaborator="saveObjCollaborator"
+                                                  :closeDialog="closeDialog"
+                                                  :close="close"
+                                                  :editarObj="editarObj"
+                                                  :editIndexObj="editIndexObj"
+                                                  :formTitle="formTitle"
+                                                  :editMode="editMode"></form-crud>
                               </v-dialog>
 
                               <v-dialog v-model="dialogDelete" max-width="500px">
@@ -103,11 +78,7 @@
                          </v-btn>
                    </template>
                    <template v-slot:no-data>
-                         <v-btn
-                              color="primary"
-                              @click="ini">
-                              
-                         </v-btn>
+                         <span>No hay datos disponibles</span>
                    </template>
                    <tfoot></tfoot>
           </v-data-table>
@@ -118,18 +89,18 @@
 
 <script type="text/javascript">
      import Pagination from "../../../../global_components/Pagination.vue"
-     import FormCrud from "./Form.vue"
+     import Form from "./Form.vue"
      import Controls from "../../crud/Controls.vue"
      import Info from "./Info.vue"
      export default {
           components:{
                'paginate' : Pagination,
-               'form-crud' : FormCrud,
+               'form-crud' : Form,
                'controls-crud' : Controls,
                'info-crud' : Info
           },
           data: () => ({
-               nameComponent : 'Cliente',
+               nameComponent : 'Colaborador',
                snackbarInfoCrud: false,
                infoCrud: '',
                crud: [],
@@ -138,50 +109,37 @@
                     current_page:1,
                },
                paso: 1,
-               infoLoader: 'Cargando Clientes',
+               infoLoader: 'Cargando Colaboradores',
                title : '',
                dialog: false,
                dialogDelete: false,
                objectsTabe: [
       
                     { text: 'Nombre', value: 'nombre' },
-                    { text: 'CIF', value: 'cif' },
                     { text: 'Teléfono', value: 'telefono' },
-                    { text: 'Gasto', value: 'gasto' },
-                    { text: 'Email', value: 'email' },
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
-               users: [],
+               collaborators: [],
                editMode: false,
                editIndexObj: -1,
                editarObj: {
                     id: '',
                     nombre: '',
-                    cif: '',
-                    telefono: '',
-                    email: '',
-                    gasto: '',
-                    nota_gasto : '',
-                    beneficio: ''
+                   
                },
                objDefault: {
                     id: '',
                     nombre: '',
-                    cif: '',
-                    telefono: '',
-                    email: '',
-                    gasto: '',
-                    nota_gasto : '',
-                    beneficio: '',
+                    
                },
           }),
 
           computed: {
                formTitle () {
-                    return this.editIndexObj === -1 ? 'Nuevo Cliente' : 'Editar Cliente'
+                    return this.editIndexObj === -1 ? 'Nuevo Colaborador' : 'Editar Colaborador'
                },
                titleCrud(){
-                  this.title = 'Clientes'
+                  this.title = 'Colaboradores'
                   return this.title
                },
                isloading: function() {
@@ -214,16 +172,16 @@
                     this.dialog =  false
                },
                ini () {
-                    this.getUsers()  
+                    this.getCollaborators()  
                },
-               getUsers(){
-                    this.snackbarInfoCrud = false
-                    this.infoCrud = ''
+               getCollaborators(){
                     this.$Progress.start()
-                    axios.get(this.$apiUrl + `/users?page` + this.pagination.current_page).then(response => {
+                    this.snackbar = false
+                    this.infoCrud = ''
+                    axios.get(this.$apiUrl + `/collaborators?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
-                              this.users = response.data.users.data
-                              this.pagination = response.data.users
+                              this.collaborators = response.data.colaboradores.data
+                              this.pagination = response.data.colaboradores
                               this.$Progress.finish()
                          }
                          
@@ -232,16 +190,17 @@
                         this.$Progress.fail()
                     })
                },
-               saveObjUser () {
+               saveObjCollaborator () {
                     this.$Progress.start()
-                    this.snackbarInfoCrud = false
-                    this.infoCrud = ''
+                         this.infoCrud = 'Guardado '
                     this.infoLoader = 'Guardando...'
-                    axios.post(this.$apiUrl + `/users`, this.editarObj).then(response => {
+                    axios.post(this.$apiUrl + `/collaborators`, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Guardado Exitosamente'
                               this.snackbarInfoCrud = true
-                              this.users.unshift(response.data.user)
+
+                              this.getCollaborators()
+                              this.collaborators.unshift(response.data.tipoProducto)
                               this.close()
                               this.$Progress.finish()
                          }
@@ -255,20 +214,20 @@
                },
                editObj (item) {
                     this.editMode = true
-                    this.editIndexObj = this.users.indexOf(item)
+                    this.editIndexObj = this.collaborators.indexOf(item)
                     this.editarObj = Object.assign({}, item)
                     this.dialog = true
                },
-               updateObjUser () {
+               updateObjCollaborator () {
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Actualizando...'
-                    axios.put(this.$apiUrl + `/users/` + this.editarObj.id, this.editarObj).then(response => {
+                    axios.put(this.$apiUrl + `/collaborators/` + this.editarObj.id, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Actualizado Exitosamente'
                               this.snackbarInfoCrud = true
-                              this.getUsers()
+                              this.getCollaborators()
                               this.close()
                               this.$Progress.finish()
                          }
@@ -282,7 +241,7 @@
                },
 
                deleteObj (item) {
-                    this.editIndexObj = this.users.indexOf(item)
+                    this.editIndexObj = this.collaborators.indexOf(item)
                     this.editarObj = Object.assign({}, item)
                     this.dialogDelete = true
                     
@@ -293,10 +252,10 @@
                     this.$Progress.start()
                     this.infoLoader = 'Eliminando...'
                     let objDelete = this.editarObj
-                    axios.post(this.$apiUrl + `/users-trash/` + this.editarObj.id).then(response => {
+                    axios.post(this.$apiUrl + `/collaborators-trash/` + this.editarObj.id).then(response => {
                          if (response.status == 200) {
-                              this.getUsers()
-                              this.$delete(this.users, objDelete)
+
+                              this.getCollaborators()
                               this.closeDelete()
                               this.infoCrud = 'Elemento Eliminado'
                               this.snackbarInfoCrud = true

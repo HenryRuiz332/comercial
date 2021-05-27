@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Productos\TiposProductosCollection;
 use App\Http\Resources\Productos\TipoProductoResource;
 use App\Models\Productos\TipoProducto;
+use App\Traits\Paginate;
 
 class TiposProductosController extends Controller
 {
@@ -23,7 +24,7 @@ class TiposProductosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'tiposProductos' => $productTypes
+                'tiposProductos' => Paginate::createPaginator($request, $productTypes->items(), 8)
             ]);
         }else{
             return response()->json([
@@ -42,15 +43,15 @@ class TiposProductosController extends Controller
      */
     public function store(Request $request)
     {
-        $productTypes = null;
+        $productType = null;
         if ($request->isMethod("post")) {
             try {
-                $productTypes = new TipoProducto;
-                $productTypes->nombre = $request->nombre;
-                $productTypes->saveOrfail();   
+                $productType = new TipoProducto;
+                $productType->nombre = $request->nombre;
+                $productType->saveOrfail();   
             } catch (\Throwable $th) {
 
-                $productTypes->forceDelete();
+                $productType->forceDelete();
                 DB::rollBack();
                 throw $th;
             }
@@ -58,7 +59,7 @@ class TiposProductosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'tiposProductos' => $productTypes
+                'tipoProducto' => $productType
             ]);
 
         }else{
@@ -94,20 +95,18 @@ class TiposProductosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $productTypes = null;
-        if ($request->isMethod("post")) {
-            try {
-                $productTypes =  TipoProducto::findOrFail($id);
-                $productTypes->nombre = $request->nombre;
-                $productTypes->update();   
-            } catch (\Throwable $th) {
-
-            }
+        $productType = null;
+        if ($request->isMethod("put")) {
+           
+                $productType =  TipoProducto::findOrFail($id);
+                $productType->nombre = $request->nombre;
+                $productType->update();   
+           
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Update Succesfull',
-                'tiposProductos' => $productTypes
+                'tipoProducto' => $productType
             ]);
             
         }else{
@@ -129,7 +128,7 @@ class TiposProductosController extends Controller
      */
     public function trash($id)
     {
-        $productTypes =  TipoProducto::findOrFail($id)->delete();
+        $productType =  TipoProducto::findOrFail($id)->delete();
         return response()->json([
             'status' => 200,
             'message' => 'Send Resource Trash'
@@ -148,7 +147,7 @@ class TiposProductosController extends Controller
      */
     public function destroy($id)
     {
-       $productTypes =  TipoProducto::findOrFail($id)->forceDelete();
+       $productType =  TipoProducto::findOrFail($id)->forceDelete();
         return response()->json([
             'status' => 200,
             'message' => 'Resource Deleted'

@@ -8,6 +8,10 @@ import Main from "./core/main/Main.vue"
 import router from "./router/router.js"
 import auth from "./auth/auth.js"
 import store from "./store/store.js"
+import '@mdi/font/css/materialdesignicons.css'
+
+
+import ProgressBar from "./plugins/vue-progressbar/vue-progressbar"
 
 
 const app = new Vue({
@@ -18,6 +22,9 @@ const app = new Vue({
    
     components: {
         "main-component": Main
+    },
+    icons: {
+      iconfont: 'mdi',
     },
     mounted() {
   		if (auth.check()) {

@@ -17,13 +17,13 @@
                          <li class="nav-item">
                              <router-link to="/dashboard" class="nav-link font-weight-bold search-box-toggle"><i class="ri-home-4-line"></i></router-link>
                          </li>
-                         <li><a href="chat.html" class="nav-link"><i class="ri-message-line"></i></a></li>
-                         <li><a href="e-commerce-product-list.html" class="nav-link"><i class="ri-file-list-line"></i></a></li>
-                         <li><a href="profile.html" class="nav-link"><i class="ri-question-answer-line"></i></a></li>
-                         <li><a href="todo.html" class="nav-link router-link-exact-active router-link-active"><i class="ri-chat-check-line"></i></a></li>
-                         <li><a href="app/index.html" class="nav-link"><i class="ri-inbox-line"></i></a></li>
+                         <li><router-link to="/productos" class="nav-link"><i class="fa fa-cubes"></i></router-link></li>
+                         <li><router-link to="/servicios" class="nav-link"><i class="da fa-user-shield"></i></router-link></li>
+                         <li><router-link to="/clientes" class="nav-link"><i class="fa fa-users"></i></router-link></li>
+                         <li><router-link to="/colaboradores" class="nav-link router-link-exact-active router-link-active"><i class="fas fa-user-cog"></i></router-link></li>
+                        
                       </ul>
-                      <div class="iq-search-bar">
+                      <!-- <div class="iq-search-bar">
                          <form action="#" class="searchbox">
                             <input type="text" class="text search-input" placeholder="Type here to search...">
                             <a class="search-link" href="#"><i class="ri-search-line"></i></a>
@@ -44,7 +44,7 @@
                                </ul>
                             </div>
                          </form>
-                      </div>
+                      </div> -->
                    </div>
                       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>

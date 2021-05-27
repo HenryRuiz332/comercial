@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Colaboradores\ColaboradoresCollection;
 use App\Http\Resources\Colaboradores\ColaboradorResource;
 use App\Models\Users\Colaborador;
-
+use DB;
+use App\Traits\Paginate;
 
 class ColaboradoresController extends Controller
 {
@@ -24,7 +25,7 @@ class ColaboradoresController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'productos' => $collaborators
+                'colaboradores' => Paginate::createPaginator($request, $collaborators->items(), 8),
             ]);
         }else{
             return response()->json([
@@ -59,7 +60,7 @@ class ColaboradoresController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $collaborator
+                'colaborador' => $collaborator
             ]);
 
         }else{
@@ -96,20 +97,18 @@ class ColaboradoresController extends Controller
     public function update(Request $request, $id)
     {
         $collaborator = null;
-        if ($request->isMethod("post")) {
-            try {
-                $collaborator =  Colaborador::findOrFail();
+        if ($request->isMethod("put")) {
+            
+                $collaborator =  Colaborador::findOrFail($id);
                 $collaborator->nombre = $request->nombre;
                 $collaborator->telefono = $request->telefono;
                 $collaborator->update();   
-            } catch (\Throwable $th) {
-
-            }
+           
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $collaborator
+                'colaborador' => $collaborator
             ]);
 
         }else{

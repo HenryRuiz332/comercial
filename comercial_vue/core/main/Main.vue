@@ -1,5 +1,6 @@
 <template>
     <v-app>
+         <vue-progress-bar></vue-progress-bar>
         <div>
          <!-- loader END -->
           <!-- Wrapper Start -->

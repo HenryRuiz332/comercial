@@ -31,10 +31,10 @@
                 </a>
                 <ul id="productos" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                    <li>
-                        <router-link to="/productos"><i class="ri-inbox-line"></i>Lista de Productos</router-link>
+                        <router-link to="/productos"><i class="fa fa-list"></i>Lista de Productos</router-link>
                     </li>
                     <li>
-                        <router-link to="/productos"><i class="ri-inbox-line"></i>Tipos de Productos</router-link>
+                        <router-link to="/tipos-productos"><i class="fa fa-list"></i>Tipos de Productos</router-link>
                     </li>
                     <!-- <li>
                         <router-link to="/lista-clientes"><i class="ri-edit-line"></i>Tipos de Servicios</router-link></li> -->
@@ -53,10 +53,10 @@
                 </a>
                 <ul id="servicios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                     <li>
-                        <router-link to="/lista-servicios"><i class="ri-inbox-line"></i>Lista de Servicios</router-link>
+                        <router-link to="/servicios"><i class="fa fa-list"></i>Lista de Servicios</router-link>
                     </li>
                     <li>
-                        <router-link to="/lista-clientes"><i class="ri-edit-line"></i>Tipos de Servicios</router-link>
+                        <router-link to="/tipos-servicios"><i class="ri-edit-line"></i>Tipos de Servicios</router-link>
                     </li>
                 </ul>
              </li>
@@ -74,7 +74,7 @@
                 </a>
                 <ul id="clientes" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                    <li>
-                        <router-link to="/clientes"><i class="ri-inbox-line"></i>Lista de Clientes</router-link></li>
+                        <router-link to="/clientes"><i class="fa fa-list"></i>Lista de Clientes</router-link></li>
                     <!-- <li>
                         <router-link to="/lista-clientes"><i class="ri-edit-line"></i>Tipos de Servicios</router-link></li> -->
                 </ul>
@@ -87,13 +87,15 @@
                     class="iq-waves-effect collapsed"  
                     data-toggle="collapse" 
                     aria-expanded="false">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-user-tie"></i>
                         <span>Colaboradores</span>
                         <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                 </a>
                 <ul id="colaboradores" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                    <li>
-                        <router-link to="/colaboradores"><i class="ri-inbox-line"></i>Lista de Colaboradores</router-link></li>
+                        <router-link to="/colaboradores">
+                            <i class="fa fa-list"></i>Lista de Colaboradores</router-link>
+                        </li>
                     <!-- <li>
                         <router-link to="/lista-clientes"><i class="ri-edit-line"></i>Tipos de Servicios</router-link></li> -->
                 </ul>

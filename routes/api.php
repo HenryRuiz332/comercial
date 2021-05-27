@@ -27,31 +27,31 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 		Route::group(['namespace' => 'Users'], function(){
 
 			Route::resource('/users', 'UsersController');
-			Route::post('/users-trash', 'UsersController@trash');
+			Route::post('/users-trash/{id}', 'UsersController@trash');
 
 			Route::resource('/collaborators', 'ColaboradoresController');
-			Route::post('/collaborators-trash', 'ColaboradoresController@trash');
+			Route::post('/collaborators-trash/{id}', 'ColaboradoresController@trash');
 		});
 
 	
 		Route::group(['namespace' => 'Productos'], function(){
 			Route::resource('/products-types', 'TiposProductosController');
-			Route::post('/products-types-trash', 'TiposProductosController@trash');
+			Route::post('/products-types-trash/{id}', 'TiposProductosController@trash');
 
 			Route::resource('/products', 'ProductosController');
-			Route::post('/products-trash', 'ProductosController@trash');
+			Route::post('/products-trash/{id}', 'ProductosController@trash');
 		});
 
 
 
 		Route::group(['namespace' => 'Servicios'], function(){
 			Route::resource('/services', 'ServiciosController');
-			Route::post('/services-trash', 'ServiciosController@trash');
+			Route::post('/services-trash/{id}', 'ServiciosController@trash');
 		});
 
 		Route::group(['namespace' => 'Servicios'], function(){
 			Route::resource('/clients-services', 'ClientesServiciosController');
-			Route::post('/clients-services-trash', 'ClientesServiciosController@trash');
+			Route::post('/clients-services-trash/{id}', 'ClientesServiciosController@trash');
 		});
 
 

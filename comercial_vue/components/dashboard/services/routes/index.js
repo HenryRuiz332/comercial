@@ -2,7 +2,7 @@ import Users from '../Index'
 // import ListaClientes from '../partials/ListaClientes'
 
 const routes = [
-   ...route('/colaboradores', Users, {
+   ...route('/servicios', Users, {
       Auth: true,
       
    }),

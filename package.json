@@ -27,10 +27,12 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "vuetify": "^2.3.10",
+        "@mdi/font": "^5.9.55",
         "sass": "^1.15.2",
         "vue-load-image": "^0.1.7",
+        "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.1",
+        "vuetify": "^2.3.10",
         "vuetify-loader": "^1.6.0",
         "vuetify-toast-snackbar": "^0.6.1",
         "vuetify-toast-snackbar-ng": "^0.7.3",

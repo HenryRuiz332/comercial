@@ -4,7 +4,7 @@
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
           <v-data-table
           :headers="objectsTabe"
-          :items="users"
+          :items="products"
           :search="search"
           class="elevation-1"
           show-select
@@ -22,7 +22,7 @@
                               </v-divider>
                               <controls-crud 
                                    :openDialogControl="openDialog" 
-                                   :getFuntion="getUsers"
+                                   :getFuntion="getProducts"
                                    :nameComponent="nameComponent">
                                    
                               </controls-crud>
@@ -30,10 +30,9 @@
 
                               <v-dialog
                                    v-model="dialog"
-                                  
+                                   max-width="50%"
                                    persistent
-                                   fullscreen
-                                   hide-overlay
+                                  
                                    transition="dialog-bottom-transition">
                                         <template v-slot:activator="{ on, attrs }">
                                              
@@ -46,38 +45,17 @@
                                              </v-text-field>
                                             
                                         </template>
-                                        <v-stepper
-                                             v-model="paso"
-                                             vertical>
-                                             <v-stepper-step
-                                                  :complete="paso > 1"
-                                                  color="#9E7AF3"
-                                                  step="1">
-                                                  <small>{{ formTitle }}</small>
-                                             </v-stepper-step>
-
-                                             <v-stepper-content step="1">
-                                                  
-                                                  <form-crud 
-                                                       :updateObjUser="updateObjUser"
-                                                       :saveObjUser="saveObjUser"
-                                                       :closeDialog="closeDialog"
-                                                       :close="close"
-                                                       :editarObj="editarObj"
-                                                       :editIndexObj="editIndexObj"
-                                                       :formTitle="formTitle"
-                                                       :editMode="editMode"></form-crud>
-                   
-                                             </v-stepper-content>
-
-                                             <v-stepper-step
-                                                  v-if="editMode == true"
-                                                  :complete="paso > 2"
-                                                  step="2">
-                                                  Servicios Contratados
-                                             </v-stepper-step>
-                                        </v-stepper>
-                                   
+                                       
+                                             <form-crud 
+                                                  :updateObject="updateObject"
+                                                  :saveObject="saveObject"
+                                                  :closeDialog="closeDialog"
+                                                  :close="close"
+                                                  :editarObj="editarObj"
+                                                  :editIndexObj="editIndexObj"
+                                                  :formTitle="formTitle"
+                                                  :editMode="editMode"
+                                                  :productsTypes="productsTypes"></form-crud>
                               </v-dialog>
 
                               <v-dialog v-model="dialogDelete" max-width="500px">
@@ -103,11 +81,7 @@
                          </v-btn>
                    </template>
                    <template v-slot:no-data>
-                         <v-btn
-                              color="primary"
-                              @click="ini">
-                              
-                         </v-btn>
+                         <span>No hay datos disponibles</span>
                    </template>
                    <tfoot></tfoot>
           </v-data-table>
@@ -129,7 +103,7 @@
                'info-crud' : Info
           },
           data: () => ({
-               nameComponent : 'Cliente',
+               nameComponent : 'Producto',
                snackbarInfoCrud: false,
                infoCrud: '',
                crud: [],
@@ -138,55 +112,46 @@
                     current_page:1,
                },
                paso: 1,
-               infoLoader: 'Cargando Clientes',
+               infoLoader: 'Cargando Productos',
                title : '',
                dialog: false,
                dialogDelete: false,
                objectsTabe: [
       
                     { text: 'Nombre', value: 'nombre' },
-                    { text: 'CIF', value: 'cif' },
-                    { text: 'Teléfono', value: 'telefono' },
-                    { text: 'Gasto', value: 'gasto' },
-                    { text: 'Email', value: 'email' },
+                    { text: 'Tipo de Producto', value: 'tipo_producto.nombre' },
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
-               users: [],
+               products: [],
+               productsTypes: [],
                editMode: false,
                editIndexObj: -1,
                editarObj: {
                     id: '',
                     nombre: '',
-                    cif: '',
-                    telefono: '',
-                    email: '',
-                    gasto: '',
-                    nota_gasto : '',
-                    beneficio: ''
+                    tipo_producto_id: '',
+                   
                },
                objDefault: {
                     id: '',
                     nombre: '',
-                    cif: '',
-                    telefono: '',
-                    email: '',
-                    gasto: '',
-                    nota_gasto : '',
-                    beneficio: '',
+                    tipo_producto_id: '',
+                    
                },
           }),
 
           computed: {
                formTitle () {
-                    return this.editIndexObj === -1 ? 'Nuevo Cliente' : 'Editar Cliente'
+                    return this.editIndexObj === -1 ? 'Nuevo Producto' : 'Editar Producto'
                },
                titleCrud(){
-                  this.title = 'Clientes'
+                  this.title = 'Productos'
                   return this.title
                },
                isloading: function() {
                     return this.$store.getters.getloading
                },
+             
           },
 
           watch: {
@@ -214,16 +179,15 @@
                     this.dialog =  false
                },
                ini () {
-                    this.getUsers()  
+                    this.getProducts()  
                },
-               getUsers(){
-                    this.snackbarInfoCrud = false
-                    this.infoCrud = ''
+               getProducts(){
                     this.$Progress.start()
-                    axios.get(this.$apiUrl + `/users?page` + this.pagination.current_page).then(response => {
+                    axios.get(this.$apiUrl + `/products` ).then(response => {
                          if (response.status == 200) {
-                              this.users = response.data.users.data
-                              this.pagination = response.data.users
+                              this.products = response.data.productos.data
+                              this.productsTypes = response.data.tiposProductos
+                              // this.pagination = response.data.products
                               this.$Progress.finish()
                          }
                          
@@ -232,16 +196,17 @@
                         this.$Progress.fail()
                     })
                },
-               saveObjUser () {
+               saveObject () {
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Guardando...'
-                    axios.post(this.$apiUrl + `/users`, this.editarObj).then(response => {
+                    axios.post(this.$apiUrl + `/products`, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Guardado Exitosamente'
                               this.snackbarInfoCrud = true
-                              this.users.unshift(response.data.user)
+                              this.products.unshift(response.data.producto)
+                              this.getProducts()
                               this.close()
                               this.$Progress.finish()
                          }
@@ -255,20 +220,20 @@
                },
                editObj (item) {
                     this.editMode = true
-                    this.editIndexObj = this.users.indexOf(item)
+                    this.editIndexObj = this.products.indexOf(item)
                     this.editarObj = Object.assign({}, item)
                     this.dialog = true
                },
-               updateObjUser () {
+               updateObject () {
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Actualizando...'
-                    axios.put(this.$apiUrl + `/users/` + this.editarObj.id, this.editarObj).then(response => {
+                    axios.put(this.$apiUrl + `/products/` + this.editarObj.id, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Actualizado Exitosamente'
                               this.snackbarInfoCrud = true
-                              this.getUsers()
+                              this.getProducts()
                               this.close()
                               this.$Progress.finish()
                          }
@@ -282,7 +247,7 @@
                },
 
                deleteObj (item) {
-                    this.editIndexObj = this.users.indexOf(item)
+                    this.editIndexObj = this.products.indexOf(item)
                     this.editarObj = Object.assign({}, item)
                     this.dialogDelete = true
                     
@@ -293,10 +258,10 @@
                     this.$Progress.start()
                     this.infoLoader = 'Eliminando...'
                     let objDelete = this.editarObj
-                    axios.post(this.$apiUrl + `/users-trash/` + this.editarObj.id).then(response => {
+                    axios.post(this.$apiUrl + `/products-trash/` + this.editarObj.id).then(response => {
                          if (response.status == 200) {
-                              this.getUsers()
-                              this.$delete(this.users, objDelete)
+
+                              this.getProducts()
                               this.closeDelete()
                               this.infoCrud = 'Elemento Eliminado'
                               this.snackbarInfoCrud = true

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Productos\ProductosCollection;
 use App\Http\Resources\Productos\ProductoResource;
 use App\Models\Productos\Producto;
+use App\Models\Productos\TipoProducto;
+use DB;
+use App\Traits\Paginate;
 
 class ProductosController extends Controller
 {
@@ -19,11 +22,14 @@ class ProductosController extends Controller
     {
         $products = null;
         if ($request->isMethod("get")) {
-            $products = new ProductosCollection(Producto::orderBy('id', 'desc')->paginate(10));
+            $products = new ProductosCollection(Producto::with('tipoProducto')->orderBy('id', 'desc')->paginate(10));
+            $productsTypes = TipoProducto::get(['id', 'nombre']);
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
-                'productos' => $products
+                'productos' => Paginate::createPaginator($request, $products->items(), 8),
+                'tiposProductos'  => $productsTypes
             ]);
         }else{
             return response()->json([
@@ -42,16 +48,16 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        $products = null;
+        $product = null;
         if ($request->isMethod("post")) {
             try {
-                $products = new Producto;
-                $products->tipo_producto_id = $request->tipoProductoId;
-                $products->nombre = $request->nombre;
-                $products->saveOrfail();   
+                $product = new Producto;
+                $product->tipo_producto_id = $request->tipo_producto_id;
+                $product->nombre = $request->nombre;
+                $product->saveOrfail();   
             } catch (\Throwable $th) {
 
-                $products->forceDelete();
+                $product->forceDelete();
                 DB::rollBack();
                 throw $th;
             }
@@ -59,7 +65,7 @@ class ProductosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $products
+                'producto' => $product
             ]);
 
         }else{
@@ -95,13 +101,13 @@ class ProductosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $products = null;
-        if ($request->isMethod("post")) {
+        $product = null;
+        if ($request->isMethod("put")) {
             try {
-                $products =  Producto::findOrFail($id);
-                $products->tipo_producto_id = $request->tipoProductoId;
-                $products->nombre = $request->nombre;
-                $products->update();   
+                $product =  Producto::findOrFail($id);
+                $product->tipo_producto_id = $request->tipo_producto_id;
+                $product->nombre = $request->nombre;
+                $product->update();   
             } catch (\Throwable $th) {
 
             }
@@ -109,7 +115,7 @@ class ProductosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Update Succesfull',
-                'productos' => $products
+                'productos' => $product
             ]);
             
         }else{
@@ -131,7 +137,7 @@ class ProductosController extends Controller
      */
     public function trash($id)
     {
-        $products =  Producto::findOrFail($id)->delete();
+        $product =  Producto::findOrFail($id)->delete();
         return response()->json([
             'status' => 200,
             'message' => 'Send Resource Trash'
@@ -150,7 +156,7 @@ class ProductosController extends Controller
      */
     public function destroy($id)
     {
-        $products =  Producto::findOrFail($id)->forceDelete();
+        $product =  Producto::findOrFail($id)->forceDelete();
         return response()->json([
             'status' => 200,
             'message' => 'Resource Deleted'
