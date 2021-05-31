@@ -9,6 +9,8 @@ use App\Http\Resources\Colaboradores\ColaboradorResource;
 use App\Models\Users\Colaborador;
 use DB;
 use App\Traits\Paginate;
+use App\Http\RequestS\ColaboradoresCreateRequest;
+use App\Http\RequestS\ColaboradoresUpdateRequest;
 
 class ColaboradoresController extends Controller
 {
@@ -41,7 +43,7 @@ class ColaboradoresController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ColaboradoresCreateRequest $request)
     {
         $collaborator = null;
         if ($request->isMethod("post")) {
@@ -94,7 +96,7 @@ class ColaboradoresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ColaboradoresUpdateRequest $request, $id)
     {
         $collaborator = null;
         if ($request->isMethod("put")) {

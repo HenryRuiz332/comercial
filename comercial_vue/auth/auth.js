@@ -9,6 +9,7 @@ export default {
 
 	signin: function (user) {
 		axios.post('get/login', user).then(response => {
+
 			this.setLocalStorage(response.data)
 			this.dispatchUser(response.data.user)
 			this.user.authenticated = true
@@ -17,7 +18,7 @@ export default {
      		router.push('/dashboard')
 		}).catch(error => {
 			 console.log(error)
-			//this.$toast.error('Acceso denegado')
+			 alert('Error de credeciales.')
 		})
 	},
 

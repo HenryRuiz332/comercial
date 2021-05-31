@@ -56,7 +56,7 @@
                                                   <small>{{ formTitle }}</small>
                                              </v-stepper-step>
 
-                                             <v-stepper-content step="1">
+                                             <v-stepper-content  step="1">
                                                   
                                                   <form-crud 
                                                        :updateObjUser="updateObjUser"
@@ -69,14 +69,15 @@
                                                        :editMode="editMode"></form-crud>
                                                        
                                                        <v-btn
+                                                          v-show="editMode == true"
                                                           color="#9E7AF3"
                                                           @click="paso = 2">
                                                           Servicios Contratados
                                                         </v-btn>
                                              </v-stepper-content>
 
-                                             <v-stepper-step
-                                                  v-if="editMode == true"
+                                             <v-stepper-step 
+                                                  v-show="editMode == true"
                                                   :complete="paso > 2"
                                                   color="#9E7AF3"
                                                   step="2">
@@ -84,7 +85,7 @@
                                              </v-stepper-step>
 
 
-                                             <v-stepper-content step="2" >
+                                             <v-stepper-content  complete step="2" v-show="editMode == true" >
                                                   <v-row style="height:100%">
                                                        <v-col cols="12" xs="12" sm="12" md="4" lg="4" xL="4" v-for="servicio,i in editarObj.cliente_servicio" :key="i">
                                                             <template>
@@ -92,52 +93,77 @@
                                                                 class="mx-auto"
                                                                 max-width="344">
                                                                 
+                                                                     <v-card-title>
+                                                                       
+                                                                     </v-card-title>
 
-                                                                <v-card-title>
-                                                                  
-                                                                </v-card-title>
-
-                                                                <v-card-subtitle>
-                                                                 <span>
-                                                                      Servicio: {{servicio.servicio.nombre}}
-                                                                 </span><br>
-
-                                                                 <span>
-                                                                      Producto : {{servicio.producto.nombre}}
-                                                                 </span>
-                                                                      <br>
                                                                 
-                                                                 <span>
-                                                                      Colaborador: {{servicio.colaborador.nombre}}
-                                                                 </span>
-                                                                       <br>
-                                                                </v-card-subtitle>
 
-                                                                <v-card-actions>
-                                                                  <v-btn
-                                                                    color="orange lighten-2"
-                                                                    text>
-                                                                    Detalles
-                                                                  </v-btn>
+                                                                 <v-card-text>
+                                                                      <h5>
+                                                                          <strong> Servicio Contratado</strong> {{servicio.servicio.nombre}}
+                                                                      </h5></br></br>
+                                                                     
+                                                                      <v-row>
+                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
+                                                                                <v-select  label="Producto" :items="products" item-text="nombre" item-value="id"  v-model="servicio.producto">
+                                                                                     
+                                                                                </v-select>
+                                                                           </v-col>
+                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+                                                                                <v-select label="Colaborador" :items="collaborators" item-text="nombre" item-value="id" v-model="servicio.colaborador">
+                                                                                     
+                                                                                </v-select>
+                                                                           </v-col>
+                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
+                                                                                <v-text-field @change="validar" label="Gasto" v-model="servicio.gasto" >
+                                                                                     
+                                                                                </v-text-field>
+                                                                           </v-col>
+                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
+                                                                                <v-text-field @change="validar" label="Beneficio" v-model="servicio.beneficio">
+                                                                                     
+                                                                                </v-text-field>
+                                                                           </v-col>
+                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+                                                                                <v-text-field @change="validar" label="Comision"  v-model="servicio.comision">
+                                                                                     
+                                                                                </v-text-field>
+                                                                           </v-col>
+                                                                          <!--  <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+                                                                               
+                                                                           <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="servicio.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
 
-                                                                  <v-spacer></v-spacer>
+                                                                               <template v-slot:activator="{ on, attrs }">
+                                                                                   <v-text-field filled  v-model="servicio.aviso_permanencia" label="Fecha" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
+                                                                                   </v-text-field>
+                                                                               </template>
 
-                                                                  <v-btn
-                                                                    icon
-                                                                    @click="show = !show">
-                                                                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                                                                  </v-btn>
-                                                                </v-card-actions>
+                                                                               <v-date-picker v-model="servicio.aviso_permanencia" no-title scrollable>
+                                                                                   <v-spacer></v-spacer>
 
-                                                                <v-expand-transition>
-                                                                  <div v-show="show">
-                                                                    <v-divider></v-divider>
+                                                                                   <v-btn text color="primary" @click="menu = false">
+                                                                                       Cancel
+                                                                                   </v-btn>
 
-                                                                    <v-card-text>
-                                                                      
-                                                                    </v-card-text>
-                                                                  </div>
-                                                                </v-expand-transition>
+                                                                                   <v-btn text color="primary" @click="$refs.menu.save(servicio.aviso_permanencia)">
+                                                                                       OK
+                                                                                   </v-btn>
+                                                                               </v-date-picker>
+
+                                                                           </v-menu>
+                
+                                                                           </v-col> -->
+
+                                                                           <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+                                                                                <v-textarea label="Nota de Gasto" v-model="servicio.nota_gasto">
+                                                                                     
+                                                                                </v-textarea>
+                                                                           </v-col>
+                                                                      </v-row>
+                                                                       <v-chip @click="actualizarServicio(editarObj, servicio)">Actualizar servicio</v-chip>
+                                                                </v-card-text>
+                                                               
                                                               </v-card>
                                                             </template>
 
@@ -158,7 +184,7 @@
                                                                  x-smal
                                                                  color="#9E7AF3"
                                                                  text
-                                                                 @click="close">
+                                                                 @click="closeDialog()">
                                                                       Cerrar
                                                             </v-btn>
                                                        </div>
@@ -170,17 +196,9 @@
                                    
                               </v-dialog>
 
-                              <v-dialog v-model="dialogDelete" max-width="500px">
-                                   <v-card>
-                                        <v-card-title class="headline">Se procederá a eliminar este elemento</v-card-title>
-                                        <v-card-actions>
-                                             <v-spacer></v-spacer>
-                                             <v-btn color="#9E7AF3" text @click="closeDelete">Cancel</v-btn>
-                                             <v-btn color="#9E7AF3" text @click="deleteItemConfirm">De Acuerdo</v-btn>
-                                             <v-spacer></v-spacer>
-                                        </v-card-actions>
-                                   </v-card>
-                              </v-dialog>
+                              <dialog-delete :dialogDelete="dialogDelete" 
+                                             :closeDelete="closeDelete"
+                                             :deleteItemConfirm="deleteItemConfirm"></dialog-delete>
 
                          </v-toolbar>
                    </template>
@@ -206,15 +224,18 @@
      import Pagination from "../../../../global_components/Pagination.vue"
      import FormCrud from "./Form.vue"
      import Controls from "../../crud/Controls.vue"
+     import DialogDelete from "../../crud/DialogDelete.vue"
      import Info from "./Info.vue"
      export default {
           components:{
                'paginate' : Pagination,
                'form-crud' : FormCrud,
                'controls-crud' : Controls,
-               'info-crud' : Info
+               'info-crud' : Info,
+               'dialog-delete': DialogDelete
           },
           data: () => ({
+               menu: false,
                show: false,
                nameComponent : 'Cliente',
                snackbarInfoCrud: false,
@@ -227,18 +248,20 @@
                paso: 1,
                infoLoader: 'Cargando Clientes',
                title : '',
-               dialog: false,
+               dialog: false, 
                dialogDelete: false,
                objectsTabe: [
       
                     { text: 'Nombre', value: 'nombre' },
                     { text: 'CIF', value: 'cif' },
                     { text: 'Teléfono', value: 'telefono' },
-                    { text: 'Gasto', value: 'gasto' },
                     { text: 'Email', value: 'email' },
+                    { text: 'Beneficio (€)', value: 'beneficio' },
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
                users: [],
+               collaborators: [],
+               products: [],
                editMode: false,
                editIndexObj: -1,
                editarObj: {
@@ -249,7 +272,8 @@
                     email: '',
                     gasto: '',
                     nota_gasto : '',
-                    beneficio: ''
+                    beneficio: '',
+                   
                },
                objDefault: {
                     id: '',
@@ -260,7 +284,9 @@
                     gasto: '',
                     nota_gasto : '',
                     beneficio: '',
+                   
                },
+              
           }),
 
           computed: {
@@ -290,11 +316,38 @@
           },
 
           methods: {
+                validar(value){
+                    this.$decimal(value)
+                },
+               actualizarServicio(user, servicio){
+                    this.$Progress.start()
+                    this.snackbarInfoCrud = false
+                    this.infoCrud = ''
+                    this.infoLoader = 'Actualizando...'
+
+                    let updateService = {
+                         'user' : user,
+                         'service' : servicio
+
+                    }
+
+                    axios.put(this.$apiUrl + `/users-update-services/` + servicio.id, updateService).then(response => {
+                         if (response.status == 200) {
+                              this.infoCrud = 'Actualizado Exitosamente' 
+                              this.snackbarInfoCrud = true
+                              this.$Progress.finish()
+                         }
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un error al Actualizar los datos'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })
+               },
+              
                closeSnackbar(){
                     this.snackbarInfoCrud = false
                },
                openDialog(){
-                    this.editMode = false
                     this.dialog =  true
                },
                closeDialog(){
@@ -310,7 +363,19 @@
                     axios.get(this.$apiUrl + `/users?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
                               this.users = response.data.users.data
+
+                              this.collaborators = response.data.collaborators
+                              this.products = response.data.products
+
                               this.pagination = response.data.users
+
+                              // for (var i = 0; i < this.users.length; i++) {
+                              //      for (var n = 0; n < this.users[i].cliente_servicio.length; i++) {
+                              //            this.users[i].cliente_servicio[n]['detalles'] = false
+                                         
+                              //      }
+                                 
+                              // }
                               this.$Progress.finish()
                          }
                          
@@ -330,6 +395,8 @@
                               this.snackbarInfoCrud = true
                               this.getUsers()
                               this.users.unshift(response.data.user)
+                              
+
                               this.close()
                               this.$Progress.finish()
                          }
@@ -342,9 +409,11 @@
                    
                },
                editObj (item) {
+                   
                     this.editMode = true
-                    this.editIndexObj = this.users.indexOf(item)
-                    this.editarObj = Object.assign({}, item)
+                    // this.editIndexObj = this.users.indexOf(item)
+                    // this.editarObj = Object.assign({}, item)
+                    this.editarObj = item
                     this.dialog = true
                },
                updateObjUser () {
@@ -400,6 +469,7 @@
                },
 
                close() {
+                    this.paso = 1
                     this.closeDialog()
                     this.$nextTick(() => {
                          this.editarObj = Object.assign({}, this.objDefault)
@@ -408,6 +478,7 @@
                     this.editMode = false
                },
                closeDelete () {
+                    this.paso = 1
                     this.dialogDelete = false
                     this.$nextTick(() => {
                          this.editarObj = Object.assign({}, this.objDefault)

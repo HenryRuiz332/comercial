@@ -8,6 +8,9 @@ use App\Http\Resources\Productos\TiposProductosCollection;
 use App\Http\Resources\Productos\TipoProductoResource;
 use App\Models\Productos\TipoProducto;
 use App\Traits\Paginate;
+use App\Http\RequestS\TiposProductosCreateRequest;
+use App\Http\RequestS\TiposProductosUpdateRequest;
+
 
 class TiposProductosController extends Controller
 {
@@ -41,7 +44,7 @@ class TiposProductosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TiposProductosCreateRequest $request)
     {
         $productType = null;
         if ($request->isMethod("post")) {
@@ -93,7 +96,7 @@ class TiposProductosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TiposProductosUpdateRequest $request, $id)
     {
         $productType = null;
         if ($request->isMethod("put")) {

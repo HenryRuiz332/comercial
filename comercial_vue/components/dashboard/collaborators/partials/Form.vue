@@ -40,7 +40,10 @@
                               xl="12">
                                    <v-text-field
                                         v-model="editarObj.nombre"
-                                        label="Nombre completo">
+                                        label="Nombre completo" 
+                                        :error-messages="errors.errors.nombre ? errors.errors.nombre[0] : null"
+                                        
+                                        :counter="100">
                                           
                                    </v-text-field>
                          </v-col>
@@ -52,7 +55,8 @@
                               xl="12">
                                    <v-text-field
                                         v-model="editarObj.telefono"
-                                        label="Teléfono">
+                                        :error-messages="errors.errors.telefono ? errors.errors.telefono[0] : null"
+                                        label="Teléfono" maxlength="9" :counter="9"  :rules="[rules.number]" >
                                           
                                    </v-text-field>
                          </v-col>
@@ -102,11 +106,17 @@
                editMode : Boolean,
           },
           data: () => ({
-              
+              rules: {
+                    number: value => /^\d+$/.test(value) || 'Este campo solo acepta números',
+               },
           }),
 
           computed: {
-               
+                computed: {
+                    errors() {
+                         return this.$store.getters.geterrors
+                    }
+               },
           },
 
           watch: {

@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\Paginate;
 use Illuminate\Support\Str;
 use DB;
+use App\Http\RequestS\UserCreateRequest;
+use App\Http\RequestS\UserUpdateRequest;
+use App\Models\Productos\Producto;
+use App\Models\Users\Colaborador;
+use App\Models\Servicios\ClienteServicio;
 
 
 class UsersController extends Controller
@@ -28,10 +33,16 @@ class UsersController extends Controller
         if ($request->isMethod("get")) {
             $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador')->orderBy('id', 'desc')->paginate(10));
             
+            $products = Producto::get(['id', 'nombre']);
+            $collaborators = Colaborador::get(['id', 'nombre']);
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
                 'users' => Paginate::createPaginator($request, $users->items(), 8),
+                'products' => $products,
+                'collaborators' => $collaborators,
+
             ]);
         }else{
             return response()->json([
@@ -47,7 +58,7 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
 
         $user = null;
@@ -112,7 +123,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $user = null;
         if ($request->isMethod("put")) {
@@ -170,5 +181,45 @@ class UsersController extends Controller
     }
 
 
+    ##################
+    ##################
 
+
+
+    public function updateService(Request $request, $id){
+        
+        $user = $request->user;
+        $serviceRequest = $request->service;
+
+        $service = null;
+        if ($request->isMethod("put")) {
+            
+                $service =  ClienteServicio::findOrFail($id);
+                $service->user_id = $serviceRequest['user_id'];
+                $service->servicio_id = $serviceRequest['servicio_id'];
+                $service->producto_id = $serviceRequest['producto_id'];
+                $service->colaborador_id = $serviceRequest['colaborador_id'];
+                $service->gasto = $serviceRequest['gasto'];
+
+                $service->nota_gasto = $serviceRequest['nota_gasto'];
+
+                $service->beneficio = $serviceRequest['beneficio'];
+                $service->comision = $serviceRequest['comision'];
+                $service->aviso_permanencia = $serviceRequest['aviso_permanencia'];
+                $service->notas = $serviceRequest['notas'];
+                $service->update();   
+           
+            return response()->json([
+                'status' => 200,
+                'message' => 'Save Succesfull',
+                'service' => $service
+            ]);
+
+        }else{
+            return response()->json([
+                'status' => 400,
+                'message' => 'Post Request Error'
+            ]);  
+        }
+    }
 }

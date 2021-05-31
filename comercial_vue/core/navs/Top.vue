@@ -208,18 +208,18 @@
                       <ul class="navbar-list">
                           <li>
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center bg-primary rounded">
-                               <img src="assets/images/user/1.jpg" class="img-fluid rounded mr-3" alt="user">
+                               <!-- <img src="assets/images/user/1.jpg" class="img-fluid rounded mr-3" alt="user"> -->
                                <div class="caption">
-                                  <h6 class="mb-0 line-height text-white">Nik jone</h6>
-                                  <span class="font-size-12 text-white">Available</span>
+                                  <h6 class="mb-0 line-height text-white">En linea</h6>
+                                  <!-- <span class="font-size-12 text-white">Available</span> -->
                                </div>
                             </a>
                             <div class="iq-sub-dropdown iq-user-dropdown">
                                <div class="iq-card shadow-none m-0">
                                   <div class="iq-card-body p-0 ">
                                      <div class="bg-primary p-3">
-                                        <h5 class="mb-0 text-white line-height">Hello Nik jone</h5>
-                                        <span class="text-white font-size-12">Available</span>
+                                        <!-- <h5 class="mb-0 text-white line-height">Hello Nik jone</h5> -->
+                                        <span class="text-white font-size-12">Disponible</span>
                                      </div>
                                      <!-- <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                                         <div class="media align-items-center">
@@ -267,7 +267,7 @@
                                      </a> -->
                                      <div class="d-inline-block w-100 text-center p-3">
                                         <a class="bg-primary iq-sign-btn" @click="doLogout" role="button">
-                                            Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                            Salir<i class="ri-login-box-line ml-2"></i></a>
                                      </div>
                                   </div>
                                </div>

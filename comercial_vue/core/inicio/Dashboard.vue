@@ -18,82 +18,64 @@
                         </div>
                      </div>
                   </div> -->
-                  <div class="col-md-6 col-lg-3">
-                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body">
-                           <div class="text-center"><span>AVG Impressions</span></div>
-                           <div class="d-flex justify-content-between align-items-center">
-                              <div class="value-box">
-                                 <h2 class="mb-0"><span class="counter"><b>2.648</b></span></h2>
-                                 <p class="mb-0 text-secondary line-height"> 26.84% </p>
-                              </div>
-                              <div class="iq-iconbox iq-bg-danger">
-                                 <i class="ri-arrow-down-line"></i>
-                              </div>
-                           </div>
-                              <div class="iq-progress-bar mt-5">
-                              <span class="bg-danger" data-percent="80"></span>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-6 col-lg-3">
-                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body">
-                           <div class="text-center"><span>AVG Engagements Rate</span></div>
-                           <div class="d-flex justify-content-between align-items-center">
-                              <div class="value-box">
-                                 <h2 class="mb-0"><span class="counter"><b>89.6</b></span></h2>
-                                 <p class="mb-0 pl-2 text-secondary line-height"> 8.64% </p>
-                              </div>
-                              <div class="iq-iconbox iq-bg-info">
-                                 <i class="ri-arrow-up-line"></i>
-                              </div>
-                           </div>
-                              <div class="iq-progress-bar mt-5">
-                              <span class="bg-info" data-percent="50"></span>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-6 col-lg-3">
-                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body">
-                           <div class="text-center"><span>AVG Reach</span></div>
-                           <div class="d-flex justify-content-between align-items-center">
-                              <div class="value-box">
-                                 <h2 class="mb-0"><span class="counter"><b>826</b></span></h2>
-                                 <p class="mb-0 pl-2 text-secondary line-height"> 0.86% </p>
-                              </div>
-                              <div class="iq-iconbox iq-bg-success">
-                                 <i class="ri-arrow-up-line"></i>
-                              </div>
-                           </div>
-                           <div class="iq-progress-bar mt-5">
-                              <span class="bg-success" data-percent="66"></span>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-6 col-lg-3">
-                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-body">
-                           <div class="text-center"><span>AVG Transport</span></div>
-                           <div class="d-flex justify-content-between align-items-center">
-                              <div class="value-box">
-                                 <h2 class="mb-0"><span class="counter"><b>7.55</b></span></h2>
-                                 <p class="mb-0 pl-2 text-secondary line-height"> 25.5% </p>
-                              </div>
-                              <div class="iq-iconbox iq-bg-primary">
-                                 <i class="ri-arrow-up-line"></i>
-                              </div>
-                           </div>
-                              <div class="iq-progress-bar mt-5">
-                              <span class="bg-primary" data-percent="70"></span>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                
+                
+               <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center"  >
+                    <v-card
+                      color="deep-purple lighten-2"
+                      dark
+                    >
+                      <v-card-title class="text-h6 text-center ml-5">
+                        <small>Total Gastos</small>
+                        
+                      </v-card-title>
+
+                      <v-card-subtitle > <h6 style="color:#fff!important">{{totals.gastos}}€</h6></v-card-subtitle>
+
+                      <!-- <v-card-actions>
+                        <v-btn text>
+                          Listen Now
+                        </v-btn>
+                      </v-card-actions> -->
+                    </v-card>
+                  </v-col>
+
+                   <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center" >
+                    <v-card
+                      color="blue lighten-2">
+                      <v-card-title class="text-h6 text-center ml-5">
+                        <small style="color:#fff!important">Total Comisiones</small>
+                      </v-card-title>
+
+                      <v-card-subtitle > <h6 style="color:#fff!important">{{totals.comisiones}}€</h6></v-card-subtitle>
+
+                      <!-- <v-card-actions>
+                        <v-btn text>
+                          Listen Now
+                        </v-btn>
+                      </v-card-actions> -->
+                    </v-card>
+                  </v-col>
+
+                   <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center" >
+                    <v-card
+                      color="#385F73"
+                      dark
+                    >
+                      <v-card-title class="text-h6 text-center ml-5">
+                          <small>Total Beneficios</small>
+                        
+                      </v-card-title>
+
+                      <v-card-subtitle > <h6 style="color:#fff!important">{{totals.beneficios}}€</h6></v-card-subtitle>
+
+                      <!-- <v-card-actions>
+                        <v-btn text>
+                          Listen Now
+                        </v-btn>
+                      </v-card-actions> -->
+                    </v-card>
+                  </v-col>
                </div>
                <!-- <div class="row">
                    <div class="col-lg-8">
@@ -390,9 +372,47 @@
 
     export default {
         mixins: [menu_items_mixin],
-        mounted(){
-           
-        }
+         data: () => ({
+             totals : [] 
+         }),
+
+         computed: {
+               isloading: function() {
+                    return this.$store.getters.getloading
+               },
+               
+         },
+
+         watch: {
+             
+         },
+
+         created () {
+              this.dashboard()
+            
+         },
+
+         methods: {
+              
+              dashboard(){
+                    this.snackbarInfoCrud = false
+                    this.infoCrud = ''
+                    this.$Progress.start()
+                    axios.get(this.$apiUrl + `/dashboard` ).then(response => {
+                         if (response.status == 200) {
+                              this.totals = response.data
+
+                              this.$Progress.finish()
+                         }
+                         
+                  
+                    }, err => {
+                        this.$Progress.fail()
+                    })
+              }
+
+              
+         },
     };
 </script>
 

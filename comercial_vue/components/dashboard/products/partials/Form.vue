@@ -38,7 +38,13 @@
                               md="12"
                               lg="12"
                               xl="12">
-                              <v-select label="Seleccione un tipo de producto" v-model="editarObj.tipo_producto_id" :items="productsTypes" item-value="id" item-text="nombre">
+                              <v-select 
+                                   label="Seleccione un tipo de producto" 
+                                   v-model="editarObj.tipo_producto_id" 
+                                   :items="productsTypes" 
+                                   item-value="id" 
+                                   item-text="nombre"
+                                   :error-messages="errors.errors.tipo_producto_id ? errors.errors.tipo_producto_id[0] : null">
                                    
                               </v-select>
                          </v-col>
@@ -50,7 +56,11 @@
                               xl="12">
                                    <v-text-field
                                         v-model="editarObj.nombre"
-                                        label="Nombre del Producto">
+                                        label="Nombre del Producto"
+                                        :error-messages="errors.errors.nombre ? errors.errors.nombre[0] : null"
+                                        maxlength="100"
+                                        :counter="100"
+                                        >
                                           
                                    </v-text-field>
                          </v-col>
@@ -101,11 +111,16 @@
                productsTypes: Array
           },
           data: () => ({
-              
+               nameRules: [
+                  v => !!v || 'El nombre es requerido',
+                  v => (v && v.length >= 4) || 'Se requiere más de 3 caracteres',
+               ],
           }),
 
           computed: {
-               
+               errors() {
+                    return this.$store.getters.geterrors
+               }
           },
 
           watch: {

@@ -56,17 +56,11 @@
                                                   :editMode="editMode" ></form-crud>
                               </v-dialog>
 
-                              <v-dialog v-model="dialogDelete" max-width="500px">
-                                   <v-card>
-                                        <v-card-title class="headline">Se procederá a eliminar este elemento</v-card-title>
-                                        <v-card-actions>
-                                             <v-spacer></v-spacer>
-                                             <v-btn color="#9E7AF3" text @click="closeDelete">Cancel</v-btn>
-                                             <v-btn color="#9E7AF3" text @click="deleteItemConfirm">De Acuerdo</v-btn>
-                                             <v-spacer></v-spacer>
-                                        </v-card-actions>
-                                   </v-card>
-                              </v-dialog>
+                              <dialog-delete :dialogDelete="dialogDelete" 
+                                             :closeDelete="closeDelete"
+                                             :deleteItemConfirm="deleteItemConfirm"></dialog-delete>
+                                            
+                                             
 
                          </v-toolbar>
                    </template>
@@ -93,12 +87,14 @@
      import FormCrud from "./Form.vue"
      import Controls from "../../crud/Controls.vue"
      import Info from "../../crud/Info.vue"
+     import DialogDelete from "../../crud/DialogDelete.vue"
      export default {
           components:{
                'paginate' : Pagination,
                'form-crud' : FormCrud,
                'controls-crud' : Controls,
-               'info-crud' : Info
+               'info-crud' : Info,
+               'dialog-delete': DialogDelete
           },
           data: () => ({
                nameComponent : 'Servicio',

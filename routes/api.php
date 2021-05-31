@@ -24,10 +24,14 @@ Route::post('/logout', 'Auth\AuthController@logout');
 //Main prefix routes v1
 Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function(){
 		
+		Route::get('/dashboard', 'DashboardController@index');
+
+
 		Route::group(['namespace' => 'Users'], function(){
 
 			Route::resource('/users', 'UsersController');
 			Route::post('/users-trash/{id}', 'UsersController@trash');
+			Route::put('/users-update-services/{idServices}', 'UsersController@updateService');
 
 			Route::resource('/collaborators', 'ColaboradoresController');
 			Route::post('/collaborators-trash/{id}', 'ColaboradoresController@trash');

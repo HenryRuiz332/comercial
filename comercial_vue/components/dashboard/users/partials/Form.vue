@@ -40,7 +40,9 @@
                               xl="4">
                                    <v-text-field
                                         v-model="editarObj.nombre"
-                                        label="Nombre Completo">
+                                        label="Nombre Completo"
+                                        :rules="nameRules"
+                                        :error-messages="errors.errors.nombre ? errors.errors.nombre[0] : null">
                                           
                                    </v-text-field>
                          </v-col>
@@ -51,8 +53,12 @@
                               lg="4"
                               xl="4">
                               <v-text-field
-                                  v-model="editarObj.telefono"
-                                  label="Teléfono">
+                                   v-model="editarObj.telefono"
+                                   label="Teléfono"
+                                   :error-messages="errors.errors.telefono ? errors.errors.telefono[0] : null"
+                                   :rules="[rules.number]" 
+                                   :counter="9" 
+                                   maxlength="9">
                                   
                              </v-text-field>
                          </v-col>
@@ -64,7 +70,8 @@
                               xl="4">
                                    <v-text-field
                                         v-model="editarObj.cif"
-                                        label="CIF">
+                                        label="CIF" :counter="15"  maxlength="15"
+                                        :error-messages="errors.errors.cif ? errors.errors.cif[0] : null">
                                           
                                    </v-text-field>
                          </v-col>
@@ -76,7 +83,9 @@
                               xl="4">
                               <v-text-field
                                    v-model="editarObj.email"
-                                   label="Email">
+                                   label="Email"
+                                   :rules="emailRules" :counter="80"
+                                   :error-messages="errors.errors.email ? errors.errors.email[0] : null">
                                      
                               </v-text-field>
                          </v-col>
@@ -88,7 +97,8 @@
                               xl="4">
                                    <v-text-field
                                         v-model="editarObj.gasto"
-                                        label="Gasto">
+                                        label="Gasto" :counter="10"
+                                        :error-messages="errors.errors.gasto ? errors.errors.gasto[0] : null">
                                        
                                    </v-text-field>
                          </v-col>
@@ -100,7 +110,8 @@
                               xl="4">
                                    <v-text-field
                                         v-model="editarObj.beneficio"
-                                        label="Beneficio">
+                                        label="Beneficio" :counter="10"
+                                        :error-messages="errors.errors.beneficio ? errors.errors.beneficio[0] : null">
                                        
                                    </v-text-field>
                          </v-col>
@@ -112,6 +123,7 @@
                               xl="12">
                                    <v-textarea
                                         v-model="editarObj.nota_gasto"
+                                        :error-messages="errors.errors.nota_gasto ? errors.errors.nota_gasto[0] : null"
                                         label="Nota">
                                        
                                    </v-textarea>
@@ -162,11 +174,24 @@
                editMode : Boolean,
           },
           data: () => ({
-              
+               nameRules: [
+                  v => !!v || 'El nombre es requerido',
+                  v => (v && v.length >= 4) || 'Se requiere más de 3 caracteres',
+               ],
+               
+               rules: {
+                    number: value => /^\d+$/.test(value) || 'Este campo solo acepta números',
+               },
+               emailRules: [
+                 
+                  v => /.+@.+\..+/.test(v) || 'Ingrese un correo electrónico válido',
+                ],
           }),
 
           computed: {
-               
+               errors() {
+                    return this.$store.getters.geterrors
+               }
           },
 
           watch: {

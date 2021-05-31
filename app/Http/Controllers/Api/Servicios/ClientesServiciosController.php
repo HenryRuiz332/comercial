@@ -137,7 +137,7 @@ class ClientesServiciosController extends Controller
     {
         $service = null;
         if ($request->isMethod("put")) {
-            try {
+            
                 $service =  ClienteServicio::findOrFail($id);
                 $service->user_id = $request->user_id;
                 $service->servicio_id = $request->servicio_id;
@@ -152,10 +152,7 @@ class ClientesServiciosController extends Controller
                 $service->aviso_permanencia = $request->aviso_permanencia;
                 $service->notas = $request->notas;
                 $service->update();   
-            } catch (\Throwable $th) {
-
-            }
-
+           
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',

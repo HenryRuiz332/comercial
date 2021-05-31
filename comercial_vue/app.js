@@ -1,5 +1,7 @@
 require("./bootstrap")
 require('./config/global.js');
+require('./config/validaciones.js');
+
 
 import Vue from 'vue'
 

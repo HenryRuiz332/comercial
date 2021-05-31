@@ -39,8 +39,12 @@
                               lg="12"
                               xl="12">
                                    <v-text-field
+                                        :error-messages="errors.errors.nombre ? errors.errors.nombre[0] : null"
                                         v-model="editarObj.nombre"
-                                        label="Tipo de Producto">
+                                        label="Tipo de Producto"
+                                        :counter="100"
+                                        :rules="nameRules"
+                                        maxlength="100">
                                           
                                    </v-text-field>
                          </v-col>
@@ -91,11 +95,16 @@
                editMode : Boolean,
           },
           data: () => ({
-              
+               nameRules: [
+                  v => !!v || 'El nombre es requerido',
+                  v => (v && v.length >= 4) || 'Se requiere más de 3 caracteres',
+               ],
           }),
 
           computed: {
-               
+               errors() {
+                    return this.$store.getters.geterrors
+               }
           },
 
           watch: {

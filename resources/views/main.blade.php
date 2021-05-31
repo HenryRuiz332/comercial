@@ -22,7 +22,11 @@
     <link href='{{ asset("assets/fullcalendar/list/main.css") }}' rel='stylesheet' />
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
+    <style type="text/css">
+        .iq-sidebar{
+            z-index: 200!important
+        }
+    </style>
     <title>Comercial</title>
 </head>
 

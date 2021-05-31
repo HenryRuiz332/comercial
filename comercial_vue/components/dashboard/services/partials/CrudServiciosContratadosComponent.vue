@@ -84,17 +84,9 @@
                                    
                               </v-dialog>
 
-                              <v-dialog v-model="dialogDelete" max-width="500px">
-                                   <v-card>
-                                        <v-card-title class="headline">Se procederá a eliminar este elemento</v-card-title>
-                                        <v-card-actions>
-                                             <v-spacer></v-spacer>
-                                             <v-btn color="#9E7AF3" text @click="closeDelete">Cancel</v-btn>
-                                             <v-btn color="#9E7AF3" text @click="deleteItemConfirm">De Acuerdo</v-btn>
-                                             <v-spacer></v-spacer>
-                                        </v-card-actions>
-                                   </v-card>
-                              </v-dialog>
+                              <dialog-delete :dialogDelete="dialogDelete" 
+                                             :closeDelete="closeDelete"
+                                             :deleteItemConfirm="deleteItemConfirm"></dialog-delete>
 
                          </v-toolbar>
                    </template>
@@ -121,12 +113,15 @@
      import FormServiciosContratados from "./FormServiciosContratados.vue"
      import Controls from "../../crud/Controls.vue"
      import Info from "../../crud/Info.vue"
+     import DialogDelete from "../../crud/DialogDelete.vue"
+                                            
      export default {
           components:{
                'paginate' : Pagination,
                'form-crud' : FormServiciosContratados,
                'controls-crud' : Controls,
-               'info-crud' : Info
+               'info-crud' : Info,
+                'dialog-delete': DialogDelete
           },
           data: () => ({
                nameComponent : 'Servico de Cliente',
@@ -148,8 +143,8 @@
                     { text: 'Servicio', value: 'servicio.nombre' },
                     { text: 'Producto', value: 'producto.nombre' },
                     { text: 'Colaborador', value: 'colaborador.nombre' },
-                    { text: 'Gasto', value: 'gasto' },
-                    { text: 'Comision', value: 'comision' },
+                    { text: 'Gasto (€)', value: 'gasto' },
+                    { text: 'Comision (€)', value: 'comision' },
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
                clientsServices: [],
