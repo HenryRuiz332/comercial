@@ -14,6 +14,8 @@ use App\Models\Users\Colaborador;
 use App\Models\Servicios\Servicio;
 use App\Models\Productos\Producto;
 
+use App\Http\Requests\ClienteServicioCreateRequest;
+use App\Http\Requests\ClienteServicioUpdateRequest;
 
 class ClientesServiciosController extends Controller
 {
@@ -70,7 +72,7 @@ class ClientesServiciosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClienteServicioCreateRequest $request)
     {
         $service = null;
         if ($request->isMethod("post")) {
@@ -133,7 +135,7 @@ class ClientesServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClienteServicioUpdateRequest $request, $id)
     {
         $service = null;
         if ($request->isMethod("put")) {

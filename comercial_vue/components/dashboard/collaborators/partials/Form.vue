@@ -112,11 +112,9 @@
           }),
 
           computed: {
-                computed: {
-                    errors() {
+                errors() {
                          return this.$store.getters.geterrors
                     }
-               },
           },
 
           watch: {

@@ -116,19 +116,20 @@
                                                                                 </v-select>
                                                                            </v-col>
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
-                                                                                <v-text-field @change="validar" label="Gasto" v-model="servicio.gasto" >
+                                                                                <v-text-field @change="validar" label="Gasto" v-model="servicio.gasto" suffix="€">
                                                                                      
                                                                                 </v-text-field>
                                                                            </v-col>
                                                                             <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
-                                                                                <v-text-field @change="validar" label="Beneficio" v-model="servicio.beneficio">
+                                                                                <v-text-field @change="validar" label="Beneficio" v-model="servicio.beneficio" suffix="€">
                                                                                      
                                                                                 </v-text-field>
                                                                            </v-col>
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
-                                                                                <v-text-field @change="validar" label="Comision"  v-model="servicio.comision">
+                                                                                <v-text-field @change="validar" label="Comision"  v-model="servicio.comision" suffix="€">
                                                                                      
                                                                                 </v-text-field>
+                                                                                 
                                                                            </v-col>
                                                                           <!--  <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
                                                                                
@@ -286,7 +287,9 @@
                     beneficio: '',
                    
                },
-              
+               errorDecimalGasto: '',
+              errorDecimalComision:'',
+              errorDecimalBeneficio:''
           }),
 
           computed: {
@@ -486,6 +489,45 @@
                     })
                      this.editMode = false
                },
+
+
+
+               validarGasto(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalGasto= ''
+                    } else {
+                               alert('Inserte un número entero o decimal')
+                         this.errorDecimalGasto =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.gasto= []
+                    }
+                   
+
+              },
+              validarComision(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalComision= ''
+                    } else {
+                              // alert('Inserte un número entero o decimal')
+                         this.errorDecimalComision =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.comision= []
+                    }
+                   
+
+              },
+              validarbeneficio(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalBeneficio= ''
+                    } else {
+                              // alert('Inserte un número entero o decimal')
+                         this.errorDecimalBeneficio =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.beneficio= []
+                    }
+                   
+
+              },
 
               
           },

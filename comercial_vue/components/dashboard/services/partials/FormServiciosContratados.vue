@@ -43,7 +43,8 @@
                                         v-model="editarObj.user_id"
                                         label="Cliente"
                                         item-text="nombre"
-                                        item-value="id">
+                                        item-value="id"
+                                        :error-messages="errors.errors.user_id ? errors.errors.user_id[0] : null" >
                                           
                                    </v-select>
                          </v-col>
@@ -58,7 +59,8 @@
                                    v-model="editarObj.servicio_id"
                                    label="Servicio"
                                    item-text="nombre"
-                                   item-value="id">
+                                   item-value="id"
+                                   :error-messages="errors.errors.servicio_id ? errors.errors.servicio_id[0] : null">
                                           
                               </v-select>
                          </v-col>
@@ -73,7 +75,8 @@
                                         v-model="editarObj.producto_id"
                                         label="Producto"
                                         item-text="nombre"
-                                        item-value="id">
+                                        item-value="id"
+                                        :error-messages="errors.errors.producto_id ? errors.errors.producto_id[0] : null">
                                                
                                    </v-select>
                          </v-col>
@@ -88,7 +91,8 @@
                                    v-model="editarObj.colaborador_id"
                                    label="Colaborador"
                                    item-text="nombre"
-                                   item-value="id">      
+                                   item-value="id"
+                                   :error-messages="errors.errors.colaborador_id ? errors.errors.colaborador_id[0] : null">      
                               </v-select>
                          </v-col>
                          <v-col
@@ -98,9 +102,11 @@
                               lg="4"
                               xl="4">
                                    <v-text-field
+                                        @change="validarGasto"
                                         v-model="editarObj.gasto"
+                                        suffix="€"
                                         label="Gasto">
-                                       
+                                        <small style="color:red" v-if="errorDecimalGasto != ''">{{errorDecimalGasto}}</small>
                                    </v-text-field>
                          </v-col>
                           <v-col
@@ -110,10 +116,13 @@
                               lg="4"
                               xl="4">
                                    <v-text-field
+                                        @change="validarComision"
                                         v-model="editarObj.comision"
+                                        suffix="€"
                                         label="Comisión">
                                        
                                    </v-text-field>
+                                   <small style="color:red" v-if="errorDecimalComision != ''">{{errorDecimalComision}}</small>
                          </v-col>
                          <v-col
                               cols="12"
@@ -122,10 +131,13 @@
                               lg="4"
                               xl="4">
                                    <v-text-field
+                                         @change="validarbeneficio"
                                         v-model="editarObj.beneficio"
+                                        suffix="€"
                                         label="Beneficio">
                                        
                                    </v-text-field>
+                                    <small style="color:red" v-if="errorDecimalBeneficio != ''">{{errorDecimalBeneficio}}</small>
                          </v-col>
                           <v-col
                               cols="12"
@@ -201,11 +213,15 @@
                collaborators: Array,
           },
           data: () => ({
-              
+              errorDecimalGasto: '',
+              errorDecimalComision:'',
+              errorDecimalBeneficio:''
           }),
 
           computed: {
-               
+               errors() {
+                    return this.$store.getters.geterrors
+               }
           },
 
           watch: {
@@ -219,7 +235,42 @@
           methods: {
               
 
-              
+              validarGasto(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalGasto= ''
+                    } else {
+                               alert('Inserte un número entero o decimal')
+                         this.errorDecimalGasto =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.gasto= []
+                    }
+                   
+
+              },
+              validarComision(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalComision= ''
+                    } else {
+                              // alert('Inserte un número entero o decimal')
+                         this.errorDecimalComision =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.comision= []
+                    }
+                   
+
+              },
+              validarbeneficio(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalBeneficio= ''
+                    } else {
+                              // alert('Inserte un número entero o decimal')
+                         this.errorDecimalBeneficio =  'Inserte un número entero o decimal. Decimal separado por punto.'
+                         this.editarObj.beneficio= []
+                    }
+                   
+
+              },
           },
      };
 </script>

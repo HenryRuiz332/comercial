@@ -40,7 +40,8 @@
                               xl="12">
                                    <v-text-field
                                         v-model="editarObj.nombre"
-                                        label="Nombre del Servicio">
+                                        label="Nombre del Servicio" 
+                                        :error-messages="errors.errors.nombre ? errors.errors.nombre[0] : null">
                                           
                                    </v-text-field>
                          </v-col>
@@ -94,7 +95,9 @@
           }),
 
           computed: {
-               
+               errors() {
+                    return this.$store.getters.geterrors
+               }
           },
 
           watch: {

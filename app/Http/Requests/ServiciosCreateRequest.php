@@ -13,7 +13,7 @@ class ServiciosCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,17 @@ class ServiciosCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nombre' => 'required|min:4|max:101|string|unique:servicios'
+        ];
+    }
+
+     public function messages()
+    {
+        return [
+            'nombre.required' => 'El nombre es requerido',
+            'nombre.min' => 'El nombre debe ser mayor a 3 carácteres',
+            'nombre.max' => 'El nombre debe ser menor a 100 carácteres',
+            'nombre.unique' => 'El servicio ya existe'
         ];
     }
 }

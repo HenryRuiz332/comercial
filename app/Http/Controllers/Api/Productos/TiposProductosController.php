@@ -50,7 +50,7 @@ class TiposProductosController extends Controller
         if ($request->isMethod("post")) {
             try {
                 $productType = new TipoProducto;
-                $productType->nombre = $request->nombre;
+                $productType->nombre = strtoupper($request->nombre);
                 $productType->saveOrfail();   
             } catch (\Throwable $th) {
 
@@ -102,7 +102,7 @@ class TiposProductosController extends Controller
         if ($request->isMethod("put")) {
            
                 $productType =  TipoProducto::findOrFail($id);
-                $productType->nombre = $request->nombre;
+                $productType->nombre = strtoupper($request->nombre);
                 $productType->update();   
            
 

@@ -1,5 +1,8 @@
 import Vue from 'vue'
 
+
+
+
 Vue.prototype.$decimal  = function (value) {
 
 	
@@ -7,10 +10,11 @@ Vue.prototype.$decimal  = function (value) {
       if (RE.test(value)) {
          
       } else {
-      		alert('Inserte un numero entero o decimal')
-          // this.errorLargo = 'Inserte un numero entero o decimal'
+      		// alert('Inserte un numero entero o decimal')
+         	return  'Inserte un numero entero o decimal'
           // this.form.largo= []
       }
 
      
 }; 
+

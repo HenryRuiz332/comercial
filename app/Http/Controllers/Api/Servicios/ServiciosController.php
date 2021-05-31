@@ -10,6 +10,9 @@ use App\Models\Servicios\Servicio;
 use DB;
 use App\Traits\Paginate;
 
+use App\Http\Requests\ServiciosCreateRequest;
+use App\Http\Requests\ServiciosUpdateRequest;
+
 class ServiciosController extends Controller
 {
     /**
@@ -41,13 +44,13 @@ class ServiciosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiciosCreateRequest $request)
     {
         $service = null;
         if ($request->isMethod("post")) {
             try {
                 $service = new Servicio;
-                $service->nombre = $request->nombre;
+                $service->nombre = strtoupper($request->nombre);
                
                 $service->saveOrfail();   
             } catch (\Throwable $th) {
@@ -94,13 +97,13 @@ class ServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiciosUpdateRequest $request, $id)
     {
         $service = null;
         if ($request->isMethod("put")) {
            
                 $service =  Servicio::findOrFail($id);
-                $service->nombre = $request->nombre;
+                $service->nombre = strtoupper($request->nombre);
                
                 $service->update();   
            

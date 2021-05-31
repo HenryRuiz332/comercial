@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ColaboradoresCreateRequest extends FormRequest
+class ClienteServicioUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class ColaboradoresCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|min:3|max:100',
-            'telefono' => 'required|max:10'
+            //
         ];
     }
 }

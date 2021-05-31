@@ -65,7 +65,7 @@ class UsersController extends Controller
         if ($request->isMethod("post")) {
             try {
                 $user = new User;
-                $user->nombre = $request->nombre;
+                $user->nombre = strtoupper($request->nombre);
                 $user->telefono = $request->telefono;
                 $user->cif = $request->cif;
                 $user->gasto = $request->gasto;
@@ -128,7 +128,7 @@ class UsersController extends Controller
         $user = null;
         if ($request->isMethod("put")) {
             $user =  User::findOrFail($id);
-            $user->nombre = $request->nombre;
+            $user->nombre = strtoupper($request->nombre);
             $user->telefono = $request->telefono;
             $user->cif = $request->cif;
             $user->gasto = $request->gasto;

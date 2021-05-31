@@ -82,6 +82,7 @@
                               lg="4"
                               xl="4">
                               <v-text-field
+                                  
                                    v-model="editarObj.email"
                                    label="Email"
                                    :rules="emailRules" :counter="80"
@@ -96,11 +97,15 @@
                               lg="4"
                               xl="4">
                                    <v-text-field
+
+                                        @change="validarGasto"
                                         v-model="editarObj.gasto"
                                         label="Gasto" :counter="10"
+                                        suffix="€"
                                         :error-messages="errors.errors.gasto ? errors.errors.gasto[0] : null">
                                        
                                    </v-text-field>
+                                    <small style="color:red" v-if="errorDecimalGasto != ''">{{errorDecimalGasto}}</small>
                          </v-col>
                          <v-col
                               cols="12"
@@ -109,11 +114,14 @@
                               lg="4"
                               xl="4">
                                    <v-text-field
+                                        @change="validarBenficio"
                                         v-model="editarObj.beneficio"
                                         label="Beneficio" :counter="10"
+                                        suffix="€"
                                         :error-messages="errors.errors.beneficio ? errors.errors.beneficio[0] : null">
                                        
                                    </v-text-field>
+                                   <small style="color:red" v-if="errorDecimalBneficio != ''">{{errorDecimalBneficio}}</small>
                          </v-col>
                           <v-col
                               cols="12"
@@ -174,6 +182,8 @@
                editMode : Boolean,
           },
           data: () => ({
+               errorDecimalGasto: '',
+               errorDecimalBneficio: '',
                nameRules: [
                   v => !!v || 'El nombre es requerido',
                   v => (v && v.length >= 4) || 'Se requiere más de 3 caracteres',
@@ -199,11 +209,32 @@
           },
 
           created () {
-              
+             
           },
 
           methods: {
-              
+              validarGasto(value){
+                    var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalGasto= ''
+                    } else {
+                              // alert('Inserte un numero entero o decimal')
+                         this.errorDecimalGasto =  'Inserte un numero entero o decimal. Decimal separado por punto.'
+                         this.editarObj.gasto= []
+                    }
+                   
+
+              },
+              validarBenficio(value){
+                var RE = /^\d*\.?\d*$/;
+                    if (RE.test(value)) {
+                        this.errorDecimalBneficio= ''
+                    } else {
+                              // alert('Inserte un numero entero o decimal')
+                         this.errorDecimalBneficio =  'Inserte un numero entero o decimal. Decimal separado por punto.'
+                         this.editarObj.beneficio= []
+                    }
+              }
 
               
           },

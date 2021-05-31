@@ -24,7 +24,7 @@ class ColaboradoresUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|min:3|max:100'
+            'nombre' => 'required|min:3|max:100',
             'telefono' => 'required|max:10'
         ];
     }

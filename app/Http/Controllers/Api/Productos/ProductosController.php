@@ -54,7 +54,7 @@ class ProductosController extends Controller
             try {
                 $product = new Producto;
                 $product->tipo_producto_id = $request->tipo_producto_id;
-                $product->nombre = $request->nombre;
+                $product->nombre = strtoupper($request->nombre);
                 $product->saveOrfail();   
             } catch (\Throwable $th) {
 
@@ -107,7 +107,7 @@ class ProductosController extends Controller
             try {
                 $product =  Producto::findOrFail($id);
                 $product->tipo_producto_id = $request->tipo_producto_id;
-                $product->nombre = $request->nombre;
+                $product->nombre = strtoupper($request->nombre);
                 $product->update();   
             } catch (\Throwable $th) {
 

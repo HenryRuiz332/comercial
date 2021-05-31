@@ -17,6 +17,9 @@ class ChangesToTables extends Migration
             $table->unsignedBigInteger('producto_id')->nullable()->change();
             $table->unsignedBigInteger('colaborador_id')->nullable()->change();
             $table->unsignedBigInteger('colaborador_id')->nullable()->change();
+            $table->text('nota_gasto')->nullable()->change();
+            $table->text('notas')->nullable()->change();
+
         });
     }
 

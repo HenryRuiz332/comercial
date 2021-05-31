@@ -49,7 +49,7 @@ class ColaboradoresController extends Controller
         if ($request->isMethod("post")) {
             try {
                 $collaborator = new Colaborador;
-                $collaborator->nombre = $request->nombre;
+                $collaborator->nombre = strtoupper($request->nombre);
                 $collaborator->telefono = $request->telefono;
                 $collaborator->saveOrfail();   
             } catch (\Throwable $th) {
@@ -102,7 +102,7 @@ class ColaboradoresController extends Controller
         if ($request->isMethod("put")) {
             
                 $collaborator =  Colaborador::findOrFail($id);
-                $collaborator->nombre = $request->nombre;
+                $collaborator->nombre = strtoupper($request->nombre);
                 $collaborator->telefono = $request->telefono;
                 $collaborator->update();   
            
