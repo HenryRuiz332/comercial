@@ -141,7 +141,7 @@ class ClientesServiciosController extends Controller
         if ($request->isMethod("put")) {
             
                 $service =  ClienteServicio::findOrFail($id);
-                $service->user_id = $request->user_id;
+                $service->user_id = $request->user->id;
                 $service->servicio_id = $request->servicio_id;
                 $service->producto_id = $request->producto_id;
                 $service->colaborador_id = $request->colaborador_id;

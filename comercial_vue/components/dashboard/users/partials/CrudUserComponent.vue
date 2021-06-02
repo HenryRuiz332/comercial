@@ -50,10 +50,11 @@
                                              v-model="paso"
                                              vertical>
                                              <v-stepper-step
+
                                                   :complete="paso > 1"
                                                   color="#9E7AF3"
                                                   step="1">
-                                                  <small>{{ formTitle }}</small>
+                                                  <small style="cursor:pointer" @click="paso=1">{{ formTitle }}</small>
                                              </v-stepper-step>
 
                                              <v-stepper-content  step="1">
@@ -69,24 +70,30 @@
                                                        :editMode="editMode"></form-crud>
                                                        
                                                        <v-btn
-                                                          v-show="editMode == true"
+                                                          v-if="editMode"
                                                           color="#9E7AF3"
                                                           @click="paso = 2">
+                                                          Servicios Contratados
+                                                        </v-btn>
+                                                        <v-btn
+                                                          v-else
+                                                          style="opacity:0"
+                                                          >
                                                           Servicios Contratados
                                                         </v-btn>
                                              </v-stepper-content>
 
                                              <v-stepper-step 
-                                                  v-show="editMode == true"
+                                                  v-if="editMode"
                                                   :complete="paso > 2"
                                                   color="#9E7AF3"
                                                   step="2">
                                                   Servicios Contratados
                                              </v-stepper-step>
+                                             
 
-
-                                             <v-stepper-content  complete step="2" v-show="editMode == true" >
-                                                  <v-row style="height:100%">
+                                             <v-stepper-content  complete step="2" v-if="editMode" >
+                                                  <v-row style="height:100%" v-if="editarObj.cliente_servicio.length > 0">
                                                        <v-col cols="12" xs="12" sm="12" md="4" lg="4" xL="4" v-for="servicio,i in editarObj.cliente_servicio" :key="i">
                                                             <template>
                                                               <v-card
@@ -106,12 +113,12 @@
                                                                      
                                                                       <v-row>
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
-                                                                                <v-select  label="Producto" :items="products" item-text="nombre" item-value="id"  v-model="servicio.producto">
+                                                                                <v-select  label="Producto" :items="products" item-text="nombre" item-value="id"  v-model="servicio.producto_id">
                                                                                      
                                                                                 </v-select>
                                                                            </v-col>
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
-                                                                                <v-select label="Colaborador" :items="collaborators" item-text="nombre" item-value="id" v-model="servicio.colaborador">
+                                                                                <v-select label="Colaborador" :items="collaborators" item-text="nombre" item-value="id" v-model="servicio.colaborador_id">
                                                                                      
                                                                                 </v-select>
                                                                            </v-col>
@@ -172,6 +179,12 @@
                                                        </v-col>
                                                        
                                                   </v-row>
+                                                  <v-row v-else class="mt-5">
+                                                    <v-col>
+                                                      <p>Todavía No ha contratado ningun servicio.</p><br>
+                                                        <p><router-link to="/servicios-contratados">Contratar Servicio</router-link></p>
+                                                    </v-col>
+                                                  </v-row>
                                                   <v-row>
                                                         <div>
                                                             <v-btn
@@ -192,7 +205,7 @@
                                                   </v-row>
                    
                                              </v-stepper-content>
-
+                                              <span v-else></span>
                                         </v-stepper>
                                    
                               </v-dialog>
