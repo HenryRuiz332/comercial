@@ -13,7 +13,11 @@
                     <template v-slot:top>
                          <v-toolbar
                               flat>
-                              <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>
+                              <v-row>
+                                   <v-col cols="12">
+                                        <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>
+                                   </v-col>
+                              </v-row>
                               
                               <v-divider
                                    class="mx-4"
@@ -74,7 +78,9 @@
                    <template v-slot:no-data>
                          <span>No hay datos disponibles</span>
                    </template>
-                   <tfoot></tfoot>
+                    <t-foot>
+                         <span>ola</span>
+                    </t-foot>
           </v-data-table>
           
           <info-crud :snackbar="snackbarInfoCrud" :info="infoCrud" :closeSnackbar="closeSnackbar"></info-crud>

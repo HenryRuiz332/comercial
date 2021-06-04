@@ -1,8 +1,8 @@
 <template>
     <v-container>
         
-        <div id="content-page" class="content-page">
-            <div class="container-fluid">
+        <div id="content-page" class="">
+            <div class="">
                <div class="row">
                   <!-- <div class="col-lg-8">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">

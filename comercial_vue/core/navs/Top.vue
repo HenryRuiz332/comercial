@@ -46,9 +46,9 @@
                          </form>
                       </div> -->
                    </div>
-                      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
+                      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>
-                      </button>
+                      </button> -->
                       <div class="iq-menu-bt align-self-center">
                          <div class="wrapper-menu">
                             <div class="main-circle"><i class="ri-arrow-left-s-line"></i></div>
@@ -209,7 +209,7 @@
                           <li>
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center bg-primary rounded">
                                <!-- <img src="assets/images/user/1.jpg" class="img-fluid rounded mr-3" alt="user"> -->
-                               <div class="caption">
+                               <div class="">
                                   <h6 class="mb-0 line-height text-white">En linea</h6>
                                   <!-- <span class="font-size-12 text-white">Available</span> -->
                                </div>

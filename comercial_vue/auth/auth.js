@@ -19,6 +19,7 @@ export default {
 		}).catch(error => {
 			 console.log(error)
 			 alert('Error de credeciales.')
+			 return
 		})
 	},
 

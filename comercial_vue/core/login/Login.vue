@@ -3,7 +3,7 @@
         <section class="sign-in-page">
             <div class="container bg-white mt-5 p-0">
                 <div class="row no-gutters">
-                    <div class="col-sm-6 align-self-center">
+                    <div class="col-sm-6 offset-3 align-self-center">
                         <div class="sign-in-from">
                             <h1 class="mb-0">Login</h1>
                            
@@ -36,7 +36,7 @@
                                     <button type="submit"  @click="Login" class="btn btn-primary float-right">Iniciar Sesión</button>
                                 </div>
                                 <div class="sign-info">
-                                    <span class="dark-color d-inline-block line-height-2">¿No tienes una cuenta? <a href="#">Resgistrarme</a></span>
+                                    <span class="dark-color d-inline-block line-height-2">¿No tienes una cuenta? <a href="#">Registrarme</a></span>
                                     <ul class="iq-social-media">
                                         <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                         <li><a href="#"><i class="ri-twitter-line"></i></a></li>
@@ -46,19 +46,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-sm-6 text-center">
-                        <div class="sign-in-detail text-white">
-                            <a class="sign-in-logo mb-5" href="#"><img src="assets/images/logo-white.png" class="img-fluid" alt="logo"></a>
-                            <div class="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items="1" data-items-laptop="1" data-items-tab="1" data-items-mobile="1" data-items-mobile-sm="1" data-margin="0">
-                                <div class="item">
-                                    <img src="/assets/images/login/1.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Maneja tus servicios</h4>
-                                    <p>Es un hecho establecido desde hace mucho tiempo que un lector se distraerá con el contenido legible.</p>
-                                </div>
-                              {{errors}}
-                            </div>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </section>  
