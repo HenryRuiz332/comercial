@@ -16,7 +16,7 @@
                     v-if="editMode == false"
                     dark
                     text
-                    @click="saveObjUser">
+                    @click="saveObjServiceC">
                          Guardar
                </v-btn>
                <v-btn
@@ -163,6 +163,21 @@
                                        
                                    </v-textarea>
                          </v-col>
+
+                         <v-col
+                              cols="12"
+                              sm="12"
+                              md="6"
+                              lg="6"
+                              xl="6">
+                                   <file-input  
+                                       :files="files" 
+                                       v-on:file-change="setFiles" 
+                                       file-clear="clearFiles"
+                                       id="inputFile">
+                                       
+                                   </file-input>
+                         </v-col>
                     </v-row>
                </v-container>
           </v-card-text>
@@ -181,7 +196,7 @@
                          x-smal
                          color="#9E7AF3"
                          text
-                         @click="saveObjUser">
+                         @click="saveObjServiceC">
                               Guardar
                     </v-btn>
                     <v-btn
@@ -197,10 +212,15 @@
 </template>
 
 <script type="text/javascript">
+     import FileInput from '../../../../global_components/FileInput.vue'
+
      export default {
+          components: {
+               'file-input' : FileInput
+          },
           props: {
                updateObjUser : Function,
-               saveObjUser : Function,
+               saveObjServiceC : Function,
                close: Function,
                closeDialog: Function,
                editarObj: Object,
@@ -213,9 +233,10 @@
                collaborators: Array,
           },
           data: () => ({
-              errorDecimalGasto: '',
-              errorDecimalComision:'',
-              errorDecimalBeneficio:''
+               errorDecimalGasto: '',
+               errorDecimalComision:'',
+               errorDecimalBeneficio:'',
+               
           }),
 
           computed: {
@@ -234,8 +255,41 @@
 
           methods: {
               
+               setFiles(files) {
+                
+                    const filesPreview = files
 
-              validarGasto(value){
+                    Object.keys(filesPreview).forEach(i => {
+                         const file = filesPreview[i];
+                         const reader = new FileReader();
+                         reader.onload = (e) => {
+                             this.imagePreview.push(reader.result);
+                         }
+                         this.imagePreview = []
+                         reader.readAsDataURL(file);
+
+                    });
+                    console.log(this.imagePreview)
+
+                    if (files !== undefined) {
+                         this.files = files
+                         this.disableUploadButtonImage = false
+                    }
+               },
+
+           
+               limpiar(){
+             
+                    // const input = this.$refs.file
+                    // input.type = 'text'
+                    // input.type = 'file'
+
+                    var input = document.getElementById("inputFile")
+                    input.children[0].type = 'text'
+                    input.children[0].type = "file"
+                    this.files = []
+               },
+               validarGasto(value){
                     var RE = /^\d*\.?\d*$/;
                     if (RE.test(value)) {
                         this.errorDecimalGasto= ''

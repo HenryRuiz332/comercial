@@ -37,6 +37,7 @@
         <main-component></main-component>
     </div>
    <!--  <script type="text/javascript" src="{{ url('js/moment.min.js') }}"></script> -->
+    <script type="text/javascript" src="{{ url('js/moment.min.js') }}"></script>
 
     <script src="{{ asset('assets/js/jquery.min.js') }} "></script>
     <script src="{{ asset('assets/js/popper.min.js') }} "></script>
@@ -79,6 +80,10 @@
 
 
     <script type="text/javascript" src="{{  url(mix('app/main.js')) }}"></script>
+    <script type="text/javascript">
+        
+        
+    </script>
 </body>
 
 </html>

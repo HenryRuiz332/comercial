@@ -23,7 +23,8 @@
                               <controls-crud 
                                    :openDialogControl="openDialog" 
                                    :getFuntion="getUsers"
-                                   :nameComponent="nameComponent">
+                                   :nameComponent="nameComponent"
+                                   :sendWhatsApp="sendWhatsApp">
                                    
                               </controls-crud>
                               <v-spacer></v-spacer>
@@ -138,30 +139,30 @@
                                                                                 </v-text-field>
                                                                                  
                                                                            </v-col>
-                                                                          <!--  <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
                                                                                
-                                                                           <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="servicio.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
+                                                                           <v-menu ref="menu" v-model="servicio.menu" :close-on-content-click="false" :return-value.sync="servicio.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
 
                                                                                <template v-slot:activator="{ on, attrs }">
-                                                                                   <v-text-field filled  v-model="servicio.aviso_permanencia" label="Fecha" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
+                                                                                   <v-text-field filled  v-model="servicio.aviso_permanencia" label="A. Permanencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
                                                                                    </v-text-field>
                                                                                </template>
 
                                                                                <v-date-picker v-model="servicio.aviso_permanencia" no-title scrollable>
                                                                                    <v-spacer></v-spacer>
 
-                                                                                   <v-btn text color="primary" @click="menu = false">
+                                                                                   <v-btn text color="primary" @click="servicio.menu = false">
                                                                                        Cancel
                                                                                    </v-btn>
 
-                                                                                   <v-btn text color="primary" @click="$refs.menu.save(servicio.aviso_permanencia)">
+                                                                                   <v-btn text color="primary" @click="saveDate(servicio.aviso_permanencia)">
                                                                                        OK
                                                                                    </v-btn>
                                                                                </v-date-picker>
 
                                                                            </v-menu>
                 
-                                                                           </v-col> -->
+                                                                           </v-col>
 
                                                                            <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
                                                                                 <v-textarea label="Nota de Gasto" v-model="servicio.nota_gasto">
@@ -332,6 +333,18 @@
           },
 
           methods: {
+               sendWhatsApp(){
+                    axios.post(this.$apiUrl + `/user-whatsapp-message`).then(response => {
+                        console.log(response)
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un error al Actualizar los datos'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })
+               },
+               saveDate(){
+
+               },
                 validar(value){
                     this.$decimal(value)
                 },
@@ -385,13 +398,13 @@
 
                               this.pagination = response.data.users
 
-                              // for (var i = 0; i < this.users.length; i++) {
-                              //      for (var n = 0; n < this.users[i].cliente_servicio.length; i++) {
-                              //            this.users[i].cliente_servicio[n]['detalles'] = false
+                              for (var i = 0; i < this.users.length; i++) {
+                                   for (var n = 0; n < this.users[i].cliente_servicio.length; i++) {
+                                         this.users[i].cliente_servicio[n]['menu'] = false
                                          
-                              //      }
+                                   }
                                  
-                              // }
+                              }
                               this.$Progress.finish()
                          }
                          

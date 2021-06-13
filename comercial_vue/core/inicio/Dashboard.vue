@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        
+        <loader v-if="isloading" :infoLoader="infoLoader"></loader>
         <div id="content-page" class="">
             <div class="">
                <div class="row">
@@ -20,11 +20,10 @@
                   </div> -->
                 
                 
-               <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center"  >
+               <v-col cols="12" sm="12" md="3" lg="3" xl="3" class="text-center"  >
                     <v-card
                       color="deep-purple lighten-2"
-                      dark
-                    >
+                      dark>
                       <v-card-title class="text-h6 text-center ml-5">
                         <small>Total Gastos</small>
                         
@@ -40,7 +39,29 @@
                     </v-card>
                   </v-col>
 
-                   <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center" >
+
+                   <v-col cols="12" sm="12" md="3" lg="3" xl="3" class="text-center"  >
+                     <router-link to="/gastos-generales">
+                       <v-card
+                         color="red"
+                         dark>
+                         <v-card-title class="text-h6 text-center ml-5">
+                           <small>Gastos generales</small>
+                           
+                         </v-card-title>
+
+                         <v-card-subtitle > <h6 style="color:#fff!important">€</h6></v-card-subtitle>
+
+                         <!-- <v-card-actions>
+                           <v-btn text>
+                             Listen Now
+                           </v-btn>
+                         </v-card-actions> -->
+                       </v-card>
+                     </router-link>
+                  </v-col>
+
+                   <v-col cols="12" sm="12" md="3" lg="3" xl="3" class="text-center" >
                     <v-card
                       color="blue lighten-2">
                       <v-card-title class="text-h6 text-center ml-5">
@@ -57,7 +78,7 @@
                     </v-card>
                   </v-col>
 
-                   <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="text-center" >
+                   <v-col cols="12" sm="12" md="3" lg="3" xl="3" class="text-center" >
                     <v-card
                       color="#385F73"
                       dark
@@ -373,7 +394,8 @@
     export default {
         mixins: [menu_items_mixin],
          data: () => ({
-             totals : [] 
+             totals : [],
+             infoLoader: 'Obteniendo Página Principal'
          }),
 
          computed: {

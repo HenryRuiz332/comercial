@@ -60,7 +60,7 @@
                                                   
                                                   <form-crud 
                                                        :updateObjUser="updateObjUser"
-                                                       :saveObjUser="saveObjUser"
+                                                       :saveObjServiceC="saveObjServiceC"
                                                        :closeDialog="closeDialog"
                                                        :close="close"
                                                        :editarObj="editarObj"
@@ -68,9 +68,10 @@
                                                        :formTitle="formTitle"
                                                        :editMode="editMode" 
                                                        :services="services"
-													   :clients="clients"
-													   :products="products"
-													   :collaborators="collaborators"></form-crud>
+											:clients="clients"
+											:products="products"
+											:collaborators="collaborators" 
+                                                       :files="files"></form-crud>
                    
                                              </v-stepper-content>
 
@@ -166,6 +167,7 @@
                     aviso_permanencia : '',
                     nota_gasto: '',
                     notas: '',
+                    archivo : {}
                },
                objDefault: {
                    id: '',
@@ -179,7 +181,10 @@
                     aviso_permanencia : '',
                     nota_gasto: '',
                     notas: '',
+                    archivo : {}
                },
+               
+              
           }),
 
           computed: {
@@ -256,17 +261,28 @@
                         this.$Progress.fail()
                     })
                },
-               saveObjUser () {
+               saveObjServiceC () {
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Guardando...'
+
+
+                    let formDataSave = new FormData()
+                    for (let fileSave of this.files) {
+                         formDataSave.append('imagen[]', fileSave, fileSave.name)
+
+                    }
+
+                    this.editarObj.archivo = formDataSave
+
+
                     axios.post(this.$apiUrl + `/clients-services`, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Guardado Exitosamente'
                               this.snackbarInfoCrud = true
                               this.getClientServices()
-                              this.clientsServices.unshift(response.data.user)
+                              this.clientsServices.unshift(response.data.service)
                               this.close()
                               this.$Progress.finish()
                          }

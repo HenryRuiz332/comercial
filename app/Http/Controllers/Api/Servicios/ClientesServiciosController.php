@@ -74,6 +74,9 @@ class ClientesServiciosController extends Controller
      */
     public function store(ClienteServicioCreateRequest $request)
     {
+
+        dd( $request->archivo);
+
         $service = null;
         if ($request->isMethod("post")) {
             try {
@@ -101,7 +104,7 @@ class ClientesServiciosController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
-                'productos' => $service
+                'service' => $service
             ]);
 
         }else{

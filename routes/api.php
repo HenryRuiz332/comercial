@@ -32,6 +32,8 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 			Route::resource('/users', 'UsersController');
 			Route::post('/users-trash/{id}', 'UsersController@trash');
 			Route::put('/users-update-services/{idServices}', 'UsersController@updateService');
+			Route::post('/user-whatsapp-message', 'UsersController@whatsAppMessage');
+
 
 			Route::resource('/collaborators', 'ColaboradoresController');
 			Route::post('/collaborators-trash/{id}', 'ColaboradoresController@trash');
@@ -58,6 +60,18 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 			Route::post('/clients-services-trash/{id}', 'ClientesServiciosController@trash');
 
 			Route::get('/clients-services-aux/', 'ClientesServiciosController@indexAux');
+		});
+
+
+
+		Route::group(['namespace' => 'Gastos'], function(){
+			Route::resource('/gTypes', 'TiposGastosController');
+			Route::post('/gTypes-trash/{id}', 'TiposGastosController@trash');
+
+
+			Route::resource('/gastos', 'GastosController');
+			Route::post('/gastos-trash/{id}', 'GastosController@trash');
+			Route::post('gastos-filter-date',  'GastosController@dateFilter');
 		});
 
 

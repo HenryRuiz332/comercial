@@ -10,7 +10,7 @@
 
 
 		public static function createPaginator($request,$items,$perPage){
-	        $perPage = 200;
+	        $perPage = 1000000;
 	        $currentPage = LengthAwarePaginator::resolveCurrentPage();
 	        $perPage = $perPage;
 
