@@ -14,6 +14,20 @@ class GastosCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection->transform(function($expenses){
+                return [
+                    "id"                        => $expenses->id,
+                    "tipo_de_gasto_id"          => $expenses->tipo_de_gasto_id,
+                    "importe"                   => $expenses->importe,
+                    "fecha"                     => $expenses->fecha,
+                    "descripcion"               => $expenses->descripcion,
+                    "total"                     => 900,
+                    "url"                       => url()->full()
+                ];
+            })
+
+        ];
     }
+
 }
