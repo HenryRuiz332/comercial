@@ -66,6 +66,7 @@ class GastosController extends Controller
                 throw $th;
             }
 
+            $expense['tipo_gasto'] = '';
             return response()->json([
                 'status' => 200,
                 'message' => 'Save Succesfull',
