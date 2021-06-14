@@ -13,29 +13,36 @@
                          <controls-crud 
                                    :openDialogControl="openDialog" 
                                    :getFuntion="getExpenses"
-                                   :nameComponent="nameComponent">
-                                   
+                                   :nameComponent="nameComponent">          
                          </controls-crud>
                     </v-col> 
                     <v-col  cols="12" xs="12" sm="12" md="3" lg="3" xl="3">
                           <v-text-field
+
                                    append-icon="mdi-magnify"
                                    v-model="search"
                                    label="Buscar"
-                                   class="mr-3 mt-3">
+                                   class=""
+                                   style="margin-top:-15px!important">
                                         
                               </v-text-field>
                              
                     </v-col>
                </v-row>
                <v-row class="container" style="margin-top:-3vw">
-                    <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+                    <v-col cols="12" xs="12" sm="12" md="8" lg="8" xl="8">
 
                         <rango-fechas 
                                    :expensesTypes="expensesTypes"
                                    :url="url" 
                                    has_tipo="true" 
                                    v-on:success_query="setGastos"></rango-fechas>
+                        
+                    </v-col>
+                    <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3">
+                         <span class="h5">Total Gastos</span>
+                         &nbsp; &nbsp; &nbsp;
+                         <span class="h5" style="color:red">{{ totalGeneral }}€</span>
                     </v-col>
                </v-row>
           </div>
@@ -59,8 +66,9 @@
                     </thead>
                     <tbody>
                          <tr v-for="item in expenses" :key="item.name">
+
                               <td>{{ item.importe }}</td>
-                              <td>{{ item.tipo_gasto.nombre }}</td>
+                              <td>{{item.tipo_gasto.nombre}}</td>
                               <td>{{ item.fecha }}</td>
                               <td>
                                    <v-btn @click="editObj(item)" color="success" x-small>
@@ -159,7 +167,8 @@
                     
                     
                },
-               url : ''
+               url : '',
+               
               
           }),
 
@@ -173,6 +182,15 @@
                },
                isloading: function() {
                     return this.$store.getters.getloading
+               },
+               totalGeneral(){
+                    let gasto = 0
+                    for (var i = 0; i < this.expenses.length; i++) {
+                         gasto = (gasto + 1 * this.expenses[i].importe)
+                    }
+
+                    return gasto.toFixed(2)
+                    
                },
                
              
@@ -190,9 +208,11 @@
           created () {
                this.ini()
                this.url =  this.$apiUrl + `/gastos`
+               
           },
 
           methods: {
+
                setGastos(data) {
 
                     if (data.length > 0) {

@@ -69,7 +69,7 @@
 
         <v-col cols="12" md="4">
             <v-btn @click="buscarRango" depressed rounded color="green" x-small class="white--text">Buscar</v-btn>
-            <v-btn @click="defaultQuery" outlined depressed rounded color="green" x-small class="white--text">reiniciar</v-btn>
+            
         </v-col>
 
     </v-row>
