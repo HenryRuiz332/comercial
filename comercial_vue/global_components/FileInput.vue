@@ -67,29 +67,6 @@ Seleccionar archivo
 
         console.log(e)
         const filesPreview = e.currentTarget.files;
-
-        // for(let h = 0; h<filesPreview.length; h++){
-
-        //  if(filesPreview[h].size<=100000){
-        //        Object.keys(filesPreview).forEach(i => {
-        //             const file = filesPreview[i];
-        //             const reader = new FileReader();
-        //             reader.onload = (e) => {
-        //                 this.imagePreview.push(reader.result);
-        //             }
-        //             this.imagePreview = []
-        //             reader.readAsDataURL(file);
-        //             return
-        //         });
-              
-        // }else{
-        //     alert('La imagen que está eligiendo para el producto, no puede superar los 100 kb')
-        //     return
-        // }     
-      
-
-        // }
-
         Object.keys(filesPreview).forEach(i => {
             const file = filesPreview[i];
             const reader = new FileReader();

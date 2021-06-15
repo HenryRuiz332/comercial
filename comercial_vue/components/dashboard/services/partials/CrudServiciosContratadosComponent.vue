@@ -60,7 +60,7 @@
                                                   
                                                   <form-crud 
                                                        :updateObjUser="updateObjUser"
-                                                       :saveObjServiceC="saveObjServiceC"
+
                                                        :closeDialog="closeDialog"
                                                        :close="close"
                                                        :editarObj="editarObj"
@@ -71,7 +71,12 @@
 											:clients="clients"
 											:products="products"
 											:collaborators="collaborators" 
-                                                       :files="files"></form-crud>
+                                                       :snackbarInfoCrud="snackbarInfoCrud"
+                                                       :infoCrud="infoCrud"
+                                                       :infoLoader="infoLoader"
+                                                       :getClientServices="getClientServices"
+
+                                                       ></form-crud>
                    
                                              </v-stepper-content>
 
@@ -261,39 +266,7 @@
                         this.$Progress.fail()
                     })
                },
-               saveObjServiceC () {
-                    this.$Progress.start()
-                    this.snackbarInfoCrud = false
-                    this.infoCrud = ''
-                    this.infoLoader = 'Guardando...'
-
-
-                    let formDataSave = new FormData()
-                    for (let fileSave of this.files) {
-                         formDataSave.append('imagen[]', fileSave, fileSave.name)
-
-                    }
-
-                    this.editarObj.archivo = formDataSave
-
-
-                    axios.post(this.$apiUrl + `/clients-services`, this.editarObj).then(response => {
-                         if (response.status == 200) {
-                              this.infoCrud = 'Guardado Exitosamente'
-                              this.snackbarInfoCrud = true
-                              this.getClientServices()
-                              this.clientsServices.unshift(response.data.service)
-                              this.close()
-                              this.$Progress.finish()
-                         }
-                    }, err => {
-                         this.infoCrud = 'Ocurrió un error al guardar los datos'
-                         this.snackbarInfoCrud = true
-                         this.$Progress.fail()
-                    })
-
-                   
-               },
+              
                editObj (item) {
                     this.auxAxios()
                     this.editMode = true

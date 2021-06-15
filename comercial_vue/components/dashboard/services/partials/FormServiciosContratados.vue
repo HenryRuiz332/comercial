@@ -220,7 +220,7 @@
           },
           props: {
                updateObjUser : Function,
-               saveObjServiceC : Function,
+              
                close: Function,
                closeDialog: Function,
                editarObj: Object,
@@ -231,11 +231,18 @@
                clients: Array,
                products: Array,
                collaborators: Array,
+               snackbarInfoCrud: Boolean,
+               infoCrud: String,
+               infoLoader: String,
+               getClientServices : Function,
+
           },
           data: () => ({
                errorDecimalGasto: '',
                errorDecimalComision:'',
                errorDecimalBeneficio:'',
+               files: [],
+               imagePreview: []
                
           }),
 
@@ -254,7 +261,49 @@
           },
 
           methods: {
-              
+               saveObjServiceC () {
+                    this.$Progress.start()
+                    this.snackbarInfoCrud = false
+                    this.infoCrud = ''
+                    this.infoLoader = 'Guardando...'
+
+
+                    axios.post(this.$apiUrl + `/clients-services`, this.editarObj).then(response => {
+                         if (response.status == 200) {
+                              console.log(response.data.service.id)
+                              this.postDoc(response.data.service.id)
+                              this.infoCrud = 'Guardado Exitosamente'
+                              this.snackbarInfoCrud = true
+                              this.getClientServices()
+                              // this.clientsServices.unshift(response.data.service)
+                              this.close()
+                              this.$Progress.finish()
+                         }
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un error al guardar los datos'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })
+
+                   
+               },
+               postDoc(id){
+
+                    let formDataSave = new FormData()
+                    for (let fileSave of this.files) {
+                         formDataSave.append('imagen[]', fileSave, fileSave.name)
+
+                    }
+                    formDataSave.append('id', id)
+                   
+                    axios.post(this.$apiUrl + `/clients-services-doc/` + id, formDataSave).then(response => {
+                         if (response.status == 200) {
+                              
+                         }
+                    }, err => {
+                        
+                    })
+               },
                setFiles(files) {
                 
                     const filesPreview = files
@@ -269,7 +318,7 @@
                          reader.readAsDataURL(file);
 
                     });
-                    console.log(this.imagePreview)
+                  
 
                     if (files !== undefined) {
                          this.files = files

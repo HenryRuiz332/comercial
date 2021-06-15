@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Servicios\ClientesServiciosCollection;
 use App\Http\Resources\Servicios\ClienteServicioResource;
 use App\Models\Servicios\ClienteServicio;
+use App\Models\Gastos\Gasto;
+
 use stdClass;
 
 
@@ -18,6 +20,7 @@ class DashboardController extends Controller
     	$totals->gastos = 0;
 		$totals->comisiones = 0;
 		$totals->beneficios = 0;
+		$totals->expenses = 0;
 
     	$clientsServices = ClienteServicio::get(['gasto', 'comision', 'beneficio']);
 
@@ -28,7 +31,12 @@ class DashboardController extends Controller
     		$totals->beneficios =  $totals->beneficios + 1*$value->beneficio;
     	}
 
-
+    	$gastosGenerales = Gasto::get(['importe']);
+    	$totalGG = 0; 
+    	foreach ($gastosGenerales as $i) {
+    		$totalGG = $totalGG + $i->importe;
+    	}
+    	$totals->expenses = $totalGG;
     	return json_encode($totals);
     }
 }

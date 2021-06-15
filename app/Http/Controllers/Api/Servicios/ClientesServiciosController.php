@@ -16,6 +16,7 @@ use App\Models\Productos\Producto;
 
 use App\Http\Requests\ClienteServicioCreateRequest;
 use App\Http\Requests\ClienteServicioUpdateRequest;
+use App\Traits\HandlerFiles;
 
 class ClientesServiciosController extends Controller
 {
@@ -75,9 +76,6 @@ class ClientesServiciosController extends Controller
     public function store(ClienteServicioCreateRequest $request)
     {
 
-        dd( $request->archivo);
-
-        $service = null;
         if ($request->isMethod("post")) {
             try {
                 $service = new ClienteServicio;
@@ -113,6 +111,29 @@ class ClientesServiciosController extends Controller
                 'message' => 'Post Request Error'
             ]);  
         }
+    }
+    protected function pathServer(){
+        $PATH = $_SERVER['DOCUMENT_ROOT'];
+        $pathPublicOut = explode('public',$PATH);
+        $res = $pathPublicOut[0]; 
+        return $res;
+    }
+    public function doc(Request $request){
+
+        $destination = $this->pathServer() . 'storage/app/public/docs';
+
+
+
+        $store = HandlerFiles::store($request,  $destination);
+
+       
+
+        $archivo = $store->original['nombresArchivos'][0];
+       
+        $service =  ClienteServicio::findOrFail($request->id);
+        $service->documento =  $archivo;
+        $service->update();
+
     }
 
     /**

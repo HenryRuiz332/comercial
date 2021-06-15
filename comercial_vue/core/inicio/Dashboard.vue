@@ -50,7 +50,7 @@
                            
                          </v-card-title>
 
-                         <v-card-subtitle > <h6 style="color:#fff!important">€</h6></v-card-subtitle>
+                         <v-card-subtitle > <h6 style="color:#fff!important">{{totals.expenses}}€</h6></v-card-subtitle>
 
                          <!-- <v-card-actions>
                            <v-btn text>
