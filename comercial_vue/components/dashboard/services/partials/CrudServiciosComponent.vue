@@ -2,6 +2,17 @@
 
      <div>
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
+           <v-card class="searchMovil">
+              <v-card-title>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+          </v-card>
           <v-data-table
           :headers="objectsTabe"
           :items="services"
@@ -39,7 +50,7 @@
                                                   append-icon="mdi-magnify"
                                                   v-model="search"
                                                   label="Buscar"
-                                                  class="mr-3 mt-3">
+                                                  class="mr-3 mt-3 seacrPc">
                                                        
                                              </v-text-field>
                                             

@@ -45,10 +45,10 @@
                                         :items="expensesTypes" 
                                         item-value="id" 
                                         item-text="nombre"
-                                        :error-messages="errors.errors.tipo_producto_id ? errors.errors.tipo_producto_id[0] : null">
+                                        :error-messages="errors.errors.tipo_de_gasto_id ? errors.errors.tipo_de_gasto_id[0] : null">
                                         
                                    </v-select>
-                                   <p>
+                                   <p class="mt-3">
                                         <v-btn x-small color="success" @click="NewExpenseTypeDialog">Nuevo Tipo de Gasto</v-btn>
                                    </p>
                               </v-col>

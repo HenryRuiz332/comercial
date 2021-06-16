@@ -14,14 +14,14 @@
           </span>
           
         </div-->
-        <!-- <input type="file" ref="file"  @change="onChange" multiple> -->
+        <input type="file" ref="file"  @change="onChange" multiple>
 
        <!--  <spam>
           
             <img :src="getImagesP()">
         </spam>
          -->
-         <div class="container-input">
+       <!--   <div class="container-input">
 <input value="value" type="file" name="file-7" id="file-7"  ref="file"  @change="onChange" class="inputfile inputfile-7" data-multiple-caption="{count} archivos seleccionados" multiple style="display:none"/>
 <label for="file-7">
 <span class="iborrainputfile">{{ nombreImg }}</span>
@@ -30,7 +30,7 @@
 Seleccionar archivo
 </strong>
 </label>
-</div>
+</div> -->
     </div>
 
 </template>
@@ -65,7 +65,7 @@ Seleccionar archivo
       },
       onChange(e){
 
-        console.log(e)
+       
         const filesPreview = e.currentTarget.files;
         Object.keys(filesPreview).forEach(i => {
             const file = filesPreview[i];
@@ -84,8 +84,8 @@ Seleccionar archivo
 
         let files = e.target.files //subir varias
         this.$emit('file-change', files)
-       
-        this.nombreImg = this.files.name
+        
+
       },
 
       getFilesName (){

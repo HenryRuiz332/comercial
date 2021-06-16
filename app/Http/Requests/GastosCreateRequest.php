@@ -24,7 +24,16 @@ class GastosCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'importe' => 'required',
+            'fecha' => 'required',
+            'tipo_de_gasto_id' => 'required',
+        ];
+    }
+    public function messages(){
+        return [
+            'importe.required' => 'Campo requerido',
+            'fecha.required' => 'Campo requerido',
+            'tipo_de_gasto_id.required' => 'Campo requerido',
         ];
     }
 }

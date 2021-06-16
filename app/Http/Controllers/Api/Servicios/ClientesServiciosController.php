@@ -120,20 +120,42 @@ class ClientesServiciosController extends Controller
     }
     public function doc(Request $request){
 
-        $destination = $this->pathServer() . 'storage/app/public/docs';
-
-
-
+        $destination = $this->pathServer() . 'public/assets/images/docs/';
         $store = HandlerFiles::store($request,  $destination);
 
+        $archivos = $store->original['nombresArchivos'];
+
+        if ($request->update == 'no') {
+            $service =  ClienteServicio::findOrFail($request->id);
+            $service->documento =  json_encode($archivos);
+            $service->update();
+
+            return $archivos;
+
+        }else{
+            $service =  ClienteServicio::findOrFail($request->id);
+
+            $arrayBd = $service->documento;
+
+            $result = [];
+
+            foreach (json_decode($arrayBd) as $imgBd) {
+                $result [] = $imgBd;
+            }
+            foreach ($archivos as $entrante) {
+                $result[] = $entrante;
+            }
+
+            $service->documento =  json_encode($result);
+            $service->update();
+
+            return $result;
+        }
+      
+
        
 
-        $archivo = $store->original['nombresArchivos'][0];
-       
-        $service =  ClienteServicio::findOrFail($request->id);
-        $service->documento =  $archivo;
-        $service->update();
-
+        
     }
 
     /**

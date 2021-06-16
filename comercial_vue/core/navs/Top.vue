@@ -21,6 +21,7 @@
                          <li><router-link to="/servicios" class="nav-link"><i class="fa fa-file"></i></router-link></li>
                          <li><router-link to="/clientes" class="nav-link"><i class="fa fa-users"></i></router-link></li>
                          <li><router-link to="/colaboradores" class="nav-link router-link-exact-active router-link-active"><i class="fa fa-user"></i></router-link></li>
+                          <li><router-link to="/gastos-generales" class="nav-link router-link-exact-active router-link-active"><i class="fa fa-arrow-down"></i></router-link></li>
                         
                       </ul>
                       <!-- <div class="iq-search-bar">

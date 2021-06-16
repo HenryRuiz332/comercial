@@ -29,6 +29,27 @@
 
        
     </style>
+
+
+    <style type="text/css">
+         @media (max-width: 650px) {
+              .seacrPc{
+                   display: none!important;
+              }
+         }
+
+         @media (min-width: 283 ) {
+              .titleCrud{
+                   font-size: 15px!important;
+              }
+         }
+
+         @media (min-width: 650px ) {
+              .searchMovil{
+                   visibility: hidden;
+              }
+         }
+    </style>
     <title>Comercial</title>
 </head>
 

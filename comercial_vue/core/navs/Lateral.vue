@@ -102,6 +102,26 @@
             </li>
 
 
+            <li>
+                <a 
+                    href="#gastos_generales" 
+                    class="iq-waves-effect collapsed"  
+                    data-toggle="collapse" 
+                    aria-expanded="false">
+                    <i class="fa fa-chevron-down"></i>
+                        <span>Gastos </span>
+                        <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                </a>
+                <ul id="gastos_generales" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                   <li>
+                        <router-link to="/gastos-generales">
+                            <i class="fa fa-arrow-down"></i>Gastos Generales</router-link>
+                        </li>
+                  
+                </ul>
+            </li>
+
+
             
             
 

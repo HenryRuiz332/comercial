@@ -167,9 +167,9 @@
                          <v-col
                               cols="12"
                               sm="12"
-                              md="6"
-                              lg="6"
-                              xl="6">
+                              md="12"
+                              lg="12"
+                              xl="12">
                                    <file-input  
                                        :files="files" 
                                        v-on:file-change="setFiles" 
@@ -177,7 +177,74 @@
                                        id="inputFile">
                                        
                                    </file-input>
+
+                                   <span>
+                                        <v-btn v-if="files.length > 0 && editMode == true">
+                                             <v-icon @click="actualizarArchivo">
+                                                  mdi-upload
+                                             </v-icon>
+                                        </v-btn>
+                                   </span>
                          </v-col>
+
+                         
+                             
+                        <v-col v-if="editMode" class="text-center" cols="12" xs="12" sm="12" md="4" lg="4" xl="4" v-for="doc,i in docs" :key="i">
+                                        
+                                        <i class="fa fa-file fa-4x"
+                                             v-if="    doc[0].formato == 'png' || 
+                                                       doc[0].formato == 'PNG' ||  
+                                                       doc[0].formato == 'jpg' || 
+                                                       doc[0].formato == 'JPG' || 
+                                                       doc[0].formato == 'jpeg' || 
+                                                       doc[0].formato == 'JPEG' ||
+                                                       doc[0].formato == 'svg' ||
+                                                       doc[0].formato == 'SVG' ||
+                                                       doc[0].formato == 'webp' ||
+                                                       doc[0].formato == 'txt' ||
+                                                       doc[0].formato == 'TXT' ||
+                                                       doc[0].formato == 'WEBP'" 
+
+                                            
+
+                                             >
+                                             <!--  height="200"
+                                             :src="pathDoc + doc[0].imagen"
+                                             class="img-fluid"
+                                             width="200" -->
+                                        </i>
+                                        <i class="fa fa-file fa-4x" 
+                                              v-if="doc[0].formato == 'pdf' ||
+                                               
+                                                    doc[0].formato == 'html' ">
+                                        </i>
+
+                                        <i class="fa fa-file fa-4x" v-if="doc[0].formato == 'doc' || 
+                                                                      doc[0].formato == 'docx' ||
+                                                                      doc[0].formato == 'xls' ||
+                                                                      doc[0].formato == 'xlsx' ||
+                                                                      doc[0].formato == 'ppt' ||
+                                                                      doc[0].formato == 'pptx' ||
+                                                                      doc[0].formato == 'DOC' ||
+                                                                      doc[0].formato == 'DOCX' ||
+                                                                      doc[0].formato == 'XLS' ||
+                                                                      doc[0].formato == 'XLSX' ||
+                                                                      doc[0].formato == 'PPT' ||
+                                                                      
+                                                                      doc[0].formato == 'PPTX'">
+                                                                 
+                                                                      </i>
+                                        <p>
+                                            {{doc[0].nombreImagen + '.'+ doc[0].formato}}
+                                        </p>
+                                        <p>
+                                             <v-btn @click="callDown(doc.imagen)" color="orange" x-small>
+                                             <i class="fa fa-download "></i>
+                                        </v-btn>
+                                        </p>
+                                   </v-col>
+                        
+                         
                     </v-row>
                </v-container>
           </v-card-text>
@@ -231,10 +298,10 @@
                clients: Array,
                products: Array,
                collaborators: Array,
-               snackbarInfoCrud: Boolean,
-               infoCrud: String,
-               infoLoader: String,
-               getClientServices : Function,
+               successDataSave : Function,
+               beforeSave : Function,
+               docs: Array,
+               getClientServices: Function
 
           },
           data: () => ({
@@ -261,23 +328,36 @@
           },
 
           methods: {
+               actualizarArchivo(){
+                   
+                    let formDataSave = new FormData()
+                    for (let fileSave of this.files) {
+                         formDataSave.append('imagen[]', fileSave, fileSave.name)
+
+                    }
+                    formDataSave.append('id', this.editarObj.id)
+                    formDataSave.append('update', 'si')
+                   
+                    axios.post(this.$apiUrl + `/clients-services-doc/` + this.editarObj.id, formDataSave).then(response => {
+                         if (response.status == 200) {
+                              this.getClientServices()
+                              this.limpiar()
+                         }
+                    }, err => {
+                        alert('ocurrio')
+                    }) 
+
+                    alert('actualizar archivo. en desarrollo')
+               },
                saveObjServiceC () {
-                    this.$Progress.start()
-                    this.snackbarInfoCrud = false
-                    this.infoCrud = ''
-                    this.infoLoader = 'Guardando...'
+                   this.beforeSave()
 
 
                     axios.post(this.$apiUrl + `/clients-services`, this.editarObj).then(response => {
                          if (response.status == 200) {
-                              console.log(response.data.service.id)
+                             
                               this.postDoc(response.data.service.id)
-                              this.infoCrud = 'Guardado Exitosamente'
-                              this.snackbarInfoCrud = true
-                              this.getClientServices()
-                              // this.clientsServices.unshift(response.data.service)
-                              this.close()
-                              this.$Progress.finish()
+                              this.successDataSave()
                          }
                     }, err => {
                          this.infoCrud = 'Ocurrió un error al guardar los datos'
@@ -288,21 +368,26 @@
                    
                },
                postDoc(id){
+                    if (this.files.length > 0) {
+                         this.beforeSave()
+                         let formDataSave = new FormData()
+                         for (let fileSave of this.files) {
+                              formDataSave.append('imagen[]', fileSave, fileSave.name)
 
-                    let formDataSave = new FormData()
-                    for (let fileSave of this.files) {
-                         formDataSave.append('imagen[]', fileSave, fileSave.name)
-
-                    }
-                    formDataSave.append('id', id)
-                   
-                    axios.post(this.$apiUrl + `/clients-services-doc/` + id, formDataSave).then(response => {
-                         if (response.status == 200) {
-                              
                          }
-                    }, err => {
+                         formDataSave.append('id', id)
+                         formDataSave.append('update', 'no')
                         
-                    })
+                         axios.post(this.$apiUrl + `/clients-services-doc/` + id, formDataSave).then(response => {
+                              if (response.status == 200) {
+                                  this.successDataSave()
+                                  location.reload() 
+                              }
+                         }, err => {
+                             alert('ocurrio')
+                         }) 
+                    }
+                   
                },
                setFiles(files) {
                 

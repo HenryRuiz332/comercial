@@ -29,6 +29,7 @@ class ClientesServiciosCollection extends ResourceCollection
                     "comision"                        => $clientsServices->comision,
                     "aviso_permanencia"                        => $clientsServices->aviso_permanencia,
                     "notas"                        => $clientsServices->notas,
+                    "documento"                        => $clientsServices->documento,
                     "url"                           => url()->full(),
 
                     // "cliente"                           => with($clientsServices->user),
