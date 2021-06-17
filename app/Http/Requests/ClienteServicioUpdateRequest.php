@@ -23,8 +23,10 @@ class ClienteServicioUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        // return [
+        //     'editarObj.user_id' => 'required|numeric',
+        //     'editarObj.servicio_id' => 'required|numeric',
+           
+        // ];
     }
 }

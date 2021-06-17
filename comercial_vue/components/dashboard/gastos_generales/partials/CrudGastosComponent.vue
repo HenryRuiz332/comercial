@@ -84,7 +84,7 @@
                </v-simple-table>
                <v-dialog
                     v-model="dialog"
-                    max-width="70%"
+                    max-width="80%"
                     persistent
                     transition="dialog-bottom-transition">
                               <form-crud 
@@ -220,7 +220,7 @@
                          return
                     }
                     this.expenses = []
-                    alert("no hay")
+                    console.log('No hay gastos disponibles')
                },
 
                closeSnackbar(){

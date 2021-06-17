@@ -24,8 +24,8 @@ class ClienteServicioCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|numeric',
-            'servicio_id' => 'required|numeric',
+            // 'editarObj.user_id' => 'required|numeric',
+            // 'editarObj.servicio_id' => 'required|numeric',
             // 'producto_id' => 'numeric',
             // 'colaborador_id' => 'numeric',
         ];
@@ -34,11 +34,11 @@ class ClienteServicioCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'El servicio a contratar debe asignarse a un cliente',
-            'user_id.numeric' => 'Error script x789',
+            'editarObj.user_id.required' => 'El servicio a contratar debe asignarse a un cliente',
+            'editarObj.user_id.numeric' => 'Error script x789',
 
-            'servicio_id.required' => 'El servicio es requerido',
-            'servicio_id.numeric' => 'Error script x789',
+            'editarObj.servicio_id.required' => 'El servicio es requerido',
+            'editarObj.servicio_id.numeric' => 'Error script x789',
 
             // 'producto_id.numeric' => 'Error script x789',
             // 'colaborador_id.numeric' => 'Error script x789',

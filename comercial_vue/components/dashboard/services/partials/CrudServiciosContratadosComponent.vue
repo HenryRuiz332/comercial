@@ -7,7 +7,7 @@
                 <v-text-field
                   v-model="search"
                   append-icon="mdi-magnify"
-                  label="Search"
+                   label="Buscar"
                   single-line
                   hide-details
                 ></v-text-field>
@@ -70,6 +70,7 @@
                                              <v-stepper-content step="1">
                                                   
                                                   <form-crud 
+                                                       :callDown="callDown"
                                                        :editObj="editObj"
                                                        :getClientServices="getClientServices"
                                                        :updateObjUser="updateObjUser"
@@ -186,7 +187,7 @@
                                                  {{doc[0].nombreImagen + '.'+ doc[0].formato}}
                                              </p>
                                              <p>
-                                                  <v-btn @click="callDown(doc.imagen)" color="orange" x-small>
+                                                  <v-btn @click="callDown(doc[0].imagen)" color="orange" x-small>
                                                   <i class="fa fa-download "></i>
                                              </v-btn>
                                              </p>
@@ -412,14 +413,15 @@
                     
                },
                callDown(doc){
-                         
+                        
                          let path  = this.pathDoc + doc 
 
                          this.downloadFiles(path, doc)
                },
                downAll(){
                     for (var i = 0; i < this.docs.length; i++) {
-                         this.downloadFiles(this.pathDoc + this.docs[i], this.docs[i])
+
+                         this.downloadFiles(this.pathDoc + this.docs[i][0].imagen, this.docs[i][0].imagen)
                     }
                },
                downloadFiles(url, filename) {
@@ -500,6 +502,7 @@
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Actualizando...'
+
                     axios.put(this.$apiUrl + `/clients-services/` + this.editarObj.id, this.editarObj).then(response => {
                          if (response.status == 200) {
                               this.infoCrud = 'Actualizado Exitosamente'

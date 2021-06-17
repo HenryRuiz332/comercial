@@ -179,10 +179,11 @@
                                    </file-input>
 
                                    <span>
-                                        <v-btn v-if="files.length > 0 && editMode == true">
-                                             <v-icon @click="actualizarArchivo">
+                                        <v-btn v-if="files.length > 0 && editMode == true"  @click="actualizarArchivo">
+                                             <v-icon>
                                                   mdi-upload
                                              </v-icon>
+                                             Cargar Archivo
                                         </v-btn>
                                    </span>
                          </v-col>
@@ -238,8 +239,8 @@
                                             {{doc[0].nombreImagen + '.'+ doc[0].formato}}
                                         </p>
                                         <p>
-                                             <v-btn @click="callDown(doc.imagen)" color="orange" x-small>
-                                             <i class="fa fa-download "></i>
+                                             <v-btn small @click="callDown(doc[0].imagen)" color="orange" x-small>
+                                             <i class="fa fa-download mt-3 "></i> 
                                         </v-btn>
                                         </p>
                                    </v-col>
@@ -287,7 +288,7 @@
           },
           props: {
                updateObjUser : Function,
-              
+               editObj:Function,
                close: Function,
                closeDialog: Function,
                editarObj: Object,
@@ -301,7 +302,8 @@
                successDataSave : Function,
                beforeSave : Function,
                docs: Array,
-               getClientServices: Function
+               getClientServices: Function,
+               callDown: Function
 
           },
           data: () => ({
@@ -341,23 +343,32 @@
                     axios.post(this.$apiUrl + `/clients-services-doc/` + this.editarObj.id, formDataSave).then(response => {
                          if (response.status == 200) {
                               this.getClientServices()
+                              this.successDataSave()
                               this.limpiar()
+
                          }
                     }, err => {
-                        alert('ocurrio')
+                        alert('Ocurrio un error')
                     }) 
 
-                    alert('actualizar archivo. en desarrollo')
+                   
                },
                saveObjServiceC () {
-                   this.beforeSave()
+                    this.beforeSave()
 
+                    let formDataSave = new FormData()
+                    for (let fileSave of this.files) {
+                         formDataSave.append('imagen[]', fileSave, fileSave.name)
 
-                    axios.post(this.$apiUrl + `/clients-services`, this.editarObj).then(response => {
+                    }
+
+                    formDataSave.append('update', 'no')
+                    formDataSave.append('editarObj', JSON.stringify(this.editarObj))
+
+                    axios.post(this.$apiUrl + `/clients-services`, formDataSave).then(response => {
                          if (response.status == 200) {
-                             
-                              this.postDoc(response.data.service.id)
                               this.successDataSave()
+                              this.limpiar()
                          }
                     }, err => {
                          this.infoCrud = 'Ocurrió un error al guardar los datos'
@@ -367,28 +378,7 @@
 
                    
                },
-               postDoc(id){
-                    if (this.files.length > 0) {
-                         this.beforeSave()
-                         let formDataSave = new FormData()
-                         for (let fileSave of this.files) {
-                              formDataSave.append('imagen[]', fileSave, fileSave.name)
-
-                         }
-                         formDataSave.append('id', id)
-                         formDataSave.append('update', 'no')
-                        
-                         axios.post(this.$apiUrl + `/clients-services-doc/` + id, formDataSave).then(response => {
-                              if (response.status == 200) {
-                                  this.successDataSave()
-                                  location.reload() 
-                              }
-                         }, err => {
-                             alert('ocurrio')
-                         }) 
-                    }
-                   
-               },
+              
                setFiles(files) {
                 
                     const filesPreview = files

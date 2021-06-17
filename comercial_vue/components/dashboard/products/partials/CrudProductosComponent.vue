@@ -7,7 +7,7 @@
                 <v-text-field
                   v-model="search"
                   append-icon="mdi-magnify"
-                  label="Search"
+                   label="Buscar"
                   single-line
                   hide-details
                 ></v-text-field>
@@ -41,7 +41,7 @@
 
                               <v-dialog
                                    v-model="dialog"
-                                   max-width="50%"
+                                   max-width="80%"
                                    persistent
                                   
                                    transition="dialog-bottom-transition">

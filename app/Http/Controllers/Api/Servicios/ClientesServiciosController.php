@@ -17,6 +17,7 @@ use App\Models\Productos\Producto;
 use App\Http\Requests\ClienteServicioCreateRequest;
 use App\Http\Requests\ClienteServicioUpdateRequest;
 use App\Traits\HandlerFiles;
+use App\Traits\Main;
 
 class ClientesServiciosController extends Controller
 {
@@ -76,22 +77,55 @@ class ClientesServiciosController extends Controller
     public function store(ClienteServicioCreateRequest $request)
     {
 
+        $data = json_decode($request->editarObj);
+
+        if ($data->producto_id == "") {
+            $data->producto_id = null;
+        }
+        if ($data->colaborador_id == "") {
+            $data->colaborador_id = null;
+        }
+        if ($data->gasto == "") {
+            $data->gasto = null;
+        }
+        if ($data->nota_gasto == "") {
+            $data->nota_gasto = null;
+        }
+        if ($data->beneficio == "") {
+            $data->beneficio = null;
+        }
+        if ($data->comision == "") {
+            $data->comision = null;
+        }
+        if ($data->aviso_permanencia == "") {
+            $data->aviso_permanencia = null;
+        }
+        if ($data->notas == "") {
+            $data->notas = null;
+        }
+       
+
         if ($request->isMethod("post")) {
             try {
                 $service = new ClienteServicio;
-                $service->user_id = $request->user_id;
-                $service->servicio_id = $request->servicio_id;
-                $service->producto_id = $request->producto_id;
-                $service->colaborador_id = $request->colaborador_id;
-                $service->gasto = $request->gasto;
+                $service->user_id = $data->user_id;
+                $service->servicio_id = $data->servicio_id;
+                $service->producto_id =  $data->producto_id ;
+                $service->colaborador_id = $data->colaborador_id;
+                $service->gasto = $data->gasto;
 
-                $service->nota_gasto = $request->nota_gasto;
+                $service->nota_gasto = $data->nota_gasto;
 
-                $service->beneficio = $request->beneficio;
-                $service->comision = $request->comision;
-                $service->aviso_permanencia = $request->aviso_permanencia;
-                $service->notas = $request->notas;
+                $service->beneficio = $data->beneficio;
+                $service->comision = $data->comision;
+                $service->aviso_permanencia = $data->aviso_permanencia;
+                $service->notas = $data->notas;
                 $service->saveOrfail();   
+
+
+                $this->saveDoc($request, $service->id);
+
+
             } catch (\Throwable $th) {
 
                 $service->forceDelete();
@@ -112,28 +146,23 @@ class ClientesServiciosController extends Controller
             ]);  
         }
     }
-    protected function pathServer(){
-        $PATH = $_SERVER['DOCUMENT_ROOT'];
-        $pathPublicOut = explode('public',$PATH);
-        $res = $pathPublicOut[0]; 
-        return $res;
-    }
-    public function doc(Request $request){
+   
+    public function saveDoc(Request $request, $id){
 
-        $destination = $this->pathServer() . 'public/assets/images/docs/';
+        $destination = Main::pathServer() . '/public/assets/images/docs/';
         $store = HandlerFiles::store($request,  $destination);
 
         $archivos = $store->original['nombresArchivos'];
 
         if ($request->update == 'no') {
-            $service =  ClienteServicio::findOrFail($request->id);
+            $service =  ClienteServicio::findOrFail($id);
             $service->documento =  json_encode($archivos);
             $service->update();
 
             return $archivos;
 
         }else{
-            $service =  ClienteServicio::findOrFail($request->id);
+            $service =  ClienteServicio::findOrFail($id);
 
             $arrayBd = $service->documento;
 
@@ -181,13 +210,14 @@ class ClientesServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClienteServicioUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
+      
         $service = null;
         if ($request->isMethod("put")) {
             
                 $service =  ClienteServicio::findOrFail($id);
-                $service->user_id = $request->user->id;
+                $service->user_id = $request->user_id;
                 $service->servicio_id = $request->servicio_id;
                 $service->producto_id = $request->producto_id;
                 $service->colaborador_id = $request->colaborador_id;
