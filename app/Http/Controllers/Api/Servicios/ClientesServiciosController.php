@@ -181,10 +181,42 @@ class ClientesServiciosController extends Controller
             return $result;
         }
       
-
-       
-
         
+    }
+
+    public function deleteDoc(Request $request, $id){
+
+        $service =  ClienteServicio::findOrFail($id*1);
+
+        $documentosServicio = json_decode($service->documento);
+        $docsRestantes = [];
+        foreach($documentosServicio as $doc){
+            if ($doc != $request->imagen) {
+                $docsRestantes[] = $doc;
+            }
+        }
+        $service->documento = json_encode($docsRestantes);
+        $service->update();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Documento eliminado',
+            'service' => $service,
+            'docsRestantes' => $docsRestantes
+        ]);  
+
+    }
+
+    public function deleteAllDocs(Request $request, $id){
+        $service =  ClienteServicio::findOrFail($id*1);
+        $service->documento = json_encode(Array());
+        $service->update();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Documento eliminado',
+            'service' => $service,
+        ]);  
     }
 
     /**

@@ -98,9 +98,9 @@
                          <v-col
                               cols="12"
                               sm="6"
-                              md="4"
-                              lg="4"
-                              xl="4">
+                              md="3"
+                              lg="3"
+                              xl="3">
                                    <v-text-field
                                         @change="validarGasto"
                                         v-model="editarObj.gasto"
@@ -112,9 +112,9 @@
                           <v-col
                               cols="12"
                               sm="6"
-                              md="4"
-                              lg="4"
-                              xl="4">
+                              md="3"
+                              lg="3"
+                              xl="3">
                                    <v-text-field
                                         @change="validarComision"
                                         v-model="editarObj.comision"
@@ -127,9 +127,9 @@
                          <v-col
                               cols="12"
                               sm="6"
-                              md="4"
-                              lg="4"
-                              xl="4">
+                              md="3"
+                              lg="3"
+                              xl="3">
                                    <v-text-field
                                          @change="validarbeneficio"
                                         v-model="editarObj.beneficio"
@@ -139,6 +139,35 @@
                                    </v-text-field>
                                     <small style="color:red" v-if="errorDecimalBeneficio != ''">{{errorDecimalBeneficio}}</small>
                          </v-col>
+
+                         <v-col
+                              cols="12"
+                              sm="6"
+                              md="3"
+                              lg="3"
+                              xl="3">
+                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="editarObj.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
+
+                                       <template v-slot:activator="{ on, attrs }">
+                                           <v-text-field filled :error-messages="errors.errors.aviso_permanencia ? errors.errors.aviso_permanencia[0] : null" v-model="editarObj.aviso_permanencia" label="Aviso permamnencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
+                                           </v-text-field>
+                                       </template>
+
+                                       <v-date-picker v-model="editarObj.aviso_permanencia" no-title scrollable>
+                                           <v-spacer></v-spacer>
+
+                                           <v-btn text color="primary" @click="menu = false">
+                                               Cancel
+                                           </v-btn>
+
+                                           <v-btn text color="primary" @click="$refs.menu.save(editarObj.aviso_permanencia)">
+                                               OK
+                                           </v-btn>
+                                       </v-date-picker>
+
+                                   </v-menu>
+                         </v-col>
+
                           <v-col
                               cols="12"
                               sm="12"
@@ -183,7 +212,7 @@
                                              <v-icon>
                                                   mdi-upload
                                              </v-icon>
-                                             Cargar Archivo
+                                             Cargar Archivo(s)
                                         </v-btn>
                                    </span>
                          </v-col>
@@ -238,10 +267,13 @@
                                         <p>
                                             {{doc[0].nombreImagen + '.'+ doc[0].formato}}
                                         </p>
-                                        <p>
-                                             <v-btn small @click="callDown(doc[0].imagen)" color="orange" x-small>
-                                             <i class="fa fa-download mt-3 "></i> 
-                                        </v-btn>
+                                        <p class="mt-3">
+                                             <v-btn title="Descargar"  @click="callDown(doc[0].imagen)" color="orange" x-small>
+                                                  <i class="fa fa-download  "></i> 
+                                             </v-btn>
+                                             <v-btn title="Eliminar" @click="eliminarAdjunto(doc[0], unicoItem)" color="red" x-small>
+                                                  <i class="fa fa-close "></i>
+                                             </v-btn>
                                         </p>
                                    </v-col>
                         
@@ -303,7 +335,10 @@
                beforeSave : Function,
                docs: Array,
                getClientServices: Function,
-               callDown: Function
+               callDown: Function,
+               eliminarAdjunto: Function,
+               unicoItem: Object,
+
 
           },
           data: () => ({
@@ -311,7 +346,8 @@
                errorDecimalComision:'',
                errorDecimalBeneficio:'',
                files: [],
-               imagePreview: []
+               imagePreview: [],
+               menu : false
                
           }),
 
@@ -330,6 +366,10 @@
           },
 
           methods: {
+               eliminarAdjuntoDesdeForm(documento, item){
+                                     
+                    this.eliminarAdjunto(documento, item)
+               },
                actualizarArchivo(){
                    
                     let formDataSave = new FormData()

@@ -304,6 +304,7 @@
                     gasto: '',
                     nota_gasto : '',
                     beneficio: '',
+                  
                    
                },
                objDefault: {
@@ -315,6 +316,7 @@
                     gasto: '',
                     nota_gasto : '',
                     beneficio: '',
+                    
                    
                },
                errorDecimalGasto: '',
@@ -415,7 +417,8 @@
                               this.pagination = response.data.users
 
                               for (var i = 0; i < this.users.length; i++) {
-                                   for (var n = 0; n < this.users[i].cliente_servicio.length; i++) {
+                                   for (var n = 0; n < this.users[i].cliente_servicio.length; n++) {
+                                        
                                          this.users[i].cliente_servicio[n]['menu'] = false
                                          
                                    }

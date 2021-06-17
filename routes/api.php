@@ -62,6 +62,9 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 			Route::get('/clients-services-aux/', 'ClientesServiciosController@indexAux');
 			
 			Route::post('/clients-services-doc/{id}', 'ClientesServiciosController@saveDoc');
+			Route::post('/clients-services-trash-imagen/{id}', 'ClientesServiciosController@deleteDoc');
+			Route::post('/clients-services-trash-images/{id}', 'ClientesServiciosController@deleteAllDocs');
+
 		});
 
 

@@ -70,6 +70,9 @@
                                              <v-stepper-content step="1">
                                                   
                                                   <form-crud 
+                                                       
+                                                       :unicoItem="unicoItem"
+                                                       :eliminarAdjunto="eliminarAdjunto"
                                                        :callDown="callDown"
                                                        :editObj="editObj"
                                                        :getClientServices="getClientServices"
@@ -136,7 +139,21 @@
                                  </v-toolbar>
                                    <v-row class="container">
                                         <v-col class="text-center" cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
-                                             <v-btn @click="downAll()" small color="orange">Descargar Todos</v-btn>
+                                             <p v-if="docs.length > 0">
+                                                   <v-btn 
+                                                       @click="downAll()" 
+                                                       small 
+                                                       color="orange"
+                                                       >Descargar Todos</v-btn>
+                                                  <v-btn 
+                                                       @click="eliminarTodosDocs()" 
+                                                       small 
+                                                       color="red"
+                                                      >Eliminar Todos</v-btn>
+                                             </p>
+                                            
+
+                                                  <span v-else>No se existen documentos relacionados a este servicio</span>
                                         </v-col>
                                         <v-col class="text-center" cols="12" xs="12" sm="12" md="4" lg="4" xl="4" v-for="doc,i in docs" :key="i">
                                              
@@ -152,11 +169,7 @@
                                                             doc[0].formato == 'webp' ||
                                                             doc[0].formato == 'txt' ||
                                                              doc[0].formato == 'TXT' ||
-                                                            doc[0].formato == 'WEBP'" 
-
-                                                 
-
-                                                  >
+                                                            doc[0].formato == 'WEBP'" >
                                                   <!--  height="200"
                                                   :src="pathDoc + doc[0].imagen"
                                                   class="img-fluid"
@@ -187,9 +200,12 @@
                                                  {{doc[0].nombreImagen + '.'+ doc[0].formato}}
                                              </p>
                                              <p>
-                                                  <v-btn @click="callDown(doc[0].imagen)" color="orange" x-small>
-                                                  <i class="fa fa-download "></i>
-                                             </v-btn>
+                                                  <v-btn title="Descargar" @click="callDown(doc[0].imagen)" color="orange" x-small>
+                                                       <i class="fa fa-download "></i>
+                                                  </v-btn>
+                                                  <v-btn title="Eliminar" @click="eliminarAdjunto(doc[0], unicoItem)" color="red" x-small>
+                                                       <i class="fa fa-close "></i>
+                                                  </v-btn>
                                              </p>
                                         </v-col>
                                    </v-row>
@@ -302,7 +318,8 @@
                },
                dialogModalDoc : false,
                unicoItem: {},
-               docs : []
+               docs : [],
+             
               
           }),
 
@@ -338,6 +355,96 @@
           },
 
           methods: {
+               eliminarTodosDocs(){
+                    
+                    axios.post(this.$apiUrl + `/clients-services-trash-images/` + this.unicoItem.id, this.unicoItem).then(response => {
+                         if (response.status == 200) {
+                              this.unicoItem  = response.data.service
+                              this.docs = []
+                              // let splitArray = []
+                              // let splitPiso = []
+                              // let images = JSON.parse(this.unicoItem.documento)
+
+                              // for (var i = 0; i < images.length; i++) {
+                              //      splitArray[splitArray.length]= images[i].split('.')
+
+                                     
+                              // }
+                              // for (var i = 0; i < splitArray.length; i++) {
+                              //      let splitPiso = splitArray[i][0].split('_')
+
+                              //      let docPush  = [
+                              //           {
+                              //                'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
+                              //                'nombreImagen' :splitPiso[0],
+                              //                'formato' :splitArray[i][1],
+                                             
+                              //           }
+                              //      ]
+                              //      this.docs.push(docPush)
+                              // }  
+                              // // this.$delete(this.clientsServices, objDelete)
+                              // // this.closeDelete()
+                              this.infoCrud = 'Elemento Eliminado'
+                              this.snackbarInfoCrud = true
+                              this.$Progress.finish()
+                             
+                         }
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un Error Al Eliminar'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })   
+               },
+               eliminarAdjunto(documento, item){
+                   
+                    this.$Progress.start()
+                    this.infoLoader = 'Eliminando...'
+                    let objDelete = new FormData()
+                    objDelete.append('idServicio', item.id)
+                    objDelete.append('imagen', documento.imagen)
+
+                    axios.post(this.$apiUrl + `/clients-services-trash-imagen/` + item.id, objDelete).then(response => {
+                         if (response.status == 200) {
+                              this.unicoItem  = response.data.service
+                              this.docs = []
+                              let splitArray = []
+                              let splitPiso = []
+                              let images = JSON.parse(this.unicoItem.documento)
+
+                              for (var i = 0; i < images.length; i++) {
+                                   splitArray[splitArray.length]= images[i].split('.')
+
+                                     
+                              }
+                              for (var i = 0; i < splitArray.length; i++) {
+                                   let splitPiso = splitArray[i][0].split('_')
+
+                                   let docPush  = [
+                                        {
+                                             'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
+                                             'nombreImagen' :splitPiso[0],
+                                             'formato' :splitArray[i][1],
+                                             
+                                        }
+                                   ]
+                                   this.docs.push(docPush)
+                              }  
+                              // this.$delete(this.clientsServices, objDelete)
+                              // this.closeDelete()
+                              this.infoCrud = 'Elemento Eliminado'
+                              this.snackbarInfoCrud = true
+                              this.$Progress.finish()
+                             
+                         }
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un Error Al Eliminar'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })
+
+               },
+
                beforeSave(){
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
@@ -551,6 +658,7 @@
                },
 
                close() {
+                    this.files = []
                     this.closeDialog()
                     this.$nextTick(() => {
                          this.editarObj = Object.assign({}, this.objDefault)
@@ -558,6 +666,7 @@
                     })
                     this.editMode = false
                     this.unicoItem = {}
+                    this.limpiar()
                },
                closeDelete () {
                     this.dialogDelete = false
@@ -568,6 +677,17 @@
                      this.editMode = false
                },
 
+               limpiar(){
+             
+                    // const input = this.$refs.file
+                    // input.type = 'text'
+                    // input.type = 'file'
+
+                    var input = document.getElementById("inputFile")
+                    input.children[0].type = 'text'
+                    input.children[0].type = "file"
+                    this.files = []
+               },
               
           },
      };

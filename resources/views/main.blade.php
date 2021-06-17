@@ -29,7 +29,7 @@
 
        
     </style>
-
+    
 
     <style type="text/css">
          @media (max-width: 650px) {
@@ -54,6 +54,8 @@
 </head>
 
 <body> 
+
+   
     <div id="app">
         <main-component></main-component>
     </div>

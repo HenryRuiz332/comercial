@@ -14,8 +14,8 @@ export default {
 			this.dispatchUser(response.data.user)
 			this.user.authenticated = true
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
-			// window.location.href = '/'
-     		router.push('/dashboard')
+			window.location.href = '#/dashboard'
+     		// router.push('/dashboard')
 		}).catch(error => {
 			 console.log(error)
 			 alert('Error de credeciales.')
@@ -47,6 +47,7 @@ export default {
 			store.dispatch('setUser', this.setDefault())
 			
 			router.push('/login')
+			location.reload()
 		}).catch(error => {
 			console.log(error)
 		})

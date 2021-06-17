@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app >
          <vue-progress-bar></vue-progress-bar>
         <div>
          <!-- loader END -->
@@ -81,6 +81,10 @@
             return {
                 drawer: true
             }
+        },
+        mounted(){
+            
+            
         },
         methods: {
             // isActive() {
