@@ -20,5 +20,13 @@ class Users extends Seeder
         	'password' => bcrypt('admin'),
 	        
        ]);
+
+         DB::table('users')->insert([
+            'nombre' => 'admin',
+            'email' => 'admin@mail.co',
+            'telefono' => '12345678',
+            'password' => bcrypt('12345678'),
+            
+       ]);
     }
 }
