@@ -185,7 +185,7 @@ class ClientesServiciosController extends Controller
     }
 
     public function deleteDoc(Request $request, $id){
-
+        
         $service =  ClienteServicio::findOrFail($id*1);
 
         $documentosServicio = json_decode($service->documento);

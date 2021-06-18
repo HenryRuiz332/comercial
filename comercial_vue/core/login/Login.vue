@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="sign-in-page">
+        <section class="sign-in-page" >
             <div class="container bg-white mt-5 p-0">
                 <div class="row no-gutters">
                     <div class="col-sm-6 offset-3 align-self-center">

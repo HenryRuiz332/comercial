@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    
+     window.location.href ="?#/login"
+     return
+</script>
+
 @extends('layouts.app')
 
 @section('content')

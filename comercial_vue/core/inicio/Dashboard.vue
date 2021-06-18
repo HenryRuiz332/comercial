@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <loader v-if="isloading" :infoLoader="infoLoader"></loader>
-        <div id="content-page" class="" >
+        <div id="content-page" class="" v-if="$route.path !== '/login'">
             <div class="">
                <div class="row">
                   <!-- <div class="col-lg-8">

@@ -135,61 +135,10 @@
                                         label="Nota">
                                        
                                    </v-textarea>
+                                   
                          </v-col>
 
-                         <v-col class="text-center" cols="12" xs="12" sm="12" md="4" lg="4" xl="4" v-for="doc,i in docs" :key="i">
-                                             
-                                             <i class="fa fa-file fa-4x"
-                                                  v-if="    doc[0].formato == 'png' || 
-                                                            doc[0].formato == 'PNG' ||  
-                                                            doc[0].formato == 'jpg' || 
-                                                            doc[0].formato == 'JPG' || 
-                                                            doc[0].formato == 'jpeg' || 
-                                                            doc[0].formato == 'JPEG' ||
-                                                            doc[0].formato == 'svg' ||
-                                                            doc[0].formato == 'SVG' ||
-                                                            doc[0].formato == 'webp' ||
-                                                            doc[0].formato == 'txt' ||
-                                                             doc[0].formato == 'TXT' ||
-                                                            doc[0].formato == 'WEBP'" >
-                                                  <!--  height="200"
-                                                  :src="pathDoc + doc[0].imagen"
-                                                  class="img-fluid"
-                                                  width="200" -->
-                                             </i>
-                                             <i class="fa fa-file fa-4x" 
-                                                   v-if="doc[0].formato == 'pdf' ||
-                                                           
-                                                         doc[0].formato == 'html' ">
-                                             </i>
-
-                                             <i class="fa fa-file fa-4x" v-if="doc[0].formato == 'doc' || 
-                                                                           doc[0].formato == 'docx' ||
-                                                                           doc[0].formato == 'xls' ||
-                                                                           doc[0].formato == 'xlsx' ||
-                                                                           doc[0].formato == 'ppt' ||
-                                                                           doc[0].formato == 'pptx' ||
-                                                                           doc[0].formato == 'DOC' ||
-                                                                           doc[0].formato == 'DOCX' ||
-                                                                           doc[0].formato == 'XLS' ||
-                                                                           doc[0].formato == 'XLSX' ||
-                                                                           doc[0].formato == 'PPT' ||
-                                                                           
-                                                                           doc[0].formato == 'PPTX'">
-                                                                      
-                                                                           </i>
-                                             <p>
-                                                 {{doc[0].nombreImagen + '.'+ doc[0].formato}}
-                                             </p>
-                                             <p>
-                                                  <v-btn title="Descargar" @click="callDown(doc[0].imagen)" color="orange" x-small>
-                                                       <i class="fa fa-download "></i>
-                                                  </v-btn>
-                                                  <v-btn title="Eliminar" @click="eliminarAdjunto(doc[0], unicoItem)" color="red" x-small>
-                                                       <i class="fa fa-close "></i>
-                                                  </v-btn>
-                                             </p>
-                                        </v-col>
+                         
                     </v-row>
                </v-container>
           </v-card-text>
@@ -234,10 +183,13 @@
                editIndexObj: Number,
                formTitle: String,
                editMode : Boolean,
+               docs : Array,
+               unicoUser: Object,
+               archivosClienteServicio : Function
           },
           data: () => ({
-               unicoItem: {},
-               docs : [],
+               
+             
                
                errorDecimalGasto: '',
                errorDecimalBneficio: '',

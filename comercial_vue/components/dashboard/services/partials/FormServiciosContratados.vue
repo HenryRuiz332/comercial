@@ -149,7 +149,7 @@
                                     <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="editarObj.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
 
                                        <template v-slot:activator="{ on, attrs }">
-                                           <v-text-field filled :error-messages="errors.errors.aviso_permanencia ? errors.errors.aviso_permanencia[0] : null" v-model="editarObj.aviso_permanencia" label="Aviso permamnencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
+                                           <v-text-field filled :error-messages="errors.errors.aviso_permanencia ? errors.errors.aviso_permanencia[0] : null" v-model="editarObj.aviso_permanencia" label="Aviso permanencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
                                            </v-text-field>
                                        </template>
 

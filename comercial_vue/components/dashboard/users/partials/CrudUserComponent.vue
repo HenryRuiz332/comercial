@@ -40,7 +40,7 @@
                                    :openDialogControl="openDialog" 
                                    :getFuntion="getUsers"
                                    :nameComponent="nameComponent"
-                                   :sendWhatsApp="sendWhatsApp">
+                                 >
                                    
                               </controls-crud>
                               <v-spacer></v-spacer>
@@ -77,6 +77,9 @@
                                              <v-stepper-content  step="1">
                                                   
                                                   <form-crud 
+                                                       :archivosClienteServicio="archivosClienteServicio"
+                                                       :docs="docs"
+                                                       :unicoUser="unicoUser"
                                                        :updateObjUser="updateObjUser"
                                                        :saveObjUser="saveObjUser"
                                                        :closeDialog="closeDialog"
@@ -110,6 +113,7 @@
                                              
 
                                              <v-stepper-content  complete step="2" v-if="editMode" >
+
                                                   <v-row style="height:100%" v-if="editarObj.cliente_servicio.length > 0">
                                                        <v-col cols="12" xs="12" sm="12" md="4" lg="4" xL="4" v-for="servicio,i in editarObj.cliente_servicio" :key="i">
                                                             <template>
@@ -185,6 +189,79 @@
                                                                                      
                                                                                 </v-textarea>
                                                                            </v-col>
+                                                                            <v-col  cols="12" xs="12" sm="12" md="12" lg="12">
+                                                                                     <h6>Documentos del Servicio</h6>
+                                                                                    
+                                                                                </v-col>   
+                                                                                <v-row style="overflow-y: scroll!important; height:200px; margin-bottom: 40px; margin-top:30px">
+                                                                               
+                                                                                <v-col class="text-center" cols="12" xs="12" sm="12" md="4" lg="4" xl="4" v-for="doc,i in servicio.docs" :key="i" :id="'columna' + i" >
+                                                                                
+                                                 
+                             
+                                                                                
+                                                                                    <i class="fa fa-file fa-4x"
+
+                                                                                     v-if="    
+                                                                                               doc[0].formato == 'zip' ||
+                                                                                               doc[0].formato == 'tar' ||
+                                                                                               doc[0].formato == 'rar' ||   
+                                                                                               doc[0].formato == 'png' || 
+                                                                                               doc[0].formato == 'PNG' ||  
+                                                                                               doc[0].formato == 'jpg' || 
+                                                                                               doc[0].formato == 'JPG' || 
+                                                                                               doc[0].formato == 'jpeg' || 
+                                                                                               doc[0].formato == 'JPEG' ||
+                                                                                               doc[0].formato == 'svg' ||
+                                                                                               doc[0].formato == 'SVG' ||
+                                                                                               doc[0].formato == 'webp' ||
+                                                                                               doc[0].formato == 'txt' ||
+                                                                                                doc[0].formato == 'TXT' ||
+                                                                                               doc[0].formato == 'WEBP'" >
+                                                                                     <!--  height="200"
+                                                                                     :src="pathDoc + doc[0].imagen"
+                                                                                     class="img-fluid"
+                                                                                     width="200" -->
+                                                                                </i>
+                                                                                <i class="fa fa-file fa-4x" 
+                                                                                      v-if="doc[0].formato == 'pdf' ||
+                                                                                              
+                                                                                            doc[0].formato == 'html' ">
+                                                                                </i>
+
+                                                                                <i class="fa fa-file fa-4x" v-if="doc[0].formato == 'doc' || 
+                                                                                                              doc[0].formato == 'docx' ||
+                                                                                                              doc[0].formato == 'xls' ||
+                                                                                                              doc[0].formato == 'xlsx' ||
+                                                                                                              doc[0].formato == 'ppt' ||
+                                                                                                              doc[0].formato == 'pptx' ||
+                                                                                                              doc[0].formato == 'DOC' ||
+                                                                                                              doc[0].formato == 'DOCX' ||
+                                                                                                              doc[0].formato == 'XLS' ||
+                                                                                                              doc[0].formato == 'XLSX' ||
+                                                                                                              doc[0].formato == 'PPT' ||
+                                                                                                              
+                                                                                                              doc[0].formato == 'PPTX'">
+                                                                                                         
+                                                                                                              </i>
+                                                                                <p>
+                                                                                    {{doc[0].nombreImagen + '.'+ doc[0].formato}}
+                                                                                </p>
+                                                                                <p>
+                                                                                     <v-btn title="Descargar" @click="callDown(doc[0].imagen)" color="orange" x-small>
+                                                                                          <i class="fa fa-download "></i>
+                                                                                     </v-btn>
+                                                                                     <v-btn title="Eliminar" @click="eliminarAdjuntoDesdeCliente(doc[0], servicio, i)" color="red" x-small>
+                                                                                          <i class="fa fa-close "></i>
+                                                                                     </v-btn>
+                                                                                    
+                                                                                </p> 
+                                                                                
+                                                                                
+
+                                                                           </v-col> 
+                                                                           </v-row>
+                                                                          
                                                                       </v-row>
                                                                        <v-chip @click="actualizarServicio(editarObj, servicio)">Actualizar servicio</v-chip>
                                                                 </v-card-text>
@@ -266,6 +343,8 @@
                'dialog-delete': DialogDelete
           },
           data: () => ({
+               unicoUser : {},
+               docs : [],
                menu: false,
                show: false,
                nameComponent : 'Cliente',
@@ -321,7 +400,9 @@
                },
                errorDecimalGasto: '',
               errorDecimalComision:'',
-              errorDecimalBeneficio:''
+              errorDecimalBeneficio:'',
+              aux : []
+             
           }),
 
           computed: {
@@ -335,6 +416,10 @@
                isloading: function() {
                     return this.$store.getters.getloading
                },
+               pathDoc(){
+
+                    return window.location.origin + '/assets/images/docs/'
+               }
           },
 
           watch: {
@@ -351,17 +436,131 @@
           },
 
           methods: {
-               sendWhatsApp(){
-                    axios.post(this.$apiUrl + `/user-whatsapp-message`).then(response => {
-                        console.log(response)
+               callDown(doc){
+                        
+                    let path  = this.pathDoc + doc 
+
+                    this.downloadFiles(path, doc)
+               },
+               downloadFiles(url, filename) {
+                    fetch(url).then(function(t) {
+                         return t.blob().then((b)=>{
+                                 var a = document.createElement("a");
+                                 a.href = URL.createObjectURL(b);
+                                 a.setAttribute("download", filename);
+                                 a.click();
+                             }
+                         );
+                     });
+               },
+               eliminarAdjuntoDesdeCliente(documento, item, i){
+                   
+                    this.$Progress.start()
+                    this.infoLoader = 'Eliminando...'
+                    let objDelete = new FormData()
+                    objDelete.append('idServicio', item.id)
+                    objDelete.append('imagen', documento.imagen)
+
+
+                    for (var i = 0; i <  this.editarObj.cliente_servicio.length; i++) {
+                         if (this.editarObj.cliente_servicio[i].id == item.id){
+                              this.editarObj.cliente_servicio[i].docs = []
+                         }
+                         
+                    }
+
+                    axios.post(this.$apiUrl + `/clients-services-trash-imagen/` + item.id, objDelete).then(response => {
+                         if (response.status == 200) {
+
+                              for (var n = 0; n < this.editarObj.cliente_servicio.length; n++) {
+                                   if (this.editarObj.cliente_servicio[n].id == item.id) {
+
+                                        this.editarObj.cliente_servicio[n]['docs'] = []
+                                        let restantes = response.data.docsRestantes
+                                        let splitArray = []
+                                        let splitPiso = []
+                                       
+                                        let images = restantes
+                                         
+                                        for (var i = 0; i < images.length; i++) {
+                                             splitArray[splitArray.length]= images[i].split('.')
+
+                                               
+                                        }
+                                        for (var i = 0; i < splitArray.length; i++) {
+                                             let splitPiso = splitArray[i][0].split('_')
+
+                                             let docPush  = [
+                                                  {
+                                                       'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
+                                                       'nombreImagen' :splitPiso[0],
+                                                       'formato' :splitArray[i][1],
+                                                       
+                                                  }
+                                             ]
+                                             this.editarObj.cliente_servicio[n]['docs'].push(docPush)
+                                            
+                                        }  
+                                        
+                                         this.getUsers()
+                                         break
+                                   }
+
+                              }
+                              
+                              
+                              this.infoCrud = 'Documento Eliminado' 
+                              this.snackbarInfoCrud = false
+                              this.$Progress.finish()
+                             
+                         }
                     }, err => {
-                         this.infoCrud = 'Ocurrió un error al Actualizar los datos'
+                         this.infoCrud = 'Ocurrió un Error Al Eliminar'
                          this.snackbarInfoCrud = true
                          this.$Progress.fail()
                     })
-               },
-               saveDate(){
 
+               },
+               archivosClienteServicio(user){
+                    this.unicoUser = {}
+                    this.docs= []
+
+                    for (var k = user.cliente_servicio.length - 1; k >= 0; k--) {
+                       
+                        if (this.editMode == true) {
+                              var item = user.cliente_servicio[k]
+                              user.cliente_servicio[k]['docs'] = [] 
+                              this.unicoUser = item
+                         
+                              let splitArray = []
+                              let splitPiso = []
+
+                              let images = JSON.parse(this.unicoUser.documento)
+
+                              for (var i = 0; i < images.length; i++) {
+                                   splitArray[splitArray.length]= images[i].split('.')
+
+                                     
+                              }
+                              for (var i = 0; i < splitArray.length; i++) {
+                                   let splitPiso = splitArray[i][0].split('_')
+
+                                   let docPush  = [
+                                        {
+                                             'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
+                                             'nombreImagen' :splitPiso[0],
+                                             'formato' :splitArray[i][1],
+                                             
+                                        }
+                                   ]
+                                   user.cliente_servicio[k]['docs'].push(docPush)
+
+                                   
+                              }  
+                         }
+                    }
+
+                    
                },
                 validar(value){
                     this.$decimal(value)
@@ -463,6 +662,7 @@
                     // this.editarObj = Object.assign({}, item)
                     this.editarObj = item
                     this.dialog = true
+                    this.archivosClienteServicio(item)
                },
                updateObjUser () {
                     this.$Progress.start()

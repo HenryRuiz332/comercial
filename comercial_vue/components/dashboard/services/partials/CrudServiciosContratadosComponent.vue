@@ -319,6 +319,7 @@
                dialogModalDoc : false,
                unicoItem: {},
                docs : [],
+               
              
               
           }),
@@ -361,30 +362,30 @@
                          if (response.status == 200) {
                               this.unicoItem  = response.data.service
                               this.docs = []
-                              // let splitArray = []
-                              // let splitPiso = []
-                              // let images = JSON.parse(this.unicoItem.documento)
+                              let splitArray = []
+                              let splitPiso = []
+                              let images = JSON.parse(this.unicoItem.documento)
 
-                              // for (var i = 0; i < images.length; i++) {
-                              //      splitArray[splitArray.length]= images[i].split('.')
+                              for (var i = 0; i < images.length; i++) {
+                                   splitArray[splitArray.length]= images[i].split('.')
 
                                      
-                              // }
-                              // for (var i = 0; i < splitArray.length; i++) {
-                              //      let splitPiso = splitArray[i][0].split('_')
+                              }
+                              for (var i = 0; i < splitArray.length; i++) {
+                                   let splitPiso = splitArray[i][0].split('_')
 
-                              //      let docPush  = [
-                              //           {
-                              //                'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
-                              //                'nombreImagen' :splitPiso[0],
-                              //                'formato' :splitArray[i][1],
+                                   let docPush  = [
+                                        {
+                                             'imagen' :splitArray[i][0] + '.' + splitArray[i][1],
+                                             'nombreImagen' :splitPiso[0],
+                                             'formato' :splitArray[i][1],
                                              
-                              //           }
-                              //      ]
-                              //      this.docs.push(docPush)
-                              // }  
-                              // // this.$delete(this.clientsServices, objDelete)
-                              // // this.closeDelete()
+                                        }
+                                   ]
+                                   this.docs.push(docPush)
+                              }  
+                              // this.$delete(this.clientsServices, objDelete)
+                              // this.closeDelete()
                               this.infoCrud = 'Elemento Eliminado'
                               this.snackbarInfoCrud = true
                               this.$Progress.finish()
