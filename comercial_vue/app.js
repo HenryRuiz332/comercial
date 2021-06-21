@@ -11,7 +11,8 @@ import router from "./router/router.js"
 import auth from "./auth/auth.js"
 import store from "./store/store.js"
 import '@mdi/font/css/materialdesignicons.css'
-
+ import CKEditor from '@ckeditor/ckeditor5-vue2';
+     Vue.use( CKEditor );
 
 import ProgressBar from "./plugins/vue-progressbar/vue-progressbar"
 

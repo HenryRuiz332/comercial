@@ -80,5 +80,12 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 		});
 
 
+		Route::group(['namespace' => 'Messages'], function(){
+			
+			Route::resource('send-messages',  'MessagesController');
+		});
+
+
+
 });
 //End prefix routes

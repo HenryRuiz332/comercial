@@ -13,6 +13,14 @@
                         <span>Dashboard</span>
                 </router-link>
             </li>
+            <li>
+                <router-link 
+                    to="/mensajes" 
+                    class="iq-waves-effect">
+                        <i class="fa fa-envelope"></i>
+                        <span>Mensajes</span>
+                </router-link>
+            </li>
              
             <li class="iq-menu-title">
                 <i class="ri-subtract-line"></i><span>App</span>

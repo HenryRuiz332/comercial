@@ -44,7 +44,7 @@ class TiposProductosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TiposProductosCreateRequest $request)
+    public function store(Request $request)
     {
         $productType = null;
         if ($request->isMethod("post")) {
@@ -96,7 +96,7 @@ class TiposProductosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TiposProductosUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $productType = null;
         if ($request->isMethod("put")) {

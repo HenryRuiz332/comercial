@@ -74,7 +74,7 @@ class ClientesServiciosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ClienteServicioCreateRequest $request)
+    public function store(Request $request)
     {
 
         $data = json_decode($request->editarObj);

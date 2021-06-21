@@ -87,7 +87,7 @@
             if (!localStorage.user_id) {
                 window.location.href ="#/login"
             }else{
-                window.location.href ="#/dashboard"
+               
             }
             
         },

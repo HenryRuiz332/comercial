@@ -47,7 +47,7 @@ class ProductosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductosCreateRequest $request)
+    public function store(Request $request)
     {
         $product = null;
         if ($request->isMethod("post")) {

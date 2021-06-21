@@ -17,6 +17,9 @@ import collaborators from '../components/dashboard/collaborators/routes/'
 
 import gastos from '../components/dashboard/gastos_generales/routes/'
 
+
+import sms from '../components/dashboard/messages/routes/'
+
 // import testrutas from '../component/testrutas'
 
 /* importar rutas */
@@ -31,7 +34,8 @@ const globlalRoutes = [
  	 ...services,
  	 ...users,
 	 ...collaborators,
-	 ...gastos 
+	 ...gastos, 
+	 ...sms
 
 	 
  ]
