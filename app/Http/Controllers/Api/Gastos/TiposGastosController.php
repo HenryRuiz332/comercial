@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Traits\Paginate;
-use App\Http\RequestS\TGastosCreateRequest;
-use App\Http\RequestS\TGastosUpdateRequest;
+use App\Http\Requests\TGastosCreateRequest;
+use App\Http\Requests\TGastosUpdateRequest;
 use App\Models\Gastos\TiposGasto;
 
 class TiposGastosController extends Controller

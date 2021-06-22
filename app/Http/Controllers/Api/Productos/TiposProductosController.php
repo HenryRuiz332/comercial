@@ -8,8 +8,8 @@ use App\Http\Resources\Productos\TiposProductosCollection;
 use App\Http\Resources\Productos\TipoProductoResource;
 use App\Models\Productos\TipoProducto;
 use App\Traits\Paginate;
-use App\Http\RequestS\TiposProductosCreateRequest;
-use App\Http\RequestS\TiposProductosUpdateRequest;
+use App\Http\Requests\TiposProductosCreateRequest;
+use App\Http\Requests\TiposProductosUpdateRequest;
 
 
 class TiposProductosController extends Controller

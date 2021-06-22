@@ -153,36 +153,20 @@
                                                                                      
                                                                                 </v-text-field>
                                                                            </v-col>
+                                                                           <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+                                                                                
+                                                                                <input type="date" v-model="servicio.aviso_permanencia" class="form-control" id="exampleInputdate">
+
+
+                
+                                                                           </v-col>
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
                                                                                 <v-text-field @change="validar" label="Comision"  v-model="servicio.comision" suffix="€">
                                                                                      
                                                                                 </v-text-field>
                                                                                  
                                                                            </v-col>
-                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
-                                                                               
-                                                                           <v-menu ref="menu" v-model="servicio.menu" :close-on-content-click="false" :return-value.sync="servicio.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
-
-                                                                               <template v-slot:activator="{ on, attrs }">
-                                                                                   <v-text-field filled  v-model="servicio.aviso_permanencia" label="A. Permanencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
-                                                                                   </v-text-field>
-                                                                               </template>
-
-                                                                               <v-date-picker v-model="servicio.aviso_permanencia" no-title scrollable>
-                                                                                   <v-spacer></v-spacer>
-
-                                                                                   <v-btn text color="primary" @click="servicio.menu = false">
-                                                                                       Cancel
-                                                                                   </v-btn>
-
-                                                                                   <v-btn text color="primary" @click="saveDate(servicio.aviso_permanencia)">
-                                                                                       OK
-                                                                                   </v-btn>
-                                                                               </v-date-picker>
-
-                                                                           </v-menu>
-                
-                                                                           </v-col>
+                                                                           
 
                                                                            <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
                                                                                 <v-textarea label="Nota de Gasto" v-model="servicio.nota_gasto">
@@ -436,6 +420,9 @@
           },
 
           methods: {
+               saveDate(date){
+                    console.log(date)
+               },
                callDown(doc){
                         
                     let path  = this.pathDoc + doc 

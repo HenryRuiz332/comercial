@@ -14,13 +14,16 @@
               </v-card-title>
           </v-card>
           <v-data-table
+          
+          item-key="id"
+          :loading="loading"
           :headers="objectsTabe"
           :items="clientsServices"
           :search="search"
-          class="elevation-1"
+          class="elevation-1 activo "
           show-select
           v-model="crud">
-                    
+
                     <template v-slot:top>
                          <v-toolbar
                               flat>
@@ -217,7 +220,7 @@
                          </v-toolbar>
                    </template>
 
-
+                  
                    <template v-slot:item.actions="{ item }">
                          <v-btn @click="modalDocs(item)" color="orange" x-small>
                               <i class="fa fa-download mr-2"></i>
@@ -258,6 +261,7 @@
                 'dialog-delete': DialogDelete
           },
           data: () => ({
+               loading: false,
                nameComponent : 'Servico de Cliente',
                snackbarInfoCrud: false,
                infoCrud: '',
@@ -356,6 +360,7 @@
           },
 
           methods: {
+              
                eliminarTodosDocs(){
                     
                     axios.post(this.$apiUrl + `/clients-services-trash-images/` + this.unicoItem.id, this.unicoItem).then(response => {
@@ -575,6 +580,7 @@
                     this.getClientServices()  
                },
                getClientServices(){
+                    this.loading = true
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.$Progress.start()
@@ -585,7 +591,7 @@
                             this.services =  response.data.services
                             this.$Progress.finish()
 
-
+                            this.loading = false
                             
                          }
                          
@@ -701,5 +707,5 @@
                     display: none!important;
                }
           }
-     
+         
 </style>

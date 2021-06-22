@@ -74,7 +74,7 @@ class ClientesServiciosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClienteServicioCreateRequest $request)
     {
 
         $data = json_decode($request->editarObj);
@@ -242,7 +242,7 @@ class ClientesServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClienteServicioUpdateRequest $request, $id)
     {
       
         $service = null;

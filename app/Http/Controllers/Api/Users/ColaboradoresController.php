@@ -9,8 +9,8 @@ use App\Http\Resources\Colaboradores\ColaboradorResource;
 use App\Models\Users\Colaborador;
 use DB;
 use App\Traits\Paginate;
-use App\Http\RequestS\ColaboradoresCreateRequest;
-use App\Http\RequestS\ColaboradoresUpdateRequest;
+use App\Http\Requests\ColaboradoresCreateRequest;
+use App\Http\Requests\ColaboradoresUpdateRequest;
 
 class ColaboradoresController extends Controller
 {

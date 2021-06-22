@@ -10,8 +10,8 @@ use App\Models\Productos\Producto;
 use App\Models\Productos\TipoProducto;
 use DB;
 use App\Traits\Paginate;
-use App\Http\RequestS\ProductosCreateRequest;
-use App\Http\RequestS\ProductosUpdateRequest;
+use App\Http\Requests\ProductosCreateRequest;
+use App\Http\Requests\ProductosUpdateRequest;
 class ProductosController extends Controller
 {
     /**
@@ -47,7 +47,7 @@ class ProductosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductosCreateRequest $request)
     {
         $product = null;
         if ($request->isMethod("post")) {
@@ -100,7 +100,7 @@ class ProductosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductosUpdateRequest $request, $id)
     {
         $product = null;
         if ($request->isMethod("put")) {

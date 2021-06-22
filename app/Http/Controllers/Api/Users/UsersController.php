@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\Paginate;
 use Illuminate\Support\Str;
 use DB;
-use App\Http\RequestS\UserCreateRequest;
-use App\Http\RequestS\UserUpdateRequest;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\Productos\Producto;
 use App\Models\Users\Colaborador;
 use App\Models\Servicios\ClienteServicio;
@@ -58,7 +58,7 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
 
         $user = null;
@@ -123,7 +123,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $user = null;
         if ($request->isMethod("put")) {
