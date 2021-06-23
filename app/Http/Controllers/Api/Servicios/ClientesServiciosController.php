@@ -40,7 +40,9 @@ class ClientesServiciosController extends Controller
 
           	$clients = User::get(['id', 'nombre']);
             $services = Servicio::get(['id', 'nombre']);
-        
+            
+
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',
@@ -55,6 +57,8 @@ class ClientesServiciosController extends Controller
             ]);  
         }
     }
+
+
 
     public function indexAux(Request $request){
         $products = Producto::get(['id', 'nombre']);
@@ -242,9 +246,9 @@ class ClientesServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClienteServicioUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-      
+        
         $service = null;
         if ($request->isMethod("put")) {
             

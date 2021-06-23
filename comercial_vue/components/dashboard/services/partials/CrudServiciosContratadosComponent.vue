@@ -13,16 +13,64 @@
                 ></v-text-field>
               </v-card-title>
           </v-card>
-          <v-data-table
-          
-          item-key="id"
-          :loading="loading"
-          :headers="objectsTabe"
-          :items="clientsServices"
-          :search="search"
-          class="elevation-1 activo "
-          show-select
-          v-model="crud">
+
+          <v-simple-table >
+
+                    <template v-slot:default>
+                    <thead>
+                         <tr>
+                              <th><v-checkbox></v-checkbox></th>
+                              <th class="text-left">
+                                   Cliente
+                              </th>
+                              <th class="text-left">
+                                   Servicio
+                              </th>
+                              <th class="text-left">
+                                   Producto
+                              </th>
+                              <th class="text-left">
+                                   Gasto
+                              </th>
+                              <th class="text-left">
+                                   Comisión
+                              </th>
+                              <th class="text-left">
+                                   Opciones
+                              </th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                         <tr 
+                              v-for="item in clientsServices" 
+                              :key="item.id"
+                              :class="item.aviso == 30 ? 'permanencia' : ''">
+                              <td><v-checkbox></v-checkbox></td>
+                              <td>{{ item.cliente.nombre }}</td>
+                              <td>{{ item.servicio.nombre}}</td>
+                              <td v-if="item.producto_id">{{ item.producto.nombre }}</td>
+                              <td v-else></td>
+                              <td>{{ item.gasto }}</td>
+                              <td>{{ item.comision }}</td>
+                              <td>
+                                    <v-btn @click="modalDocs(item)" color="orange" x-small>
+                                        <i class="fa fa-download mr-2"></i>
+                                   </v-btn>
+
+                                   <v-btn @click="editObj(item)" color="success" x-small>
+                                        <i class="fa fa-pencil mr-2"></i>
+                                   </v-btn>
+                                   <v-btn @click="deleteObj(item)" color="error" x-small>
+                                        <i class="fa fa-trash mr-2"></i>
+                                   </v-btn>
+                              </td>
+                              
+                         </tr>
+
+                        
+
+                    </tbody>
+               </template>
 
                     <template v-slot:top>
                          <v-toolbar
@@ -113,33 +161,33 @@
                                              :deleteItemConfirm="deleteItemConfirm"></dialog-delete>
 
                               <v-dialog
-                               v-model="dialogModalDoc"
-                               fullscreen
-                               hide-overlay
-                               transition="dialog-bottom-transition">
+                                    v-model="dialogModalDoc"
+                                    fullscreen
+                                    hide-overlay
+                                    transition="dialog-bottom-transition">
                               
-                               <v-card>
-                                 <v-toolbar
-                                   dark
-                                   color="primary">
-                                   <v-btn
-                                     icon
-                                     dark
-                                     @click="dialogModalDoc = false">
-                                     <v-icon>mdi-close</v-icon>
-                                   </v-btn>
-                                   <v-toolbar-title class="h6">Documentos del Servicio</v-toolbar-title>
-                                   <v-spacer></v-spacer>
-                                   
-                                   <v-toolbar-items class="itemsDown">
-                                     <v-btn
-                                       dark
-                                       text
-                                       @click="dialogModalDoc = false">
-                                       Cerrar
-                                     </v-btn>
-                                   </v-toolbar-items>
-                                 </v-toolbar>
+                                   <v-card>
+                                      <v-toolbar
+                                        dark
+                                        color="primary">
+                                        <v-btn
+                                          icon
+                                          dark
+                                          @click="dialogModalDoc = false">
+                                          <v-icon>mdi-close</v-icon>
+                                        </v-btn>
+                                        <v-toolbar-title class="h6">Documentos del Servicio</v-toolbar-title>
+                                        <v-spacer></v-spacer>
+                                        
+                                        <v-toolbar-items class="itemsDown">
+                                          <v-btn
+                                            dark
+                                            text
+                                            @click="dialogModalDoc = false">
+                                            Cerrar
+                                          </v-btn>
+                                        </v-toolbar-items>
+                                      </v-toolbar>
                                    <v-row class="container">
                                         <v-col class="text-center" cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
                                              <p v-if="docs.length > 0">
@@ -220,7 +268,7 @@
                          </v-toolbar>
                    </template>
 
-                  
+                  <!-- 
                    <template v-slot:item.actions="{ item }">
                          <v-btn @click="modalDocs(item)" color="orange" x-small>
                               <i class="fa fa-download mr-2"></i>
@@ -233,14 +281,14 @@
                               <i class="fa fa-trash mr-2"></i>
                          </v-btn>
                    </template>
-
+ -->
 
                    <template v-slot:no-data>
                         <span>No hay datos disponibles</span>
                    </template>
                    <tfoot></tfoot>
-          </v-data-table>
-          
+          </v-simple-table>
+         
           <info-crud :snackbar="snackbarInfoCrud" :info="infoCrud" :closeSnackbar="closeSnackbar"></info-crud>
      </div>
 </template>
@@ -323,8 +371,6 @@
                dialogModalDoc : false,
                unicoItem: {},
                docs : [],
-               
-             
               
           }),
 
@@ -589,6 +635,27 @@
                             this.clientsServices = response.data.clientsServices.data
                             this.clients =  response.data.clients
                             this.services =  response.data.services
+                            
+
+                            for (var i = 0; i < this.clientsServices.length; i++) {
+
+                                   var hoy = moment(new Date().toISOString().substr(0, 10))
+                                   var  avisoPermam = moment(this.clientsServices[i].aviso_permanencia)
+
+                                   let res = avisoPermam.diff(hoy, 'days')
+                                   this.clientsServices[i]['aviso'] = res
+                                   this.clientsServices[i]['rojo'] = false
+
+                                   if (this.clientsServices[i]['aviso'] == 30) {
+                                        this.clientsServices[i]['rojo'] == true
+                                   }
+
+                            } 
+
+
+
+
+
                             this.$Progress.finish()
 
                             this.loading = false
@@ -706,6 +773,12 @@
                .itemsDown{
                     display: none!important;
                }
+          }
+          .permanencia{
+               background: #F44336;
+          }
+          .permanencia:hover{
+               background: #F44336;
           }
          
 </style>

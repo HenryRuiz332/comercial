@@ -173,6 +173,13 @@
                                                                                      
                                                                                 </v-textarea>
                                                                            </v-col>
+
+                                                                            <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+                                                                                <v-textarea label="Notas" v-model="servicio.notas">
+                                                                                     
+                                                                                </v-textarea>
+                                                                           </v-col>
+
                                                                             <v-col  cols="12" xs="12" sm="12" md="12" lg="12">
                                                                                      <h6>Documentos del Servicio</h6>
                                                                                     
