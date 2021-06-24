@@ -111,9 +111,11 @@
                     //      this.$Progress.fail()
                     // })
 
-                    https://acumbamail.com/api/1/(nombreFuncion)/
+                  
 
-                    axios.post('https://acumbamail.com/api/1/sendSMS(HYn29fZIQ8kVGmZtzqbW, "hola")/').then(response => {
+                    let json = [ { "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
+
+                    axios.post('https://acumbamail.com/api/1/sendSMS(HYn29fZIQ8kVGmZtzqbW, json)').then(response => {
                          console.log(response)
                     }, err => {
                          
