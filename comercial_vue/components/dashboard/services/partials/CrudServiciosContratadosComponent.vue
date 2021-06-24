@@ -2,19 +2,33 @@
 
      <div>
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
-           <v-card class="searchMovil">
-              <v-card-title>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                   label="Buscar"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-          </v-card>
+           <div style="background:white; z-index:1000">
+               <v-row class="container">
+                    <v-col cols="12" xs="12" sm="12" md="5" lg="5" xl="5">
+                         <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>     
+                    </v-col>
+                    <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3">
+                         <controls-crud 
+                                   :openDialogControl="openDialog" 
+                                   :getFuntion="getClientServices"
+                                   :nameComponent="nameComponent">
+                         </controls-crud>
+                    </v-col> 
+                    <v-col  cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+                          <v-text-field
 
-          <v-simple-table >
+                                   append-icon="mdi-magnify"
+                                   v-model="search"
+                                   label="Buscar"
+                                   class=""
+                                   style="margin-top:-15px!important">
+                                        
+                              </v-text-field>
+                             
+                    </v-col>
+               </v-row>
+          </div>
+          <v-simple-table style="margin-top:-3vw">
 
                     <template v-slot:default>
                     <thead>
@@ -50,8 +64,16 @@
                               <td>{{ item.servicio.nombre}}</td>
                               <td v-if="item.producto_id">{{ item.producto.nombre }}</td>
                               <td v-else></td>
-                              <td>{{ item.gasto }}</td>
-                              <td>{{ item.comision }}</td>
+                              <td>
+                                   <span v-for="monto in item.monto" :key="monto.id">
+                                        {{  monto.gasto }}
+                                   </span>
+                              </td>
+                              <td>
+                                   <span v-for="monto in item.monto" :key="monto.id">
+                                        {{  monto.comision }}
+                                   </span>
+                              </td>
                               <td>
                                     <v-btn @click="modalDocs(item)" color="orange" x-small>
                                         <i class="fa fa-download mr-2"></i>
@@ -75,21 +97,9 @@
                     <template v-slot:top>
                          <v-toolbar
                               flat>
-                              <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>
-                              
-                              <v-divider
-                                   class="mx-4"
-                                   inset
-                                   vertical>   
-                              </v-divider>
-                              <controls-crud 
-                                   :openDialogControl="openDialog" 
-                                   :getFuntion="getClientServices"
-                                   :nameComponent="nameComponent">
-                                   
-                              </controls-crud>
-                              <v-spacer></v-spacer>
-
+                             
+                          
+                             
                               <v-dialog
                                    v-model="dialog"
                                   
@@ -99,14 +109,7 @@
                                    transition="dialog-bottom-transition">
                                         <template v-slot:activator="{ on, attrs }">
                                              
-                                             <v-text-field
-                                                  append-icon="mdi-magnify"
-                                                  v-model="search"
-                                                  label="Buscar"
-                                                  class="mr-3 mt-3 seacrPc">
-                                                       
-                                             </v-text-field>
-                                            
+                                           
                                         </template>
                                         <v-stepper
                                              v-model="paso"
@@ -121,7 +124,9 @@
                                              <v-stepper-content step="1">
                                                   
                                                   <form-crud 
-                                                       
+                                                       :montosInputs="montosInputs"
+                                                       :addRow="addRow"
+                                                       :removeRow="removeRow"
                                                        :unicoItem="unicoItem"
                                                        :eliminarAdjunto="eliminarAdjunto"
                                                        :callDown="callDown"
@@ -371,6 +376,20 @@
                dialogModalDoc : false,
                unicoItem: {},
                docs : [],
+
+
+               montosInputs:[
+                    {
+                         id: 0,
+                         menu: '',
+                         gasto: '',
+                         comision: '',
+                         beneficio: '',
+                         aviso_permanencia :''
+                    }
+
+                    
+               ],
               
           }),
 
@@ -406,7 +425,29 @@
           },
 
           methods: {
-              
+              addRow(){
+                    let vm = this.montosInputs
+
+                    let lastId = vm[vm.length-1].id
+
+                    let newMontosInputs = {
+                         id: lastId + 1,
+                         menu: '',
+                         gasto: '',
+                         comision: '',
+                         beneficio: '',
+                         aviso_permanencia :''
+                    }
+                    vm.push(newMontosInputs)
+               },
+               removeRow(index){
+                    console.log(index)
+                    const indice =   this.montosInputs. indexOf(this.montosInputs[index]);
+                    this.montosInputs .splice(indice, 1)
+               },
+
+
+
                eliminarTodosDocs(){
                     
                     axios.post(this.$apiUrl + `/clients-services-trash-images/` + this.unicoItem.id, this.unicoItem).then(response => {
@@ -669,6 +710,7 @@
                },
               
                editObj (item) {
+                    this.montosInputs = item.monto
                     this.auxAxios()
                     this.editMode = true
                     this.editIndexObj = this.clientsServices.indexOf(item)
@@ -683,6 +725,7 @@
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Actualizando...'
+
 
                     axios.put(this.$apiUrl + `/clients-services/` + this.editarObj.id, this.editarObj).then(response => {
                          if (response.status == 200) {
@@ -741,6 +784,20 @@
                     this.editMode = false
                     this.unicoItem = {}
                     this.limpiar()
+
+                    this.montosInputs = []
+                    let vm = this.montosInputs
+
+                    let newMontosInputs = {
+                         id: 0,
+                         menu: '',
+                         gasto: '',
+                         comision: '',
+                         beneficio: '',
+                         aviso_permanencia :''
+                    }
+                    vm.push(newMontosInputs)
+
                },
                closeDelete () {
                     this.dialogDelete = false

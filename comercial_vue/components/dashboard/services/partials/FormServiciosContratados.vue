@@ -95,78 +95,145 @@
                                    :error-messages="errors.errors.colaborador_id ? errors.errors.colaborador_id[0] : null">      
                               </v-select>
                          </v-col>
-                         <v-col
-                              cols="12"
-                              sm="6"
-                              md="3"
-                              lg="3"
-                              xl="3">
-                                   <v-text-field
-                                        @change="validarGasto"
-                                        v-model="editarObj.gasto"
-                                        suffix="€"
-                                        label="Gasto">
-                                        <small style="color:red" v-if="errorDecimalGasto != ''">{{errorDecimalGasto}}</small>
-                                   </v-text-field>
-                         </v-col>
-                          <v-col
-                              cols="12"
-                              sm="6"
-                              md="3"
-                              lg="3"
-                              xl="3">
-                                   <v-text-field
-                                        @change="validarComision"
-                                        v-model="editarObj.comision"
-                                        suffix="€"
-                                        label="Comisión">
-                                       
-                                   </v-text-field>
-                                   <small style="color:red" v-if="errorDecimalComision != ''">{{errorDecimalComision}}</small>
-                         </v-col>
-                         <v-col
-                              cols="12"
-                              sm="6"
-                              md="3"
-                              lg="3"
-                              xl="3">
-                                   <v-text-field
-                                         @change="validarbeneficio"
-                                        v-model="editarObj.beneficio"
-                                        suffix="€"
-                                        label="Beneficio">
-                                       
-                                   </v-text-field>
-                                    <small style="color:red" v-if="errorDecimalBeneficio != ''">{{errorDecimalBeneficio}}</small>
-                         </v-col>
 
-                         <v-col
-                              cols="12"
-                              sm="6"
-                              md="3"
-                              lg="3"
-                              xl="3">
-                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="editarObj.aviso_permanencia" transition="scale-transition" offset-y min-width="290px">
 
-                                       <template v-slot:activator="{ on, attrs }">
-                                           <v-text-field filled :error-messages="errors.errors.aviso_permanencia ? errors.errors.aviso_permanencia[0] : null" v-model="editarObj.aviso_permanencia" label="Aviso permanencia" append-icon="mdi-calendar" readonly v-bind="attrs" v-on="on">
-                                           </v-text-field>
-                                       </template>
 
-                                       <v-date-picker v-model="editarObj.aviso_permanencia" no-title scrollable>
-                                           <v-spacer></v-spacer>
 
-                                           <v-btn text color="primary" @click="menu = false">
-                                               Cancel
-                                           </v-btn>
+                        <v-col cols="12"
+                              sm="12"
+                              md="12"
+                              lg="12"
+                              xl="12">
+                              
+                              <p>
+                                   Ingresar Montos del servicio
+                              </p>
+                              <v-divider></v-divider>
+                        </v-col>
 
-                                           <v-btn text color="primary" @click="$refs.menu.save(editarObj.aviso_permanencia)">
-                                               OK
-                                           </v-btn>
-                                       </v-date-picker>
 
-                                   </v-menu>
-                         </v-col>
+                        <v-col cols="12"
+                              sm="12"
+                              md="12"
+                              lg="12"
+                              xl="12">
+                              
+                             <v-simple-table>
+
+                                  <thead>
+                                        <tr>
+                                             <th class="text-left">
+                                                  Gasto
+                                             </th>
+                                             <th class="text-left">
+                                                  Comisión
+                                             </th>
+                                             <th class="text-left">
+                                                  Beneficio
+                                             </th>
+                                             <th class="text-left">
+                                                  Aviso Permanencia
+                                             </th>
+                                             <th class="text-left">
+                                                  <v-btn @click="addRow" color="success" x-small>
+                                                       <v-icon>mdi-plus</v-icon>
+                                                  </v-btn>
+                                             </th>
+                                        </tr>
+                                   </thead>
+                                   <tbody v-if="editMode == false">
+                                        <tr v-for="monto,k in montosInputs" :key="k">
+                                             <td>
+                                                  <v-text-field
+                                                       @change="validarGasto(monto.gasto, k)"
+                                                       v-model="monto.gasto"
+                                                       suffix="€">
+                                                  </v-text-field>
+                                             </td>
+
+                                             <td>
+                                                  <v-text-field
+                                                       @change="validarComision"
+                                                       v-model="monto.comision"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
+                                                  
+                                             </td>
+
+                                             <td>
+                                                     <v-text-field
+                                                       @change="validarbeneficio"
+                                                       v-model="monto.beneficio"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
+                                                   
+                                             </td>
+
+                                             <td>
+                                                  
+                                                   <input type="date" v-model="monto.aviso_permanencia" class="form-control" id="exampleInputdate">
+                                             </td>
+                                             <td>
+                                                  <v-btn @click="removeRow(k)" color="error" x-small>
+                                                       <v-icon>mdi-close</v-icon>
+                                                  </v-btn>
+                                             </td>
+
+                                            
+                                        </tr>
+                                   </tbody>
+
+                                   <tbody v-else>
+                                        <tr v-for="monto,k in unicoItem.monto" :key="k">
+                                            
+                                             <td>
+                                                  <v-text-field
+                                                       @change="validarGasto(monto.gasto, k)"
+                                                       v-model="monto.gasto"
+                                                       suffix="€">
+                                                  </v-text-field>
+                                             </td>
+
+                                             <td>
+                                                  <v-text-field
+                                                       @change="validarComision"
+                                                       v-model="monto.comision"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
+                                                  
+                                             </td>
+
+                                             <td>
+                                                     <v-text-field
+                                                       @change="validarbeneficio"
+                                                       v-model="monto.beneficio"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
+                                                   
+                                             </td>
+
+                                             <td>
+                                                  
+                                                   <input type="date" v-model="monto.aviso_permanencia" class="form-control" id="exampleInputdate">
+                                             </td>
+                                             <td>
+                                                  <v-btn @click="removeRow(k)" color="error" x-small>
+                                                       <v-icon>mdi-close</v-icon>
+                                                  </v-btn>
+                                             </td>
+
+                                            
+                                        </tr>
+                                   </tbody>
+                             </v-simple-table>
+
+
+                        </v-col>
+
 
                           <v-col
                               cols="12"
@@ -339,9 +406,16 @@
                eliminarAdjunto: Function,
                unicoItem: Object,
 
+               montosInputs: Array,
+               addRow: Function,
+               removeRow: Function,
+              
+
 
           },
           data: () => ({
+               
+               
                errorDecimalGasto: '',
                errorDecimalComision:'',
                errorDecimalBeneficio:'',
@@ -366,6 +440,7 @@
           },
 
           methods: {
+               
                eliminarAdjuntoDesdeForm(documento, item){
                                      
                     this.eliminarAdjunto(documento, item)
@@ -404,6 +479,7 @@
 
                     formDataSave.append('update', 'no')
                     formDataSave.append('editarObj', JSON.stringify(this.editarObj))
+                    formDataSave.append('montos', JSON.stringify(this.montosInputs))
 
                     axios.post(this.$apiUrl + `/clients-services`, formDataSave).then(response => {
                          if (response.status == 200) {
@@ -452,8 +528,11 @@
                     input.children[0].type = 'text'
                     input.children[0].type = "file"
                     this.files = []
+
                },
-               validarGasto(value){
+               validarGasto(value, k){
+                    console.log(value + ' ' + k)
+
                     var RE = /^\d*\.?\d*$/;
                     if (RE.test(value)) {
                         this.errorDecimalGasto= ''

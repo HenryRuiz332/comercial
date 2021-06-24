@@ -9,6 +9,7 @@ use App\Models\Servicios\Servicio;
 use App\Models\Productos\Producto;
 use App\Models\Users\Colaborador;
 
+use App\Models\Servicios\MontoClienteServicio;
 
 class ClienteServicio extends Model
 {
@@ -31,6 +32,10 @@ class ClienteServicio extends Model
 
     public function colaborador(){
         return $this->hasOne(Colaborador::class, "id", "colaborador_id");
+    }
+
+    public function monto(){
+        return $this->hasMany(MontoClienteServicio::class);
     }
 
 }

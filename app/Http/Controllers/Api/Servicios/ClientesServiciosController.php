@@ -19,6 +19,8 @@ use App\Http\Requests\ClienteServicioUpdateRequest;
 use App\Traits\HandlerFiles;
 use App\Traits\Main;
 
+use App\Models\Servicios\MontoClienteServicio;
+
 class ClientesServiciosController extends Controller
 {
 
@@ -35,7 +37,7 @@ class ClientesServiciosController extends Controller
         $clientsServices = null;
         if ($request->isMethod("get")) {
           	$clientsServices = new ClientesServiciosCollection(ClienteServicio::orderBy('id', 'desc')
-          		->with('cliente', 'servicio', 'producto', 'colaborador')
+          		->with('cliente', 'servicio', 'producto', 'colaborador', 'monto')
           		->paginate(10));
 
           	$clients = User::get(['id', 'nombre']);
@@ -80,6 +82,9 @@ class ClientesServiciosController extends Controller
      */
     public function store(ClienteServicioCreateRequest $request)
     {
+
+
+        $montos = json_decode($request->montos);
 
         $data = json_decode($request->editarObj);
 
@@ -126,6 +131,28 @@ class ClientesServiciosController extends Controller
                 $service->notas = $data->notas;
                 $service->saveOrfail();   
 
+
+                foreach ($montos as  $monto) {
+                    if ($monto->gasto == "") {
+                        $monto->gasto = null;
+                    }
+                    if ($monto->comision == "") {
+                        $monto->comision = null;
+                    }
+                    if ($monto->beneficio == "") {
+                        $monto->beneficio = null;
+                    }
+                    if ($monto->aviso_permanencia == "") {
+                        $monto->aviso_permanencia = null;
+                    }
+                   $newMount = new MontoClienteServicio;
+                   $newMount->cliente_servicio_id = $service->id;
+                   $newMount->gasto = $monto->gasto;
+                   $newMount->comision = $monto->comision;
+                   $newMount->beneficio = $monto->beneficio;
+                   $newMount->aviso_permanencia = $monto->aviso_permanencia;
+                   $newMount->saveOrfail();
+                }
 
                 $this->saveDoc($request, $service->id);
 
@@ -246,26 +273,79 @@ class ClientesServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //ClienteServicioUpdateRequest
     public function update(Request $request, $id)
     {
-        
+        $servicio = $request;
+        $montos = $request->monto;
+
+
+        if ($servicio->producto_id == "") {
+            $servicio->producto_id = null;
+        }
+        if ($servicio->colaborador_id == "") {
+            $servicio->colaborador_id = null;
+        }
+        if ($servicio->gasto == "") {
+            $servicio->gasto = null;
+        }
+        if ($servicio->nota_gasto == "") {
+            $servicio->nota_gasto = null;
+        }
+        if ($servicio->beneficio == "") {
+            $servicio->beneficio = null;
+        }
+        if ($servicio->comision == "") {
+            $servicio->comision = null;
+        }
+        if ($servicio->aviso_permanencia == "") {
+            $servicio->aviso_permanencia = null;
+        }
+        if ($servicio->notas == "") {
+            $servicio->notas = null;
+        }
+
         $service = null;
         if ($request->isMethod("put")) {
             
                 $service =  ClienteServicio::findOrFail($id);
-                $service->user_id = $request->user_id;
-                $service->servicio_id = $request->servicio_id;
-                $service->producto_id = $request->producto_id;
-                $service->colaborador_id = $request->colaborador_id;
-                $service->gasto = $request->gasto;
+                $service->user_id = $servicio->user_id;
+                $service->servicio_id = $servicio->servicio_id;
+                $service->producto_id = $servicio->producto_id;
+                $service->colaborador_id = $servicio->colaborador_id;
+                $service->gasto = $servicio->gasto;
 
-                $service->nota_gasto = $request->nota_gasto;
+                $service->nota_gasto = $servicio->nota_gasto;
 
-                $service->beneficio = $request->beneficio;
-                $service->comision = $request->comision;
-                $service->aviso_permanencia = $request->aviso_permanencia;
-                $service->notas = $request->notas;
-                $service->update();   
+                $service->beneficio = $servicio->beneficio;
+                $service->comision = $servicio->comision;
+                $service->aviso_permanencia = $servicio->aviso_permanencia;
+                $service->notas = $servicio->notas;
+                $service->update(); 
+
+                foreach ($montos as  $monto) {
+                    if ($monto['gasto'] == "") {
+                        $monto['gasto'] = null;
+                    }
+                    if ($monto['comision'] == "") {
+                        $monto['comision'] = null;
+                    }
+                    if ($monto['beneficio'] == "") {
+                        $monto['beneficio'] = null;
+                    }
+                    if ($monto['aviso_permanencia'] == "") {
+                        $monto['aviso_permanencia'] = null;
+                    }
+                   $newMount =  MontoClienteServicio::findOrFail($monto['id']);
+                   $newMount->cliente_servicio_id = $service['id'];
+                   $newMount->gasto = $monto['gasto'];
+                   $newMount->comision = $monto['comision'];
+                   $newMount->beneficio = $monto['beneficio'];
+                   $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+                   $newMount->update();
+                }
+
            
             return response()->json([
                 'status' => 200,
