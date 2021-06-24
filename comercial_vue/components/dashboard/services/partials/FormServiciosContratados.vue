@@ -132,7 +132,7 @@
                                                   Beneficio
                                              </th>
                                              <th class="text-left">
-                                                  Aviso Permanencia
+                                                  Fecha
                                              </th>
                                              <th class="text-left">
                                                   <v-btn @click="addRow" color="success" x-small>

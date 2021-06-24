@@ -98,19 +98,26 @@
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
                     this.infoLoader = 'Guardando...'
-                    axios.post(this.$apiUrl + `/send-messages`, this.form).then(response => {
-                         if (response.status == 200) {
-                              this.infoCrud = 'Guardado Exitosamente'
-                              this.snackbarInfoCrud = true
-                              this.cancelarEnvio()
-                              this.$Progress.finish()
-                         }
-                    }, err => {
-                         this.infoCrud = 'Ocurrió un error al guardar los datos'
-                         this.snackbarInfoCrud = true
-                         this.$Progress.fail()
-                    })
+                    // axios.post(this.$apiUrl + `/send-messages`, this.form).then(response => {
+                    //      if (response.status == 200) {
+                    //           this.infoCrud = 'Guardado Exitosamente'
+                    //           this.snackbarInfoCrud = true
+                    //           this.cancelarEnvio()
+                    //           this.$Progress.finish()
+                    //      }
+                    // }, err => {
+                    //      this.infoCrud = 'Ocurrió un error al guardar los datos'
+                    //      this.snackbarInfoCrud = true
+                    //      this.$Progress.fail()
+                    // })
 
+                    https://acumbamail.com/api/1/(nombreFuncion)/
+
+                    axios.post('https://acumbamail.com/api/1/sendSMS(HYn29fZIQ8kVGmZtzqbW, "hola")/').then(response => {
+                         console.log(response)
+                    }, err => {
+                         
+                    })
                  
               }  
           }
