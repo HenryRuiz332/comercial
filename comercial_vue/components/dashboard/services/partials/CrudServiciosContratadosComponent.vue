@@ -44,7 +44,7 @@
                          <tr 
                               v-for="item in clientsServices" 
                               :key="item.id"
-                              :class="item.aviso == 30 ? 'permanencia' : ''">
+                              :class="item.aviso <= 30 ? 'permanencia' : ''">
                               <td><v-checkbox></v-checkbox></td>
                               <td>{{ item.cliente.nombre }}</td>
                               <td>{{ item.servicio.nombre}}</td>
