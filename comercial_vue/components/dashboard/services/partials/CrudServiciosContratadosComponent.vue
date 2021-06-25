@@ -65,14 +65,16 @@
                               <td v-if="item.producto_id">{{ item.producto.nombre }}</td>
                               <td v-else></td>
                               <td>
-                                   <span v-for="monto in item.monto" :key="monto.id">
+                                   {{  item.gasto }}€
+                                   <!--<span v-for="monto in item.monto" :key="monto.id">
                                         {{  monto.gasto }}€,
-                                   </span>
+                                   </span>-->
                               </td>
                               <td>
-                                   <span v-for="monto in item.monto" :key="monto.id">
+                                   {{  item.comision }}€
+                                   <!--<span v-for="monto in item.monto" :key="monto.id">
                                         {{  monto.comision }}€,
-                                   </span>
+                                   </span>-->
                               </td>
                               <td>
                                     <v-btn @click="modalDocs(item)" color="orange" x-small>
@@ -701,7 +703,18 @@
                     this.$Progress.start()
                     axios.get(this.$apiUrl + `/clients-services?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
+                              console.log(response.data);
                             this.clientsServices = response.data.clientsServices.data
+                            this.clientsServices.forEach(element => {
+                                   element.gasto = 0;
+                                   element.comision = 0;
+                                   element.monto.forEach(elementMonto => {
+                                        element.gasto = element.gasto + Number(elementMonto.gasto);
+                                        element.comision = element.comision + Number(elementMonto.comision);
+                                   });  
+
+
+                            });
                             this.clients =  response.data.clients
                             this.services =  response.data.services
                             
@@ -720,10 +733,6 @@
                                    }
 
                             } 
-
-
-
-
 
                             this.$Progress.finish()
 
