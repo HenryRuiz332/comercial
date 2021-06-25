@@ -143,28 +143,117 @@
                                                                                      
                                                                                 </v-select>
                                                                            </v-col>
+
+
+
                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
-                                                                                <v-text-field @change="validar" label="Gasto" v-model="servicio.gasto" suffix="€">
-                                                                                     
-                                                                                </v-text-field>
-                                                                           </v-col>
-                                                                            <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6" >
-                                                                                <v-text-field @change="validar" label="Beneficio" v-model="servicio.beneficio" suffix="€">
-                                                                                     
-                                                                                </v-text-field>
-                                                                           </v-col>
-                                                                           <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
-                                                                                
-                                                                                <input type="date" v-model="servicio.aviso_permanencia" class="form-control" id="exampleInputdate">
+                                                                                <v-btn x-small @click="OppenmodalMontos(servicio)" color="success">
+                                                                                     Gastos, Beneficios, Comisiones, Fecha
+                                                                                </v-btn >
+                                                                                 <v-dialog persistent v-model="servicio.modalMontos" max-width="80%">
+                                                                                    <v-card>
+                                                                                        
+                                                                                        <v-card-text>
+                                                                                             
+                                                                                              <v-simple-table v-if="editMode">
+                                                                                                   <thead>
+                                                                                                         <tr>
+                                                                                                              <th colspan="5">
+                                                                                                                   <h4><strong> Servicio Contratado</strong> {{servicio.servicio.nombre}}</h4>
+                                                                                                              </th>
+                                                                                                         </tr>
+                                                                                                         <tr>
+                                                                                                         
+                                                                                                              <th class="text-left">
+                                                                                                                   Gasto
+                                                                                                              </th>
+                                                                                                              <th class="text-left">
+                                                                                                                   Comisión
+                                                                                                              </th>
+                                                                                                              <th class="text-left">
+                                                                                                                   Beneficio
+                                                                                                              </th>
+                                                                                                              <th class="text-left">
+                                                                                                                   Fecha
+                                                                                                              </th>
+                                                                                                              <th class="text-left">
+                                                                                                                   <v-btn @click="addRow(servicio)" color="success" x-small>
+                                                                                                                        <v-icon>mdi-plus</v-icon>
+                                                                                                                   </v-btn>
+                                                                                                              </th>
+                                                                                                         </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody >
+                                                                                                         <tr v-for="monto,k in servicio.monto" :key="k">
+                                                                                                              <td>
+                                                                                                                   <v-text-field
+                                                                                                                        @change="validarGasto(monto.gasto, k)"
+                                                                                                                        v-model="monto.gasto"
+                                                                                                                        suffix="€">
+                                                                                                                   </v-text-field>
+                                                                                                              </td>
+
+                                                                                                              <td>
+                                                                                                                   <v-text-field
+                                                                                                                        @change="validarComision"
+                                                                                                                        v-model="monto.comision"
+                                                                                                                        suffix="€">
+                                                                                                                       
+                                                                                                                   </v-text-field>
+                                                                                                                   
+                                                                                                              </td>
+
+                                                                                                              <td>
+                                                                                                                      <v-text-field
+                                                                                                                        @change="validarbeneficio"
+                                                                                                                        v-model="monto.beneficio"
+                                                                                                                        suffix="€">
+                                                                                                                       
+                                                                                                                   </v-text-field>
+                                                                                                                    
+                                                                                                              </td>
+
+                                                                                                              <td>
+                                                                                                                   
+                                                                                                                    <input type="date" v-model="monto.aviso_permanencia" class="form-control" id="exampleInputdate">
+                                                                                                              </td>
+                                                                                                              <td>
+                                                                                                                   <v-btn @click="removeRow(servicio,k)" color="error" x-small>
+                                                                                                                        <v-icon>mdi-close</v-icon>
+                                                                                                                   </v-btn>
+                                                                                                              </td>
+
+                                                                                                              
+                                                                                                         </tr>
+                                                                                                    </tbody>
 
 
-                
-                                                                           </v-col>
-                                                                           <v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
-                                                                                <v-text-field @change="validar" label="Comision"  v-model="servicio.comision" suffix="€">
-                                                                                     
-                                                                                </v-text-field>
-                                                                                 
+                                                                                                    <div class="mr-auto">
+                                                                                                         
+                                                                                                         
+                                                                                                    </div>
+                                                                                               </v-simple-table>
+                                                                                        </v-card-text>
+                                                                                        <v-card-actions >
+                                                                                          <v-spacer></v-spacer>
+                                                                                          <v-btn @click="cerrarMontos(servicio)" color="red" small>Cerrar</v-btn>
+                                                                                          <v-btn 
+                                                                                          
+                                                                                          @click="guardarMontos(servicio)" 
+                                                                                          color="success" 
+                                                                                          small>Guardar</v-btn>
+                                                                                        </v-card-actions>
+                                                                                      </v-card>
+
+                                                                                      <v-col cols="12"
+                                                                                               sm="12"
+                                                                                               md="12"
+                                                                                               lg="12"
+                                                                                               xl="12">
+                                                                                               
+                                                                                              
+                                                                                         </v-col>
+                                                                                </v-dialog>
                                                                            </v-col>
                                                                            
 
@@ -314,7 +403,7 @@
                    </template>
                    <tfoot></tfoot>
           </v-data-table>
-          
+          {{modalMontos}}
           <info-crud :snackbar="snackbarInfoCrud" :info="infoCrud" :closeSnackbar="closeSnackbar"></info-crud>
      </div>
 </template>
@@ -392,8 +481,21 @@
                errorDecimalGasto: '',
               errorDecimalComision:'',
               errorDecimalBeneficio:'',
-              aux : []
-             
+              aux : [],
+
+
+               modalMontos : false,
+               montosInputs: [
+                    {
+                         id: 0,
+                         menu: '',
+                         gasto: '',
+                         comision: '',
+                         beneficio: '',
+                         aviso_permanencia :''
+                    }
+               ],
+               
           }),
 
           computed: {
@@ -427,6 +529,76 @@
           },
 
           methods: {
+               guardarMontos(servicio){
+                    this.$Progress.start()
+                    this.snackbarInfoCrud = false
+                    this.infoCrud = ''
+                    this.infoLoader = 'Actualizando...'
+
+                    axios.post(this.$apiUrl + `/up-montos`, servicio).then(response => {
+                         if (response.status == 200) {
+                             servicio.modalMontos = false
+                             this.infoCrud = 'Actualizado Exitosamente' 
+                              this.snackbarInfoCrud = true
+                              this.$Progress.finish()
+
+                         }
+                    }, err => {
+                         this.infoCrud = 'Ocurrió un error al Actualizar los datos'
+                         this.snackbarInfoCrud = true
+                         this.$Progress.fail()
+                    })
+               },
+               addRow(servicio){
+
+                    let vm = servicio.monto
+
+                    if( servicio.monto.length == 0){
+                         let newMontosInputs = {
+                              id: 1,
+                              menu: '',
+                              gasto: '',
+                              comision: '',
+                              beneficio: '',
+                              aviso_permanencia :''
+                         }
+                         vm.push(newMontosInputs)
+                         return 
+                    }
+
+                    let lastId = vm[vm.length-1].id
+                    
+                    let newMontosInputs = {
+                         id: lastId + 1,
+                         menu: '',
+                         gasto: '',
+                         comision: '',
+                         beneficio: '',
+                         aviso_permanencia :''
+                    }
+                    vm.push(newMontosInputs)
+               },
+               removeRow(servicio, index){
+                   
+                    const indice =   servicio.monto. indexOf(servicio.monto[index]);
+                    servicio.monto .splice(indice, 1)
+               },
+               ir(){
+                    axios.post(this.$apiUrl + `/up-ir`).then(response => {
+                        console.log(response)
+                    }, err => {
+                        
+                    })
+               },
+               OppenmodalMontos(servicio){
+                     this.ir()
+                    servicio.modalMontos = true
+                    this.modalMontos = true
+               },
+               cerrarMontos(servicio){
+                     servicio.modalMontos = false
+                    this.modalMontos = false
+               },
                saveDate(date){
                     console.log(date)
                },
@@ -598,7 +770,7 @@
                },
                getUsers(){
                     this.snackbarInfoCrud = false
-                    this.infoCrud = ''
+                    this.infoCrud = 'Actualizando'
                     this.$Progress.start()
                     axios.get(this.$apiUrl + `/users?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
@@ -613,6 +785,8 @@
                                    for (var n = 0; n < this.users[i].cliente_servicio.length; n++) {
                                         
                                          this.users[i].cliente_servicio[n]['menu'] = false
+
+                                         this.users[i].cliente_servicio[n]['modalMontos'] = false
                                          
                                    }
                                  

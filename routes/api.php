@@ -34,6 +34,9 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 			Route::put('/users-update-services/{idServices}', 'UsersController@updateService');
 			Route::post('/user-whatsapp-message', 'UsersController@whatsAppMessage');
 
+			Route::post('/up-montos', 'UsersController@updateMontos');
+			Route::post('/up-ir', 'UsersController@ir');
+
 
 			Route::resource('/collaborators', 'ColaboradoresController');
 			Route::post('/collaborators-trash/{id}', 'ColaboradoresController@trash');

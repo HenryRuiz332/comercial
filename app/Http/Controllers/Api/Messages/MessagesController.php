@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Messages;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use App\Traits\AcumbamailAPI;
 
 
 class MessagesController extends Controller
@@ -28,6 +28,12 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
+
+        $api =  AcumbamailAPI::sendSMS($request);
+
+       
+        return json_encode($api);
+
         $clients = User::get(['telefono']);
 
         foreach ($clients as $key => $client) {

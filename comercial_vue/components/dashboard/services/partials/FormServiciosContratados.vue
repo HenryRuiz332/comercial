@@ -118,8 +118,7 @@
                               lg="12"
                               xl="12">
                               
-                             <v-simple-table>
-
+                              <v-simple-table>
                                   <thead>
                                         <tr>
                                              <th class="text-left">
@@ -229,9 +228,7 @@
                                             
                                         </tr>
                                    </tbody>
-                             </v-simple-table>
-
-
+                              </v-simple-table>
                         </v-col>
 
 

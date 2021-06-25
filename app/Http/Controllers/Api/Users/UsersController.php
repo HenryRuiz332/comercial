@@ -16,6 +16,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Productos\Producto;
 use App\Models\Users\Colaborador;
 use App\Models\Servicios\ClienteServicio;
+use App\Models\Servicios\MontoClienteServicio;
 
 
 class UsersController extends Controller
@@ -31,7 +32,7 @@ class UsersController extends Controller
     {
         $users = null;
         if ($request->isMethod("get")) {
-            $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador')->orderBy('id', 'desc')->paginate(10));
+            $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador', 'clienteServicio.monto')->orderBy('id', 'desc')->paginate(10));
             
             $products = Producto::get(['id', 'nombre']);
             $collaborators = Colaborador::get(['id', 'nombre']);
@@ -221,5 +222,76 @@ class UsersController extends Controller
                 'message' => 'Post Request Error'
             ]);  
         }
+    }
+
+    public function updateMontos(Request $request){
+
+        $service = $request;
+        $montos = $request->monto;
+
+        $montosEliminar = MontoClienteServicio::where('cliente_servicio_id', $service->id)->get();
+        if (count($montosEliminar) > 0) {
+
+            foreach ($montosEliminar as  $value) {
+                MontoClienteServicio::findOrFail($value['id'])->delete();
+            }
+
+            foreach ($montos as  $monto) {
+                if ($monto['gasto'] == "") {
+                    $monto['gasto'] = null;
+                }
+                if ($monto['comision'] == "") {
+                    $monto['comision'] = null;
+                }
+                if ($monto['beneficio'] == "") {
+                    $monto['beneficio'] = null;
+                }
+                if ($monto['aviso_permanencia'] == "") {
+                    $monto['aviso_permanencia'] = null;
+                }
+               $newMount =  new MontoClienteServicio;
+               $newMount->cliente_servicio_id = $service['id'];
+               $newMount->gasto = $monto['gasto'];
+               $newMount->comision = $monto['comision'];
+               $newMount->beneficio = $monto['beneficio'];
+               $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+               $newMount->saveOrfail();
+            }
+        }elseif(count($montos) == 0 && count($montosEliminar) > 0){
+            foreach ($montosEliminar as  $value) {
+                MontoClienteServicio::findOrFail($value['id'])->delete();
+            }
+        }else{
+            foreach ($montos as  $monto) {
+                if ($monto['gasto'] == "") {
+                    $monto['gasto'] = null;
+                }
+                if ($monto['comision'] == "") {
+                    $monto['comision'] = null;
+                }
+                if ($monto['beneficio'] == "") {
+                    $monto['beneficio'] = null;
+                }
+                if ($monto['aviso_permanencia'] == "") {
+                    $monto['aviso_permanencia'] = null;
+                }
+               $newMount =  new MontoClienteServicio;
+               $newMount->cliente_servicio_id = $service['id'];
+               $newMount->gasto = $monto['gasto'];
+               $newMount->comision = $monto['comision'];
+               $newMount->beneficio = $monto['beneficio'];
+               $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+               $newMount->saveOrfail();
+            }
+        }
+        
+        return response()->json([
+
+            'message' => 'Actualizado'
+        ]);
+        
+    }
+    public function ir(){
+        return;
     }
 }

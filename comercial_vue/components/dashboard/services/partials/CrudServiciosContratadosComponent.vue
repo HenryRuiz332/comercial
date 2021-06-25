@@ -66,12 +66,12 @@
                               <td v-else></td>
                               <td>
                                    <span v-for="monto in item.monto" :key="monto.id">
-                                        {{  monto.gasto }}
+                                        {{  monto.gasto }}€,
                                    </span>
                               </td>
                               <td>
                                    <span v-for="monto in item.monto" :key="monto.id">
-                                        {{  monto.comision }}
+                                        {{  monto.comision }}€,
                                    </span>
                               </td>
                               <td>
@@ -426,19 +426,47 @@
 
           methods: {
               addRow(){
-                    let vm = this.montosInputs
 
-                    let lastId = vm[vm.length-1].id
 
-                    let newMontosInputs = {
-                         id: lastId + 1,
-                         menu: '',
-                         gasto: '',
-                         comision: '',
-                         beneficio: '',
-                         aviso_permanencia :''
+                    if (this.montosInputs.length == 0) {
+                         let vm = this.montosInputs
+                         let newMontosInputs = {
+                              id: 1,
+                              menu: '',
+                              gasto: '',
+                              comision: '',
+                              beneficio: '',
+                              aviso_permanencia :''
+                         }
+                         vm.push(newMontosInputs)
+                         return 
                     }
-                    vm.push(newMontosInputs)
+                     if (this.editMode == false) {
+                         let vm = this.montosInputs
+                         let lastId = vm[vm.length-1].id
+                         let newMontosInputs = {
+                              id: lastId + 1,
+                              menu: '',
+                              gasto: '',
+                              comision: '',
+                              beneficio: '',
+                              aviso_permanencia :''
+                         }
+                         vm.push(newMontosInputs)
+                    }else{
+                         let vm = this.montosInputs
+                         let lastId = vm[vm.length-1].id
+                         let newMontosInputs = {
+                              id: lastId + 1,
+                              menu: '',
+                              gasto: '',
+                              comision: '',
+                              beneficio: '',
+                              aviso_permanencia :''
+                         }
+                         vm.push(newMontosInputs)  
+                    }
+                  
                },
                removeRow(index){
                     console.log(index)

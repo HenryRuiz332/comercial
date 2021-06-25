@@ -131,28 +131,32 @@ class ClientesServiciosController extends Controller
                 $service->notas = $data->notas;
                 $service->saveOrfail();   
 
-
-                foreach ($montos as  $monto) {
-                    if ($monto->gasto == "") {
-                        $monto->gasto = null;
+                if (count($montos) > 0) {
+                    foreach ($montos as  $monto) {
+                        if ($monto->gasto == "") {
+                            $monto->gasto = null;
+                        }
+                        if ($monto->comision == "") {
+                            $monto->comision = null;
+                        }
+                        if ($monto->beneficio == "") {
+                            $monto->beneficio = null;
+                        }
+                        if ($monto->aviso_permanencia == "") {
+                            $monto->aviso_permanencia = null;
+                        }
+                       $newMount = new MontoClienteServicio;
+                       $newMount->cliente_servicio_id = $service->id;
+                       $newMount->gasto = $monto->gasto;
+                       $newMount->comision = $monto->comision;
+                       $newMount->beneficio = $monto->beneficio;
+                       $newMount->aviso_permanencia = $monto->aviso_permanencia;
+                       $newMount->saveOrfail();
                     }
-                    if ($monto->comision == "") {
-                        $monto->comision = null;
-                    }
-                    if ($monto->beneficio == "") {
-                        $monto->beneficio = null;
-                    }
-                    if ($monto->aviso_permanencia == "") {
-                        $monto->aviso_permanencia = null;
-                    }
-                   $newMount = new MontoClienteServicio;
-                   $newMount->cliente_servicio_id = $service->id;
-                   $newMount->gasto = $monto->gasto;
-                   $newMount->comision = $monto->comision;
-                   $newMount->beneficio = $monto->beneficio;
-                   $newMount->aviso_permanencia = $monto->aviso_permanencia;
-                   $newMount->saveOrfail();
                 }
+
+
+                
 
                 $this->saveDoc($request, $service->id);
 
@@ -324,27 +328,66 @@ class ClientesServiciosController extends Controller
                 $service->notas = $servicio->notas;
                 $service->update(); 
 
-                foreach ($montos as  $monto) {
-                    if ($monto['gasto'] == "") {
-                        $monto['gasto'] = null;
+
+
+                $montosEliminar = MontoClienteServicio::where('cliente_servicio_id', $service->id)->get();
+
+                if (count( $montosEliminar)> 0) {
+                    foreach ($montosEliminar as  $value) {
+                        MontoClienteServicio::findOrFail($value['id'])->delete();
                     }
-                    if ($monto['comision'] == "") {
-                        $monto['comision'] = null;
+
+                    foreach ($montos as  $monto) {
+                        if ($monto['gasto'] == "") {
+                            $monto['gasto'] = null;
+                        }
+                        if ($monto['comision'] == "") {
+                            $monto['comision'] = null;
+                        }
+                        if ($monto['beneficio'] == "") {
+                            $monto['beneficio'] = null;
+                        }
+                        if ($monto['aviso_permanencia'] == "") {
+                            $monto['aviso_permanencia'] = null;
+                        }
+                       $newMount =  new MontoClienteServicio;
+                       $newMount->cliente_servicio_id = $service['id'];
+                       $newMount->gasto = $monto['gasto'];
+                       $newMount->comision = $monto['comision'];
+                       $newMount->beneficio = $monto['beneficio'];
+                       $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+                       $newMount->saveOrfail();
                     }
-                    if ($monto['beneficio'] == "") {
-                        $monto['beneficio'] = null;
+                }elseif(count($montosEliminar) == 0 && count( $montosEliminar)> 0){
+                    foreach ($montosEliminar as  $value) {
+                        MontoClienteServicio::findOrFail($value['id'])->delete();
                     }
-                    if ($monto['aviso_permanencia'] == "") {
-                        $monto['aviso_permanencia'] = null;
-                    }
-                   $newMount =  MontoClienteServicio::findOrFail($monto['id']);
-                   $newMount->cliente_servicio_id = $service['id'];
-                   $newMount->gasto = $monto['gasto'];
-                   $newMount->comision = $monto['comision'];
-                   $newMount->beneficio = $monto['beneficio'];
-                   $newMount->aviso_permanencia = $monto['aviso_permanencia'];
-                   $newMount->update();
+                }else{
+                    foreach ($montos as  $monto) {
+                        if ($monto['gasto'] == "") {
+                            $monto['gasto'] = null;
+                        }
+                        if ($monto['comision'] == "") {
+                            $monto['comision'] = null;
+                        }
+                        if ($monto['beneficio'] == "") {
+                            $monto['beneficio'] = null;
+                        }
+                        if ($monto['aviso_permanencia'] == "") {
+                            $monto['aviso_permanencia'] = null;
+                        }
+                       $newMount =  new MontoClienteServicio;
+                       $newMount->cliente_servicio_id = $service['id'];
+                       $newMount->gasto = $monto['gasto'];
+                       $newMount->comision = $monto['comision'];
+                       $newMount->beneficio = $monto['beneficio'];
+                       $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+                       $newMount->saveOrfail();
+                    } 
                 }
+                
+
+               
 
            
             return response()->json([

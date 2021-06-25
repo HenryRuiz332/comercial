@@ -111,11 +111,33 @@
                     //      this.$Progress.fail()
                     // })
 
-                  
+                    
 
-                    let json = [ { "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
 
-                    axios.post('https://acumbamail.com/api/1/sendSMS(HYn29fZIQ8kVGmZtzqbW, json)').then(response => {
+                    //  let json = [ { "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
+                    
+                    // this.form = json
+
+                    // axios.post(this.$apiUrl + `/send-messages`, this.form).then(response => {
+                    //      if (response.status == 200) {
+                    //           this.infoCrud = 'Guardado Exitosamente'
+                    //           this.snackbarInfoCrud = true
+                    //           this.cancelarEnvio()
+                    //           this.$Progress.finish()
+                    //      }
+                    // }, err => {
+                    //      this.infoCrud = 'Ocurrió un error al guardar los datos'
+                    //      this.snackbarInfoCrud = true
+                    //      this.$Progress.fail()
+                    // })
+
+
+                    let json = [{ "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
+
+                    let form  = new FormData()
+                    form.append('messages' , json)
+
+                    axios.post('https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ form+')').then(response => {
                          console.log(response)
                     }, err => {
                          
