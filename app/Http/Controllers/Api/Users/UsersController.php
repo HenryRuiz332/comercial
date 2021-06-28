@@ -249,12 +249,16 @@ class UsersController extends Controller
                 if ($monto['aviso_permanencia'] == "") {
                     $monto['aviso_permanencia'] = null;
                 }
+                if ($monto['fecha'] == "") {
+                    $monto['fecha'] = null;
+                }
                $newMount =  new MontoClienteServicio;
                $newMount->cliente_servicio_id = $service['id'];
                $newMount->gasto = $monto['gasto'];
                $newMount->comision = $monto['comision'];
                $newMount->beneficio = $monto['beneficio'];
                $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+               $newMount->fecha = $monto['fecha'];
                $newMount->saveOrfail();
             }
         }elseif(count($montos) == 0 && count($montosEliminar) > 0){
@@ -275,12 +279,16 @@ class UsersController extends Controller
                 if ($monto['aviso_permanencia'] == "") {
                     $monto['aviso_permanencia'] = null;
                 }
+                 if ($monto['fecha'] == "") {
+                    $monto['fecha'] = null;
+                }
                $newMount =  new MontoClienteServicio;
                $newMount->cliente_servicio_id = $service['id'];
                $newMount->gasto = $monto['gasto'];
                $newMount->comision = $monto['comision'];
                $newMount->beneficio = $monto['beneficio'];
                $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+               $newMount->fecha = $monto['fecha'];
                $newMount->saveOrfail();
             }
         }

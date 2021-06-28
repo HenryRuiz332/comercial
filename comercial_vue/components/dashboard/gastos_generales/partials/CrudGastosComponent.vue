@@ -46,7 +46,7 @@
                     </v-col>
                </v-row>
           </div>
-          <v-simple-table>
+          <v-simple-table class="table">
                <template v-slot:default>
                     <thead>
                          <tr>

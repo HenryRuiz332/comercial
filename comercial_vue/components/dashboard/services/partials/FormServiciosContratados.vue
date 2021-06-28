@@ -116,32 +116,39 @@
                               sm="12"
                               md="12"
                               lg="12"
-                              xl="12">
-                              
+                              xl="12"
+                              >
+
                               <v-simple-table>
                                   <thead>
                                         <tr>
-                                             <th class="text-left">
-                                                  Gasto
+                                             <th scope="col">
+                                                  <small>Gasto</small>
                                              </th>
-                                             <th class="text-left">
-                                                  Comisión
+                                             <th scope="col">
+                                                  <small>Comisión</small>
                                              </th>
-                                             <th class="text-left">
-                                                  Beneficio
+                                             <th scope="col">
+                                                  <small>Beneficio</small>
                                              </th>
-                                             <th class="text-left">
-                                                  Fecha
+                                             <th scope="col">
+                                                  <small>Fecha Inicio</small>
                                              </th>
-                                             <th class="text-left">
+                                             <th scope="col">
+                                                  <small>Fecha Fin</small>
+                                             </th>
+                                             <th scope="col">
                                                   <v-btn @click="addRow" color="success" x-small>
                                                        <v-icon>mdi-plus</v-icon>
                                                   </v-btn>
                                              </th>
                                         </tr>
                                    </thead>
-                                   <tbody v-if="editMode == false">
-                                        <tr v-for="monto,k in montosInputs" :key="k">
+                                   <tbody v-if="editMode == false" >
+                                        <tr 
+                                             :class="monto.aviso <= 30 ? 'permanencia' : ''"
+                                             v-for="monto,k in montosInputs" 
+                                             :key="k">
                                              <td>
                                                   <v-text-field
                                                        @change="validarGasto(monto.gasto, k)"
@@ -168,6 +175,11 @@
                                                       
                                                   </v-text-field>
                                                    
+                                             </td>
+
+                                             <td>
+                                                  
+                                                   <input type="date" v-model="monto.fecha" class="form-control" id="exampleInputdate">
                                              </td>
 
                                              <td>
@@ -185,7 +197,7 @@
                                    </tbody>
 
                                    <tbody v-else>
-                                        <tr v-for="monto,k in unicoItem.monto" :key="k">
+                                        <tr v-for="monto,k in unicoItem.monto" :key="k" :class="monto.aviso <= 30 ? 'permanencia' : ''">
                                             
                                              <td>
                                                   <v-text-field
@@ -214,7 +226,10 @@
                                                   </v-text-field>
                                                    
                                              </td>
-
+                                             <td>
+                                                  
+                                                   <input type="date" v-model="monto.fecha" class="form-control" id="exampleInputdate">
+                                             </td>
                                              <td>
                                                   
                                                    <input type="date" v-model="monto.aviso_permanencia" class="form-control" id="exampleInputdate">

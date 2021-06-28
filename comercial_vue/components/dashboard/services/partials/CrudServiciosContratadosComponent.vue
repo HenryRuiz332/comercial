@@ -27,72 +27,93 @@
                              
                     </v-col>
                </v-row>
+
           </div>
-          <v-simple-table style="margin-top:-3vw">
+          <v-data-table  
+                         style="margin-top:-3vw"
+                         :search="search"
+                         class="elevation-1"
+                         show-select
+                         v-model="crud" 
+                         :headers="objectsTabe" 
+                         :items="clientsServices" >
 
-                    <template v-slot:default>
-                    <thead>
-                         <tr>
-                              <th><v-checkbox></v-checkbox></th>
-                              <th class="text-left">
-                                   Cliente
-                              </th>
-                              <th class="text-left">
-                                   Servicio
-                              </th>
-                              <th class="text-left">
-                                   Producto
-                              </th>
-                              <th class="text-left">
-                                   Gasto
-                              </th>
-                              <th class="text-left">
-                                   Comisión
-                              </th>
-                              <th class="text-left">
-                                   Opciones
-                              </th>
-                         </tr>
-                    </thead>
-                    <tbody>
-                         <tr 
-                              v-for="item in clientsServices" 
-                              :key="item.id"
-                              :class="item.aviso <= 30 ? 'permanencia' : ''">
-                              <td><v-checkbox></v-checkbox></td>
-                              <td>{{ item.cliente.nombre }}</td>
-                              <td>{{ item.servicio.nombre}}</td>
-                              <td v-if="item.producto_id">{{ item.producto.nombre }}</td>
-                              <td v-else></td>
-                              <td>
-                                   <span v-for="monto in item.monto" :key="monto.id">
-                                        {{  monto.gasto }}€,
-                                   </span>
-                              </td>
-                              <td>
-                                   <span v-for="monto in item.monto" :key="monto.id">
-                                        {{  monto.comision }}€,
-                                   </span>
-                              </td>
-                              <td>
-                                    <v-btn @click="modalDocs(item)" color="orange" x-small>
-                                        <i class="fa fa-download mr-2"></i>
-                                   </v-btn>
 
-                                   <v-btn @click="editObj(item)" color="success" x-small>
-                                        <i class="fa fa-pencil mr-2"></i>
-                                   </v-btn>
-                                   <v-btn @click="deleteObj(item)" color="error" x-small>
-                                        <i class="fa fa-trash mr-2"></i>
-                                   </v-btn>
-                              </td>
-                              
-                         </tr>
+                  
 
-                        
+                          <template v-slot:item.montosModal="{ item }">
+                               <a target="_blank" :href="item.path" @click="modalMontosList(item)">
+                                   <v-icon medium color="orange" class="mr-2">
+                                       mdi-nfc-variant
+                                   </v-icon>
+                               </a>
+                           </template>
 
-                    </tbody>
-               </template>
+                       
+
+                  <!--   <template v-slot:default>
+                         <thead>
+                              <tr>
+                                   <th><v-checkbox></v-checkbox></th>
+                                   <th class="text-left">
+                                        Cliente
+                                   </th>
+                                   <th class="text-left">
+                                        Servicio
+                                   </th>
+                                   <th class="text-left">
+                                        Producto
+                                   </th>
+                                   <th class="text-left">
+                                        Gasto
+                                   </th>
+                                   <th class="text-left">
+                                        Comisión
+                                   </th>
+                                   <th class="text-left">
+                                        Opciones
+                                   </th>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              <tr 
+                                   v-for="item in clientsServices" 
+                                   :key="item.id"
+                                   :class="item.aviso <= 30 ? 'permanencia' : ''">
+                                   <td><v-checkbox></v-checkbox></td>
+                                   <td>{{ item.cliente.nombre }}</td>
+                                   <td>{{ item.servicio.nombre}}</td>
+                                   <td v-if="item.producto_id">{{ item.producto.nombre }}</td>
+                                   <td v-else></td>
+                                   <td>
+                                        <span v-for="monto in item.monto" :key="monto.id">
+                                             {{  monto.gasto }}€,
+                                        </span>
+                                   </td>
+                                   <td>
+                                        <span v-for="monto in item.monto" :key="monto.id">
+                                             {{  monto.comision }}€,
+                                        </span>
+                                   </td>
+                                   <td>
+                                         <v-btn @click="modalDocs(item)" color="orange" x-small>
+                                             <i class="fa fa-download mr-2"></i>
+                                        </v-btn>
+
+                                        <v-btn @click="editObj(item)" color="success" x-small>
+                                             <i class="fa fa-pencil mr-2"></i>
+                                        </v-btn>
+                                        <v-btn @click="deleteObj(item)" color="error" x-small>
+                                             <i class="fa fa-trash mr-2"></i>
+                                        </v-btn>
+                                   </td>
+                                   
+                              </tr>
+
+                             
+
+                         </tbody>
+                    </template> -->
 
                     <template v-slot:top>
                          <v-toolbar
@@ -273,7 +294,7 @@
                          </v-toolbar>
                    </template>
 
-                  <!-- 
+                  
                    <template v-slot:item.actions="{ item }">
                          <v-btn @click="modalDocs(item)" color="orange" x-small>
                               <i class="fa fa-download mr-2"></i>
@@ -286,14 +307,69 @@
                               <i class="fa fa-trash mr-2"></i>
                          </v-btn>
                    </template>
- -->
+
 
                    <template v-slot:no-data>
                         <span>No hay datos disponibles</span>
                    </template>
                    <tfoot></tfoot>
-          </v-simple-table>
-         
+          </v-data-table>
+
+          <v-dialog persistent v-model="modalMonunts" max-width="80%">
+                                        
+               <v-card>
+                    <h5 class="container" v-if="modalMonunts">
+                         {{montosClick.servicio.nombre}}
+                    </h5>
+                    <h5 class="container" v-if="modalMonunts">
+                         {{montosClick.cliente.nombre}}
+                    </h5>
+                    <p class="container">Información acerca de los montos, fecha de Inicio y Fecha de Caducidad de este servicio.</p>
+                    <p class="container">Los items de la lista marcados en rojo son servicios que estan por caducar.</p>
+                    <v-card-text>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col"><small>Gasto</small></th>
+                          <th scope="col"><small>Comision</small></th>
+                          <th scope="col"><small>Beneficio</small></th>
+                          <th scope="col"><small>Fecha</small></th>
+                          <th scope="col"><small>F. Caducidad</small></th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr 
+                         v-for="m,k in  montosClick.monto" 
+                         :key="k" 
+                         :class="m.aviso <= 30 ? 'permanencia' : ''">
+                              
+                          <td><small>{{m.gasto+ '€'}}</small></td>
+                          <td><small>{{m.comision+ '€'}}</small></td>
+                          <td><small>{{m.beneficio+ '€'}}</small></td>
+                          <td><small>{{m.fecha}}</small></td>
+                          <td><small>{{m.aviso_permanencia}}</small></td>
+                        </tr>
+                      </tbody>
+                    </table>
+               </v-card-text>
+                <v-card-actions >
+               <v-spacer></v-spacer>
+               <v-btn @click="closemodalMontosList" color="red" small>Cerrar</v-btn>
+               <v-btn 
+               
+               @click="guardarMontos(servicio)" 
+               color="success" 
+               small>Guardar</v-btn>
+             </v-card-actions>
+               </v-card>
+               
+
+          </v-dialog>
+
+
+
+          <span style="visibility:hidden; opacity:0; position:absolute; z-index:0">{{scoped}}</span>
           <info-crud :snackbar="snackbarInfoCrud" :info="infoCrud" :closeSnackbar="closeSnackbar"></info-crud>
      </div>
 </template>
@@ -333,8 +409,7 @@
                     { text: 'Cliente', value: 'cliente.nombre' },
                     { text: 'Servicio', value: 'servicio.nombre' },
                     { text: 'Producto', value: 'producto.nombre' },
-                    { text: 'Gasto (€)', value: 'gasto' },
-                    { text: 'Comision (€)', value: 'comision' },
+                    { text: 'Gasto, Comision, Beneficio, (€)', value: 'montosModal' },
                    
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
@@ -385,12 +460,14 @@
                          gasto: '',
                          comision: '',
                          beneficio: '',
+                         fecha: '',
                          aviso_permanencia :''
                     }
 
                     
                ],
-              
+               montosClick : {},
+               modalMonunts: false
           }),
 
           computed: {
@@ -407,6 +484,16 @@
                pathDoc(){
 
                     return window.location.origin + '/assets/images/docs/'
+               },
+               scoped(){
+                     for (var i = 0; i < this.clientsServices.length; i++) {
+                          if (this.crud.length > 0) {
+                              this.clientsServices[i].crud = true
+                         }else{
+                            this.clientsServices[i].crud = false 
+                         }
+                         
+                    }
                }
               
           },
@@ -418,16 +505,77 @@
                dialogDelete (val) {
                     val || this.closeDelete()
                },
+
           },
 
           created () {
                this.ini()
+              
+
+               
           },
 
           methods: {
-              addRow(){
+               axiosNotificarCaducidad(item){
+
+                    let notify = new FormData()
+                    notify.append('service', JSON.stringify(item))
+
+                    axios.post(this.$apiUrl + `/notify-date`, notify).then(response => {
+                        
+                    }, err => {
+                        
+                    })
+               },
+               calcularFechasDeCaducidad(item){
+                    
+                    let vb = item.monto
+                    var  fecha_inicio = ''
+                    var  avisoPermam = ''
+                    let res = ''
+
+                    for (var i = 0; i < vb.length; i++) {
+                         fecha_inicio = moment(vb[i].fecha)
+                         avisoPermam = moment(vb[i].aviso_permanencia)
+
+                         res = avisoPermam.diff(fecha_inicio, 'days')
+
+                         vb[i]['aviso'] = res*1
+                         vb[i]['redColor'] = false
+                         
+                         if (vb[i]['aviso'] <= 30) {
+                              vb[i]['redColor'] = true
+
+                              
+                         }
+
+                         
+                    }
+                    //axios notificar
+                    for (var n = 0; n < vb.length; n++) {
+                        if (vb[n].aviso <= 30) {
+
+                              // this.axiosNotificarCaducidad(item)
+                              break
+                         } 
+                    }
 
 
+                   
+
+               },
+               modalMontosList(item){
+                    this.calcularFechasDeCaducidad(item)
+
+                    this.montosClick = item
+                    this.modalMonunts = true
+                    
+               },
+               closemodalMontosList(){
+                    this.montosClick = {}
+                    this.modalMonunts = false
+               },
+               addRow(){
                     if (this.montosInputs.length == 0) {
                          let vm = this.montosInputs
                          let newMontosInputs = {
@@ -436,6 +584,7 @@
                               gasto: '',
                               comision: '',
                               beneficio: '',
+                              fecha: '',
                               aviso_permanencia :''
                          }
                          vm.push(newMontosInputs)
@@ -450,6 +599,7 @@
                               gasto: '',
                               comision: '',
                               beneficio: '',
+                              fecha: '',
                               aviso_permanencia :''
                          }
                          vm.push(newMontosInputs)
@@ -462,6 +612,7 @@
                               gasto: '',
                               comision: '',
                               beneficio: '',
+                              fecha: '',
                               aviso_permanencia :''
                          }
                          vm.push(newMontosInputs)  
@@ -469,7 +620,7 @@
                   
                },
                removeRow(index){
-                    console.log(index)
+                    
                     const indice =   this.montosInputs. indexOf(this.montosInputs[index]);
                     this.montosInputs .splice(indice, 1)
                },
@@ -701,13 +852,17 @@
                     this.$Progress.start()
                     axios.get(this.$apiUrl + `/clients-services?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
-                            this.clientsServices = response.data.clientsServices.data
-                            this.clients =  response.data.clients
-                            this.services =  response.data.services
+                              this.clientsServices = response.data.clientsServices.data
+                              this.clients =  response.data.clients
+                              this.services =  response.data.services
                             
 
-                            for (var i = 0; i < this.clientsServices.length; i++) {
+                              let objMail = []
 
+                              for (var i = 0; i < this.clientsServices.length; i++) {
+                                   this.clientsServices[i]['crud'] = false
+                                   this.clientsServices[i]['montosModal'] = 'Montos'
+                                   this.clientsServices[i]['mod'] = false
                                    var hoy = moment(new Date().toISOString().substr(0, 10))
                                    var  avisoPermam = moment(this.clientsServices[i].aviso_permanencia)
 
@@ -716,12 +871,36 @@
                                    this.clientsServices[i]['rojo'] = false
 
                                    if (this.clientsServices[i]['aviso'] == 30) {
-                                        this.clientsServices[i]['rojo'] == true
+                                        this.clientsServices[i]['rojo'] = true
                                    }
 
+                                  
+                                   for (var m = 0; m < this.clientsServices[i].monto.length; m++) {
+                                       let fechaInicio = moment(this.clientsServices[i].monto[m].fecha)
+                                       let fechaFin = moment(this.clientsServices[i].monto[m].aviso_permanencia)
+
+                                       
+                                        var resU = fechaFin.diff(fechaInicio, 'days')
+                                        this.clientsServices[i].monto[m]['dias'] = resU
+
+                                        if (this.clientsServices[i].monto['dias'] <= 30) {
+                                            objMail.push(this.clientsServices[i])
+
+                                        }
+                                   }
+                                       
+                                  
+                                       
                             } 
+                             console.log( objMail)
+                              // let notify = new FormData()
+                              // notify.append('service', JSON.stringify(item))
 
-
+                              // axios.post(this.$apiUrl + `/notify-date`, notify).then(response => {
+                                  
+                              // }, err => {
+                                  
+                              // })
 
 
 
@@ -738,6 +917,10 @@
                },
               
                editObj (item) {
+                    //aqui calculo de fechas
+
+                    this.calcularFechasDeCaducidad(item)
+
                     this.montosInputs = item.monto
                     this.auxAxios()
                     this.editMode = true
@@ -861,6 +1044,10 @@
           }
           .permanencia{
                background: #F44336;
+               
+          }
+          .permanencia div input::text{
+               color: white;
           }
           .permanencia:hover{
                background: #F44336;

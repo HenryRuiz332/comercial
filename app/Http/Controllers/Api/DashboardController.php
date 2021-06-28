@@ -10,11 +10,16 @@ use App\Models\Servicios\ClienteServicio;
 use App\Models\Gastos\Gasto;
 
 use stdClass;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Caducidad;
+use App\Models\Gastos\TiposGasto;
 
 class DashboardController extends Controller
 {
     public function index(Request $request){
+
+    	
+
 
     	$totals = new stdClass;
     	$totals->gastos = 0;
@@ -22,13 +27,16 @@ class DashboardController extends Controller
 		$totals->beneficios = 0;
 		$totals->expenses = 0;
 
-    	$clientsServices = ClienteServicio::get(['gasto', 'comision', 'beneficio']);
+    	 $clientsServices = ClienteServicio::with('monto')->get();
 
     	foreach ($clientsServices  as $key => $value) {
+    		foreach ($value->monto as $monto) {
+    			
+    			$totals->gastos =  $totals->gastos + 1*$monto->gasto;
+    			$totals->comisiones =  $totals->comisiones + 1*$monto->comision;
+    			$totals->beneficios =  $totals->beneficios + 1*$monto->beneficio;
+    		}
     		
-    		$totals->gastos =  $totals->gastos + 1*$value->gasto;
-    		$totals->comisiones =  $totals->comisiones + 1*$value->comision;
-    		$totals->beneficios =  $totals->beneficios + 1*$value->beneficio;
     	}
 
     	$gastosGenerales = Gasto::get(['importe']);
@@ -37,6 +45,16 @@ class DashboardController extends Controller
     		$totalGG = $totalGG + $i->importe;
     	}
     	$totals->expenses = $totalGG;
-    	return json_encode($totals);
+
+
+
+    	$expensesTypes =  TiposGasto::orderBy('nombre', 'desc')->get(['id', 'nombre']);
+
+    	return response()->json([
+                'status' => 200,
+                'message' => 'Data Succesfull',
+                'totals' => $totals,
+                'expensesTypes' => $expensesTypes
+        ]);
     }
 }

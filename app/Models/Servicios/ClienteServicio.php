@@ -17,6 +17,7 @@ class ClienteServicio extends Model
     protected $table = "clientes_servicios";
     protected $primaryKey = "id";
 
+    protected $fillable = ['user_id', 'servicio_id', 'producto_id', 'colaborador_id', 'monto'];
 
     public function cliente(){
     	return $this->hasOne(User::class, "id", "user_id");

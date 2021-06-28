@@ -20,7 +20,8 @@ use App\Traits\HandlerFiles;
 use App\Traits\Main;
 
 use App\Models\Servicios\MontoClienteServicio;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Caducidad;
 class ClientesServiciosController extends Controller
 {
 
@@ -145,12 +146,16 @@ class ClientesServiciosController extends Controller
                         if ($monto->aviso_permanencia == "") {
                             $monto->aviso_permanencia = null;
                         }
+                        if ($monto->fecha == "") {
+                            $monto->fecha = null;
+                        }
                        $newMount = new MontoClienteServicio;
                        $newMount->cliente_servicio_id = $service->id;
                        $newMount->gasto = $monto->gasto;
                        $newMount->comision = $monto->comision;
                        $newMount->beneficio = $monto->beneficio;
                        $newMount->aviso_permanencia = $monto->aviso_permanencia;
+                       $newMount->fecha = $monto->fecha;
                        $newMount->saveOrfail();
                     }
                 }
@@ -350,12 +355,16 @@ class ClientesServiciosController extends Controller
                         if ($monto['aviso_permanencia'] == "") {
                             $monto['aviso_permanencia'] = null;
                         }
+                        if ($monto['fecha'] == "") {
+                            $monto['fecha'] = null;
+                        }
                        $newMount =  new MontoClienteServicio;
                        $newMount->cliente_servicio_id = $service['id'];
                        $newMount->gasto = $monto['gasto'];
                        $newMount->comision = $monto['comision'];
                        $newMount->beneficio = $monto['beneficio'];
                        $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+                       $newMount->fecha = $monto['fecha'];
                        $newMount->saveOrfail();
                     }
                 }elseif(count($montosEliminar) == 0 && count( $montosEliminar)> 0){
@@ -376,12 +385,16 @@ class ClientesServiciosController extends Controller
                         if ($monto['aviso_permanencia'] == "") {
                             $monto['aviso_permanencia'] = null;
                         }
+                         if ($monto['fecha'] == "") {
+                            $monto['fecha'] = null;
+                        }
                        $newMount =  new MontoClienteServicio;
                        $newMount->cliente_servicio_id = $service['id'];
                        $newMount->gasto = $monto['gasto'];
                        $newMount->comision = $monto['comision'];
                        $newMount->beneficio = $monto['beneficio'];
                        $newMount->aviso_permanencia = $monto['aviso_permanencia'];
+                       $newMount->fecha = $monto['fecha'];
                        $newMount->saveOrfail();
                     } 
                 }
@@ -429,4 +442,19 @@ class ClientesServiciosController extends Controller
             'message' => 'Delete Resource'
         ]);  
     }
+
+
+
+
+    public function notifyDateTime(Request $request){
+
+        $array = ["prueba"];
+        Mail::to("henryruiz332@gmail.com", env('APP_NAME'))
+        ->queue(new Caducidad(json_encode($array)));
+
+
+    }
+
+
+
 }

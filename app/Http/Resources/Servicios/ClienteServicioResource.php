@@ -27,6 +27,7 @@ class ClienteServicioResource extends JsonResource
             "comision"                       => $this->comision,
             "aviso_permanencia"              => $this->aviso_permanencia,
             "notas"                          => $this->notas,
+           
             "url"                            => url()->full()
         ];
     }

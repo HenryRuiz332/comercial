@@ -4,19 +4,36 @@
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
 
 
-          <v-card class="searchMovil">
-              <v-card-title>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Buscar"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-          </v-card>
+         <div style="background:white; z-index:1000">
+               <v-row class="container">
+                    <v-col cols="12" xs="12" sm="12" md="5" lg="5" xl="5">
+                         <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>     
+                    </v-col>
+                    <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3">
+                        <controls-crud 
+                                   :openDialogControl="openDialog" 
+                                   :getFuntion="getUsers"
+                                   :nameComponent="nameComponent" >
+                                   
+                         </controls-crud>
+                    </v-col> 
+                    <v-col  cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+                          <v-text-field
 
-          <v-data-table
+                                   append-icon="mdi-magnify"
+                                   v-model="search"
+                                   label="Buscar"
+                                   class=""
+                                   style="margin-top:-15px!important">
+                                        
+                              </v-text-field>
+                             
+                    </v-col>
+               </v-row>
+
+          </div>
+          <v-data-table  
+                         style="margin-top:-3vw"
           :headers="objectsTabe"
           :items="users"
           :search="search"
@@ -27,24 +44,7 @@
                     <template v-slot:top>
                          <v-toolbar
                               flat>
-                              <v-toolbar-title class="h3 titleCrud">{{ titleCrud }}
-                                  
-                              </v-toolbar-title>
-                              
-                              <v-divider
-                                   class="mx-4"
-                                   inset
-                                   vertical>   
-                              </v-divider>
-                              <controls-crud 
-                                   :openDialogControl="openDialog" 
-                                   :getFuntion="getUsers"
-                                   :nameComponent="nameComponent"
-                                 >
-                                   
-                              </controls-crud>
-                              <v-spacer></v-spacer>
-
+                             
                               <v-dialog
                                    v-model="dialog"
                                   
@@ -52,17 +52,7 @@
                                    fullscreen
                                    hide-overlay
                                    transition="dialog-bottom-transition">
-                                        <template v-slot:activator="{ on, attrs }">
-                                             
-                                             <v-text-field
-                                                  append-icon="mdi-magnify"
-                                                  v-model="search"
-                                                  label="Buscar"
-                                                  class="mr-3 mt-3 seacrPc">
-                                                       
-                                             </v-text-field>
-                                            
-                                        </template>
+                                        
                                         <v-stepper
                                              v-model="paso"
                                              vertical>
@@ -174,7 +164,10 @@
                                                                                                                    Beneficio
                                                                                                               </th>
                                                                                                               <th class="text-left">
-                                                                                                                   Fecha
+                                                                                                                   Fecha Inicio
+                                                                                                              </th>
+                                                                                                              <th class="text-left">
+                                                                                                                   Fecha Fin
                                                                                                               </th>
                                                                                                               <th class="text-left">
                                                                                                                    <v-btn @click="addRow(servicio)" color="success" x-small>
@@ -184,7 +177,7 @@
                                                                                                          </tr>
                                                                                                     </thead>
                                                                                                     <tbody >
-                                                                                                         <tr v-for="monto,k in servicio.monto" :key="k">
+                                                                                                         <tr v-for="monto,k in servicio.monto" :key="k" :class="monto.aviso <= 30 ? 'permanencia' : ''">
                                                                                                               <td>
                                                                                                                    <v-text-field
                                                                                                                         @change="validarGasto(monto.gasto, k)"
@@ -212,11 +205,15 @@
                                                                                                                    </v-text-field>
                                                                                                                     
                                                                                                               </td>
-
+                                                                                                              <td>
+                                                                                                                   
+                                                                                                                    <input type="date" v-model="monto.fecha" class="form-control" id="exampleInputdate">
+                                                                                                              </td>
                                                                                                               <td>
                                                                                                                    
                                                                                                                     <input type="date" v-model="monto.aviso_permanencia" class="form-control" id="exampleInputdate">
                                                                                                               </td>
+
                                                                                                               <td>
                                                                                                                    <v-btn @click="removeRow(servicio,k)" color="error" x-small>
                                                                                                                         <v-icon>mdi-close</v-icon>
@@ -403,7 +400,7 @@
                    </template>
                    <tfoot></tfoot>
           </v-data-table>
-          {{modalMontos}}
+          <span style="opacity:0; position:absolute">{{modalMontos}}</span>
           <info-crud :snackbar="snackbarInfoCrud" :info="infoCrud" :closeSnackbar="closeSnackbar"></info-crud>
      </div>
 </template>
@@ -492,6 +489,7 @@
                          gasto: '',
                          comision: '',
                          beneficio: '',
+                         fecha: '',
                          aviso_permanencia :''
                     }
                ],
@@ -529,6 +527,40 @@
           },
 
           methods: {
+                calcularFechasDeCaducidad(item){
+                    
+                    let vb = item.monto
+                    var  fecha_inicio = ''
+                    var  avisoPermam = ''
+                    let res = ''
+
+                    for (var i = 0; i < vb.length; i++) {
+                         fecha_inicio = moment(vb[i].fecha)
+                         avisoPermam = moment(vb[i].aviso_permanencia)
+
+                         res = avisoPermam.diff(fecha_inicio, 'days')
+
+                         vb[i]['aviso'] = res*1
+                         vb[i]['redColor'] = false
+                         
+                         if (vb[i]['aviso'] <= 30) {
+                              vb[i]['redColor'] = true
+
+                              
+                         }
+
+                         
+                    }
+                    //axios notificar
+                    for (var n = 0; n < vb.length; n++) {
+                        if (vb[n].aviso <= 30) {
+
+                              // this.axiosNotificarCaducidad(item)
+                              break
+                         } 
+                    }
+
+               },
                guardarMontos(servicio){
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
@@ -560,6 +592,7 @@
                               gasto: '',
                               comision: '',
                               beneficio: '',
+                              fecha: '',
                               aviso_permanencia :''
                          }
                          vm.push(newMontosInputs)
@@ -574,6 +607,7 @@
                          gasto: '',
                          comision: '',
                          beneficio: '',
+                         fecha: '',
                          aviso_permanencia :''
                     }
                     vm.push(newMontosInputs)
@@ -585,13 +619,14 @@
                },
                ir(){
                     axios.post(this.$apiUrl + `/up-ir`).then(response => {
-                        console.log(response)
+                      
                     }, err => {
                         
                     })
                },
                OppenmodalMontos(servicio){
-                     this.ir()
+                    this.calcularFechasDeCaducidad(servicio)
+                    this.ir()
                     servicio.modalMontos = true
                     this.modalMontos = true
                },
@@ -855,6 +890,7 @@
                },
 
                deleteObj (item) {
+
                     this.editIndexObj = this.users.indexOf(item)
                     this.editarObj = Object.assign({}, item)
                     this.dialogDelete = true

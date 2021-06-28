@@ -2,18 +2,36 @@
 
      <div>
           <loader v-if="isloading" :infoLoader="infoLoader"></loader>
-           <v-card class="searchMovil">
-              <v-card-title>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                   label="Buscar"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-          </v-card>
+           <div style="background:white; z-index:1000">
+               <v-row class="container">
+                    <v-col cols="12" xs="12" sm="12" md="5" lg="5" xl="5">
+                         <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>     
+                    </v-col>
+                    <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3">
+                         <controls-crud 
+                                   :openDialogControl="openDialog" 
+                                   :getFuntion="getTypesProducts"
+                                   :nameComponent="nameComponent">
+                         </controls-crud>
+                    </v-col> 
+                    <v-col  cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+                          <v-text-field
+
+                                   append-icon="mdi-magnify"
+                                   v-model="search"
+                                   label="Buscar"
+                                   class=""
+                                   style="margin-top:-15px!important">
+                                        
+                              </v-text-field>
+                             
+                    </v-col>
+               </v-row>
+
+          </div>
+
           <v-data-table
+           style="margin-top:-3vw"
           :headers="objectsTabe"
           :items="productsTypes"
           :search="search"
@@ -24,37 +42,13 @@
                     <template v-slot:top>
                          <v-toolbar
                               flat>
-                              <v-toolbar-title>{{ titleCrud }}</v-toolbar-title>
                               
-                              <v-divider
-                                   class="mx-4"
-                                   inset
-                                   vertical>   
-                              </v-divider>
-                              <controls-crud 
-                                   :openDialogControl="openDialog" 
-                                   :getFuntion="getTypesProducts"
-                                   :nameComponent="nameComponent">
-                                   
-                              </controls-crud>
-                              <v-spacer></v-spacer>
-
                               <v-dialog
                                    max-width="80%"
                                    v-model="dialog"
                                    persistent
                                    transition="dialog-bottom-transition">
-                                        <template v-slot:activator="{ on, attrs }">
-                                             
-                                             <v-text-field
-                                                  append-icon="mdi-magnify"
-                                                  v-model="search"
-                                                  label="Buscar"
-                                                  class="mr-3 mt-3 seacrPc">
-                                                       
-                                             </v-text-field>
-                                            
-                                        </template>   
+                                         
                                              <form-crud 
                                                   :updateObject="updateObject"
                                                   :saveObject="saveObject"

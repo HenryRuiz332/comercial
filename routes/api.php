@@ -68,6 +68,9 @@ Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function()
 			Route::post('/clients-services-trash-imagen/{id}', 'ClientesServiciosController@deleteDoc');
 			Route::post('/clients-services-trash-images/{id}', 'ClientesServiciosController@deleteAllDocs');
 
+
+			Route::post('/notify-date', 'ClientesServiciosController@notifyDateTime');
+
 		});
 
 
