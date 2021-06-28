@@ -852,9 +852,26 @@
                     this.$Progress.start()
                     axios.get(this.$apiUrl + `/clients-services?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
+<<<<<<< HEAD
                               this.clientsServices = response.data.clientsServices.data
                               this.clients =  response.data.clients
                               this.services =  response.data.services
+=======
+                              console.log(response.data);
+                            this.clientsServices = response.data.clientsServices.data
+                            this.clientsServices.forEach(element => {
+                                   element.gasto = 0;
+                                   element.comision = 0;
+                                   element.monto.forEach(elementMonto => {
+                                        element.gasto = element.gasto + Number(elementMonto.gasto);
+                                        element.comision = element.comision + Number(elementMonto.comision);
+                                   });  
+
+
+                            });
+                            this.clients =  response.data.clients
+                            this.services =  response.data.services
+>>>>>>> d27ce0ec5d6d77f3ba861a5c9936e78d4caf2ac3
                             
 
                               let objMail = []
@@ -879,6 +896,7 @@
                                        let fechaInicio = moment(this.clientsServices[i].monto[m].fecha)
                                        let fechaFin = moment(this.clientsServices[i].monto[m].aviso_permanencia)
 
+<<<<<<< HEAD
                                        
                                         var resU = fechaFin.diff(fechaInicio, 'days')
                                         this.clientsServices[i].monto[m]['dias'] = resU
@@ -904,6 +922,8 @@
 
 
 
+=======
+>>>>>>> d27ce0ec5d6d77f3ba861a5c9936e78d4caf2ac3
                             this.$Progress.finish()
 
                             this.loading = false

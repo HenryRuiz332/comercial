@@ -105,9 +105,9 @@
                               lg="12"
                               xl="12">
                               
-                              <p>
-                                   Ingresar Montos del servicio
-                              </p>
+                              <h2>
+                                   Ingresar Cantidades del servicio
+                              </h2>
                               <v-divider></v-divider>
                         </v-col>
 
