@@ -131,13 +131,12 @@
                     //      this.$Progress.fail()
                     // })
 
+                    //04123639852
+                    let messages = [{ "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
 
-                    let json = [{ "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
+                    
 
-                    let form  = new FormData()
-                    form.append('messages' , json)
-
-                    axios.post('https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ form+')').then(response => {
+                    axios.post('https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')').then(response => {
                          console.log(response)
                     }, err => {
                          
