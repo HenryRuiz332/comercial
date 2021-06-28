@@ -29,7 +29,7 @@
                              
                     </v-col>
                </v-row>
-               <v-row class="container" style="margin-top:-3vw">
+               <v-row class="container" style="margin-top:-2.5vw">
                     <v-col cols="12" xs="12" sm="12" md="8" lg="8" xl="8">
 
                         <rango-fechas 
