@@ -32,7 +32,7 @@ class UsersController extends Controller
     {
         $users = null;
         if ($request->isMethod("get")) {
-            $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador', 'clienteServicio.monto')->orderBy('id', 'desc')->paginate(10));
+            $users = new UsersCollection(User::with('clienteServicio.servicio','clienteServicio.producto', 'clienteServicio.colaborador', 'clienteServicio.monto')->orderBy('id', 'desc')->paginate(500));
             
             $products = Producto::get(['id', 'nombre']);
             $collaborators = Colaborador::get(['id', 'nombre']);

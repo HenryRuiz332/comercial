@@ -131,12 +131,47 @@
                     //      this.$Progress.fail()
                     // })
 
+
+
+
+
                     //04123639852
                     let messages = [{ "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
 
-                    
 
-                    axios.post('https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')').then(response => {
+
+                    var invocation = new XMLHttpRequest();
+
+                    let obj = {
+                         'token': 'HYn29fZIQ8kVGmZtzqbW',
+                         'messages': messages
+                    }
+
+                    var  url = 'https://acumbamail.com/api/1?sendSMS=sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ JSON.stringify(messages)+')'
+                    
+                    const client = new XMLHttpRequest();
+
+                    client.addEventListener("readystatechange", () => {
+                      if (client.readyState === 4 && client.status === 200)
+                        console.log(client.responseText);
+                    });
+
+                    client.open("POST", url, obj);
+                    client.send();
+                    console.log(client)
+                    return 
+
+
+                    const instance = axios.create({
+                      withCredentials: true,
+                     
+                    })
+
+                    var  baseURL = 'https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')'
+
+                    baseURL = 'https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')'
+
+                    instance.post(baseURL).then(response => {
                          console.log(response)
                     }, err => {
                          

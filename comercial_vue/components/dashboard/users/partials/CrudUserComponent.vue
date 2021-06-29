@@ -33,13 +33,13 @@
 
           </div>
           <v-data-table  
-                         style="margin-top:-2.5vw"
+          style="margin-top:-2.5vw"
           :headers="objectsTabe"
           :items="users"
           :search="search"
           class="elevation-1"
           show-select
-          v-model="crud">
+          v-model="crud"  :items-per-page="5" >
                     
                     <template v-slot:top>
                          <v-toolbar

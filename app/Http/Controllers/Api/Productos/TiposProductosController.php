@@ -23,7 +23,7 @@ class TiposProductosController extends Controller
     {
         $productTypes = null;
         if ($request->isMethod("get")) {
-            $productTypes = new TiposProductosCollection(TipoProducto::orderBy('id', 'desc')->paginate(10));
+            $productTypes = new TiposProductosCollection(TipoProducto::orderBy('id', 'desc')->paginate(500));
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',

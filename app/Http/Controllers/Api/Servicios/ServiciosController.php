@@ -24,7 +24,7 @@ class ServiciosController extends Controller
     {
         $services = null;
         if ($request->isMethod("get")) {
-            $services = new ServiciosCollection(Servicio::orderBy('id', 'desc')->paginate(10));
+            $services = new ServiciosCollection(Servicio::orderBy('id', 'desc')->paginate(500));
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Succesfull',

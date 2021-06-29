@@ -22,6 +22,7 @@ use App\Traits\Main;
 use App\Models\Servicios\MontoClienteServicio;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Caducidad;
+use stdClass;
 class ClientesServiciosController extends Controller
 {
 
@@ -39,7 +40,7 @@ class ClientesServiciosController extends Controller
         if ($request->isMethod("get")) {
           	$clientsServices = new ClientesServiciosCollection(ClienteServicio::orderBy('id', 'desc')
           		->with('cliente', 'servicio', 'producto', 'colaborador', 'monto')
-          		->paginate(10));
+          		->paginate(500));
 
           	$clients = User::get(['id', 'nombre']);
             $services = Servicio::get(['id', 'nombre']);
@@ -146,16 +147,24 @@ class ClientesServiciosController extends Controller
                         if ($monto->aviso_permanencia == "") {
                             $monto->aviso_permanencia = null;
                         }
-                        if ($monto->fecha == "") {
-                            $monto->fecha = null;
-                        }
+
+                         if (isset($monto->fecha)) {
+                             if ($monto->fecha == "") {
+                                $monto->fecha = null;
+                            }
+                         }
+                       
                        $newMount = new MontoClienteServicio;
                        $newMount->cliente_servicio_id = $service->id;
                        $newMount->gasto = $monto->gasto;
                        $newMount->comision = $monto->comision;
                        $newMount->beneficio = $monto->beneficio;
                        $newMount->aviso_permanencia = $monto->aviso_permanencia;
-                       $newMount->fecha = $monto->fecha;
+                        if (isset($monto->fecha)) {
+                            $newMount->fecha = $monto->fecha;
+                        }
+
+                       
                        $newMount->saveOrfail();
                     }
                 }
@@ -355,16 +364,22 @@ class ClientesServiciosController extends Controller
                         if ($monto['aviso_permanencia'] == "") {
                             $monto['aviso_permanencia'] = null;
                         }
-                        if ($monto['fecha'] == "") {
-                            $monto['fecha'] = null;
+                        if (isset($monto['fecha'])) {
+                            if ($monto['fecha'] == "") {
+                                $monto['fecha'] = null;
+                            }
                         }
+                       
                        $newMount =  new MontoClienteServicio;
                        $newMount->cliente_servicio_id = $service['id'];
                        $newMount->gasto = $monto['gasto'];
                        $newMount->comision = $monto['comision'];
                        $newMount->beneficio = $monto['beneficio'];
                        $newMount->aviso_permanencia = $monto['aviso_permanencia'];
-                       $newMount->fecha = $monto['fecha'];
+                        if (isset($monto['fecha'])) {
+                             $newMount->fecha = $monto['fecha'];
+                        }
+                      
                        $newMount->saveOrfail();
                     }
                 }elseif(count($montosEliminar) == 0 && count( $montosEliminar)> 0){
@@ -448,10 +463,24 @@ class ClientesServiciosController extends Controller
 
     public function notifyDateTime(Request $request){
 
-        $array = ["prueba"];
-        Mail::to("henryruiz332@gmail.com", env('APP_NAME'))
-        ->queue(new Caducidad(json_encode($array)));
+        $services = json_decode($request->services);
 
+        
+        $data = [];
+        $obj = new stdClass;
+        $obj->client = null;
+        $obj->service = null;
+        foreach ($services as $service) {
+            $obj->client = $service->cliente;
+            $obj->service = $service;
+            $data [] = $obj;
+            $email =  json_encode($service->cliente->email);
+            Mail::to($email, env('APP_NAME'))
+            ->queue(new Caducidad(json_encode($data)));
+        }
+
+       
+        return "mail enviado";
 
     }
 

@@ -21,7 +21,7 @@ class TiposGastosController extends Controller
     {
         $expensesTypes = null;
         if ($request->isMethod("get")) {
-            $expensesTypes =  TiposGasto::orderBy('nombre', 'desc')->paginate(10);
+            $expensesTypes =  TiposGasto::orderBy('nombre', 'desc')->paginate(500);
 
             return response()->json([
                 'status' => 200,

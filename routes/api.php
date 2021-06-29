@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::options('/{any}', function() {
+    $headers = [
+        'Access-Control-Allow-Methods'=> 'POST, GET, OPTIONS, PUT, DELETE',
+        'Access-Control-Allow-Headers'=> 'X-Requested-With, Content-Type, X-Auth-Token, Origin, Authorization'
+    ];
+    return \Response::make('You are connected to the API', 200, $headers);
+})->where('any', '.*');
+
 
 Route::post('/login', 'Auth\AuthController@login')->name('login');
 Route::post('/logout', 'Auth\AuthController@logout');

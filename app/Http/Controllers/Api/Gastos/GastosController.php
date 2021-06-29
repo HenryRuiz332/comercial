@@ -24,7 +24,7 @@ class GastosController extends Controller
     {
         $expenses = null;
         if ($request->isMethod("get")) {
-            $expenses = new GastosCollection(Gasto::with('tipoGasto')->orderBy('id', 'desc')->paginate(10));
+            $expenses = new GastosCollection(Gasto::with('tipoGasto')->orderBy('id', 'desc')->paginate(500));
             $expensesTypes =  TiposGasto::orderBy('nombre', 'desc')->get(['id', 'nombre']);
 
             return response()->json([

@@ -6,10 +6,12 @@
 </head>
 <body>
 	<p>
-		<strong>Hola </strong>{!! $servicio->cliente->nombre !!}
+		<strong>Hola </strong>{{$data}}
 	</p>
 	<p>
-		Te informamamos que tu servicio {!! $servicio->servicio->nombre !!} le resta 1 mes de permanencia
+		{{-- @foreach( $service->monto as $monto)
+
+		@endforeach --}}
 	</p>
 
 	<p>

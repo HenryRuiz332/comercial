@@ -344,7 +344,7 @@
                          :key="k" 
                          :class="m.aviso <= 30 ? 'permanencia' : ''">
                               
-                          <td><small>{{m.gasto+ '€'}}</small></td>
+                          <td><small>{{m.gasto ? m.gasto+ '€' : 0}}</small></td>
                           <td><small>{{m.comision+ '€'}}</small></td>
                           <td><small>{{m.beneficio+ '€'}}</small></td>
                           <td><small>{{m.fecha}}</small></td>
@@ -516,10 +516,10 @@
           },
 
           methods: {
-               axiosNotificarCaducidad(item){
+               axiosNotificarCaducidad(objMail){
 
                     let notify = new FormData()
-                    notify.append('service', JSON.stringify(item))
+                    notify.append('services', JSON.stringify(objMail))
 
                     axios.post(this.$apiUrl + `/notify-date`, notify).then(response => {
                         
@@ -555,7 +555,7 @@
                     for (var n = 0; n < vb.length; n++) {
                         if (vb[n].aviso <= 30) {
 
-                              // this.axiosNotificarCaducidad(item)
+                            
                               break
                          } 
                     }
@@ -852,7 +852,7 @@
                     this.$Progress.start()
                     axios.get(this.$apiUrl + `/clients-services?page` + this.pagination.current_page).then(response => {
                          if (response.status == 200) {
-                              console.log(response.data);
+                            
                             this.clientsServices = response.data.clientsServices.data
                             this.clientsServices.forEach(element => {
                                    element.gasto = 0;
@@ -894,24 +894,20 @@
                                         var resU = fechaFin.diff(fechaInicio, 'days')
                                         this.clientsServices[i].monto[m]['dias'] = resU
 
-                                        if (this.clientsServices[i].monto['dias'] <= 30) {
-                                            objMail.push(this.clientsServices[i])
-
+                                        if (this.clientsServices[i].monto[m]['dias'] <= 30) {
+                                             
+                                             objMail.push(this.clientsServices[i])
+                                             break
                                         }
                                    }
                                        
                                   
                                        
                             } 
-                             console.log( objMail)
-                              // let notify = new FormData()
-                              // notify.append('service', JSON.stringify(item))
+                             console.log(objMail)
 
-                              // axios.post(this.$apiUrl + `/notify-date`, notify).then(response => {
-                                  
-                              // }, err => {
-                                  
-                              // })
+                         //crear cron para enviar correos 
+                         this.axiosNotificarCaducidad(objMail)
 
 
 

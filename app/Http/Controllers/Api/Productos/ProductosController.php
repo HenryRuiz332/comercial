@@ -23,7 +23,7 @@ class ProductosController extends Controller
     {
         $products = null;
         if ($request->isMethod("get")) {
-            $products = new ProductosCollection(Producto::with('tipoProducto')->orderBy('id', 'desc')->paginate(10));
+            $products = new ProductosCollection(Producto::with('tipoProducto')->orderBy('id', 'desc')->paginate(500));
             $productsTypes = TipoProducto::get(['id', 'nombre']);
 
             return response()->json([

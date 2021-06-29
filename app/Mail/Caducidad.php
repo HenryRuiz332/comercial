@@ -11,15 +11,15 @@ class Caducidad extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $array;
+    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($array)
+    public function __construct($data)
     {
-        $this->$array = $array;
+        $this->$data = $data;
     }
 
     /**
