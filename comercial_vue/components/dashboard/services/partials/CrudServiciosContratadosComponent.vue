@@ -41,13 +41,13 @@
 
                   
 
-                          <template v-slot:item.montosModal="{ item }">
+                        <!--   <template v-slot:item.montosModal="{ item }">
                                <a target="_blank" :href="item.path" @click="modalMontosList(item)">
                                    <v-icon medium color="orange" class="mr-2">
                                        mdi-nfc-variant
                                    </v-icon>
                                </a>
-                           </template>
+                           </template> -->
 
                        
 
@@ -300,6 +300,11 @@
                               <i class="fa fa-download mr-2"></i>
                          </v-btn>
 
+                          <v-btn @click="modalMontosList(item)" color="white" x-small>
+                              <v-icon x-small color="orange" class="mr-2">
+                                   mdi-nfc-variant
+                              </v-icon>
+                            </v-btn>  
                          <v-btn @click="editObj(item)" color="success" x-small>
                               <i class="fa fa-pencil mr-2"></i>
                          </v-btn>
@@ -409,7 +414,10 @@
                     { text: 'Cliente', value: 'cliente.nombre' },
                     { text: 'Servicio', value: 'servicio.nombre' },
                     { text: 'Producto', value: 'producto.nombre' },
-                    { text: 'Gasto, Comision, Beneficio, (€)', value: 'montosModal' },
+                    { text: 'Gastos (€)', value: 'gasto' },
+                    { text: 'Comisiones (€)' , value: 'comision' },
+                    { text: 'Beneficios (€)', value: 'beneficio' },
+                   
                    
                     { text: 'Opciones', value: 'actions', sortable: false },
                ],
@@ -841,7 +849,7 @@
                },
                closeDialog(){
                     this.dialog =  false
-               },
+               }, 
                ini () {
                     this.getClientServices()  
                },
@@ -857,9 +865,11 @@
                             this.clientsServices.forEach(element => {
                                    element.gasto = 0;
                                    element.comision = 0;
+                                   element.beneficio = 0;
                                    element.monto.forEach(elementMonto => {
                                         element.gasto = element.gasto + Number(elementMonto.gasto);
                                         element.comision = element.comision + Number(elementMonto.comision);
+                                        element.beneficio = element.beneficio + Number(elementMonto.beneficio);
                                    });  
 
 
