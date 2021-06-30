@@ -2,9 +2,15 @@
     <v-container>
         <loader v-if="isloading" :infoLoader="infoLoader"></loader>
         <div id="content-page" class="" v-if="$route.path !== '/login'">
-            <div class="">
+            <div class="" >
                <div class="row" style="background:white">
-                 
+
+                    <h5 class="container-fluid">Consultar Datos</h5>
+                    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                    <filtro-fechas :url="url" 
+                                   has_tipo="true" 
+                                   v-on:success_query="setGastos"></filtro-fechas>
+               </v-col>
                 
                <v-col cols="12" sm="12" md="3" lg="3" xl="3" class="text-center"  >
                     <v-card
@@ -71,32 +77,7 @@
                </div>
               
                <v-divider></v-divider>
-              <v-row>
-                <v-col cols="12">
-                        <v-expansion-panels>
-                            <v-expansion-panel>
-                                <v-expansion-panel-header color="">
-                                    Gastos Generales
-                                </v-expansion-panel-header>
-                                <v-expansion-panel-content style="padding-top: 10px; margin-top:10px">
-                                     <small>Filtro de gastos por fechas</small>
-                                    <rango-fechas 
-                                        :expensesTypes="expensesTypes"
-                                        :url="url" 
-                                        has_tipo="true" 
-                                        v-on:success_query="setGastos"></rango-fechas>
-
-                                        <h3 class="float-right"><span class="totalMovil">Total Gastos Generales:</span> <span style="color:red">{{totalExpnsesFilter}}€</span></h3>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
-                    
-                   
-                </v-col>
-
-                 <v-col cols="12"> 
-                 </v-col>
-              </v-row>
+             
             </div>
          </div>
     </v-container>
@@ -108,10 +89,10 @@
     } from '../../global_mixins/menu_items_mixin'
 
 
-    import RangoFechas from "./../../components/dashboard/gastos_generales/partials/RangoFechas.vue"
+    import FiltroFechaComponent from "./../../components/dashboard/crud/FiltroFechaComponent"
     export default {
         components:{
-             'rango-fechas' : RangoFechas
+             'filtro-fechas' : FiltroFechaComponent
         },
 
         mixins: [menu_items_mixin],
@@ -136,7 +117,7 @@
 
          created () {
                 this.dashboard()
-                this.url =  this.$apiUrl + `/gastos`
+                this.url =  this.$apiUrl + `/dashboardfilter-quants`
          },
 
          methods: {
@@ -146,23 +127,40 @@
             },
             setGastos(data) {
                     
+                    console.log(data)
 
-                    if (data.length > 0) {
-                        let sum = []
-                        let totalExpenseF = 0
-                        for (var i = 0; i < data.length; i++) {
-                           sum[sum.length] = data[i].importe
-                        }
-                        
-                        for (var n = 0; n < sum.length; n++) {
-                            totalExpenseF = 1*totalExpenseF + 1*sum[n]
-                        }
+                    this.totals.gastos=0
+                    this.totals.beneficios=0
+                    this.totals.comisiones=0
+                    this.totals.expenses = 0
+                    for (var i = 0; i < data.cantidades.length; i++) {
 
-                        this.totalExpnsesFilter = totalExpenseF
-                        return
+                        this.totals.gastos = 1*this.totals.gastos + 1*data.cantidades[i].gasto
+                        this.totals.beneficios = 1*this.totals.gastos + 1*data.cantidades[i].beneficio
+                        this.totals.comisiones = 1*this.totals.gastos + 1*data.cantidades[i].comision
                     }
+                    for (var n = 0; n < data.expensesG.length; n++) {
+                       this.totals.expenses = 1*this.totals.expenses + 1*data.expensesG[n].importe 
+                    }
+
+                   
+
+                    // if (data.length > 0) {
+                    //     let sum = []
+                    //     let totalExpenseF = 0
+                    //     for (var i = 0; i < data.length; i++) {
+                    //        sum[sum.length] = data[i].importe
+                    //     }
+                        
+                    //     for (var n = 0; n < sum.length; n++) {
+                    //         totalExpenseF = 1*totalExpenseF + 1*sum[n]
+                    //     }
+
+                    //     this.totalExpnsesFilter = totalExpenseF
+                    //     return
+                    // }
                     this.totalExpnsesFilter = []
-                    console.log('No hay gastos disponibles')
+                    // console.log('No hay gastos disponibles')
             },
 
               dashboard(){

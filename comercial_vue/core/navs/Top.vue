@@ -17,6 +17,9 @@
                          <li class="nav-item">
                              <router-link to="/dashboard" class="nav-link font-weight-bold search-box-toggle"><i class="ri-home-4-line"></i></router-link>
                          </li>
+
+                         <li><router-link to="/mensajes" class="nav-link router-link-exact-active router-link-active"><i class="fa fa-envelope"></i></router-link></li>
+
                          <li><router-link to="/productos" class="nav-link"><i class="fa fa-cubes"></i></router-link></li>
                          <li><router-link to="/servicios" class="nav-link"><i class="fa fa-file"></i></router-link></li>
                          <li><router-link to="/clientes" class="nav-link"><i class="fa fa-users"></i></router-link></li>

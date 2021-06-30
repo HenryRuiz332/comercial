@@ -30,9 +30,13 @@ Route::post('/login', 'Auth\AuthController@login')->name('login');
 Route::post('/logout', 'Auth\AuthController@logout');
 
 //Main prefix routes v1
+
+
+
 Route::group(['prefix' => 'v1', ['middleware' => ['auth:sanctum']] ], function(){
 		
 		Route::get('/dashboard', 'DashboardController@index');
+		Route::post('/dashboardfilter-quants', 'DashboardController@filtersDate');
 
 
 		Route::group(['namespace' => 'Users'], function(){

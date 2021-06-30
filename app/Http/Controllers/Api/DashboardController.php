@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Servicios\ClientesServiciosCollection;
 use App\Http\Resources\Servicios\ClienteServicioResource;
 use App\Models\Servicios\ClienteServicio;
+use App\Models\Servicios\MontoClienteServicio;
+
 use App\Models\Gastos\Gasto;
 
 use stdClass;
@@ -56,5 +58,50 @@ class DashboardController extends Controller
                 'totals' => $totals,
                 'expensesTypes' => $expensesTypes
         ]);
+    }
+
+    public function filtersDate(Request $request){
+       
+        $cantidades = null;
+
+
+        $desde = new \Carbon\Carbon($request->desde);
+        $hasta = new \Carbon\Carbon($request->hasta);
+        $tipo = $request->tipo;
+
+
+        if ($request->isMethod("post")) {
+
+            if ($tipo == 'not') {
+
+                $cantidades =  MontoClienteServicio::where("fecha",">=",$desde)
+                                                        ->where("aviso_permanencia","<=",$hasta)
+                                                        ->orderBy('id', 'desc')
+                                                        ->get();
+
+
+                 $expensesG =Gasto::
+                where("fecha",">=",$desde)
+                ->where("fecha","<=",$hasta)
+                ->orderBy('id', 'desc')->get();
+
+
+
+            }
+           
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Succesfull',
+                'cantidades' => $cantidades,
+                'expensesG' => $expensesG
+               
+            ]);
+        }else{
+            return response()->json([
+                'status' => 400,
+                'message' => 'Get Request Error'
+            ]);  
+        }
     }
 }

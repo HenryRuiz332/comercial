@@ -7,7 +7,8 @@
      
       <v-card>
           <v-card-title class="text-h6">
-               ¿Está seguro que desea enviar los mensajes?
+               ¿Está seguro que desea </br>
+                enviar los mensajes?
           </v-card-title>
         
           <v-card-actions>

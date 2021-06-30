@@ -1,15 +1,26 @@
 <template>
      <div>
+          <loader v-if="isloading" :infoLoader="infoLoader"></loader>
           <v-row style="background:white!important">
                <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
                     <h4>
-                         Enviar Mensajes
+                        Mensajes
                     </h4>
                     <p>Envío de mensajes a clientes </p>
                     <ckeditor 
                     style="height:50vh!important"
                     ref="miEditor" :config="editorConfig"  v-model="form.sms" :editor="editor" height="50%"  :counter="1000"></ckeditor>
-          
+                    
+                    <v-progress-circular
+                         v-if="send"
+                         indeterminate
+                         color="purple"></v-progress-circular>
+                    <p style="color:orange" v-if="mensaje!=null">
+                         <strong>{{mensaje}}</strong>
+                    </p>
+                    <div id="demo" >
+                         
+                    </div>
                     
 
                </v-col>
@@ -48,7 +59,7 @@
                infoLoader: 'Cargando...',
                dialogSend : false,
                form : {
-                    sms : ''
+                    sms : 'Hola, recibes este mensaje de acumbamail'
                },
                editor: ClassicEditor,
                editorData: '<p>Escriba la decripción del producto.</p>',
@@ -75,14 +86,42 @@
                           },
                           extraPlugins: null,
                   },
+                  users: [],
+
+                  sending : false,
+                  mensaje: null
           }),
+          computed:{
+               isloading: function() {
+                    return this.$store.getters.getloading
+               },
+               send(){
+                  return this.sending  
+               }
+          },
           created(){
                if (this.timeout == 10000) {
 
                     this.closeSnackbar()
                }
+               this.getUsers()
           },
           methods:{
+                getUsers(){
+                    this.snackbarInfoCrud = false
+                    this.infoCrud = 'Actualizando'
+                    this.$Progress.start()
+                    axios.get(this.$apiUrl + `/users`).then(response => {
+                         if (response.status == 200) {
+                              this.users = response.data.users.data
+                              this.$Progress.finish()
+                         }
+                         
+                  
+                    }, err => {
+                        this.$Progress.fail()
+                    })
+               },
                dialogSendMeesge(){
                     this.dialogSend = true
                },
@@ -93,90 +132,66 @@
                     this.snackbarInfoCrud = false
                },
                enviarMensajes(){
-
+                    this.send = true
                     this.$Progress.start()
                     this.snackbarInfoCrud = false
                     this.infoCrud = ''
-                    this.infoLoader = 'Guardando...'
-                    // axios.post(this.$apiUrl + `/send-messages`, this.form).then(response => {
-                    //      if (response.status == 200) {
-                    //           this.infoCrud = 'Guardado Exitosamente'
-                    //           this.snackbarInfoCrud = true
-                    //           this.cancelarEnvio()
-                    //           this.$Progress.finish()
-                    //      }
-                    // }, err => {
-                    //      this.infoCrud = 'Ocurrió un error al guardar los datos'
-                    //      this.snackbarInfoCrud = true
-                    //      this.$Progress.fail()
-                    // })
+                    this.infoLoader = 'Enviando...'
 
-                    
+                    const  messages = []
 
-
-                    //  let json = [ { "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
-                    
-                    // this.form = json
-
-                    // axios.post(this.$apiUrl + `/send-messages`, this.form).then(response => {
-                    //      if (response.status == 200) {
-                    //           this.infoCrud = 'Guardado Exitosamente'
-                    //           this.snackbarInfoCrud = true
-                    //           this.cancelarEnvio()
-                    //           this.$Progress.finish()
-                    //      }
-                    // }, err => {
-                    //      this.infoCrud = 'Ocurrió un error al guardar los datos'
-                    //      this.snackbarInfoCrud = true
-                    //      this.$Progress.fail()
-                    // })
-
-
-
-
-
-                    //04123639852
-                    let messages = [{ "recipient": "+5841412823998", "body": "message test", "sender": "Tu empresa" }]
-
-
-
-                    var invocation = new XMLHttpRequest();
-
-                    let obj = {
-                         'token': 'HYn29fZIQ8kVGmZtzqbW',
-                         'messages': messages
+                    let json = {
+                         "mandatory" : "4142823998",
+                         "recipient" : "",//Teléfono
+                         "body" : "", //Mensaje
+                         "sender" : "", //Empresa 
                     }
 
-                    var  url = 'https://acumbamail.com/api/1?sendSMS=sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ JSON.stringify(messages)+')'
+                    for (var i = 0; i < this.users.length; i++) {
+                         const tel =  this.users[i].telefono
+                         json = {
+                              "mandatory" : "4142823998",
+                              "recipient" : '+34' + tel,
+                              "body" : this.form.sms, 
+                              "sender" : "Comercial"
+                         }
+                         messages.push(json)
+                        
+                    }
+                    json = JSON.stringify(messages)
+                    let  apiUrl = 'https://acumbamail.com/api/1/sendSMS/'
+                    let formData = new FormData();
+                    formData.append('auth_token', 'HYn29fZIQ8kVGmZtzqbW')
+                    formData.append('messages', json)
                     
-                    const client = new XMLHttpRequest();
 
-                    client.addEventListener("readystatechange", () => {
-                      if (client.readyState === 4 && client.status === 200)
-                        console.log(client.responseText);
-                    });
+                    let control = true
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                       if (this.readyState == 4 && this.status == 200 ) {
+                              this.send = false
+                              document.getElementById("demo").innerHTML = '<p style="color:green">Se han enviado los Mensajes</p>'
+                              console.log(this.responseText)
+                      }
+                      if (this.readyState == 4 && this.status == 201 ) {
+                              control = false
+                              this.send = false
+                              document.getElementById("demo").innerHTML = '<p style="color:green">Se han enviado los Mensajes</p>'
 
-                    client.open("POST", url, obj);
-                    client.send();
-                    console.log(client)
-                    return 
+                              console.log(this.responseText)
+                      }
+                    };
 
-
-                    const instance = axios.create({
-                      withCredentials: true,
-                     
-                    })
-
-                    var  baseURL = 'https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')'
-
-                    baseURL = 'https://acumbamail.com/api/1/sendSMS("HYn29fZIQ8kVGmZtzqbW", '+ messages+')'
-
-                    instance.post(baseURL).then(response => {
-                         console.log(response)
-                    }, err => {
-                         
-                    })
-                 
+                   xhttp.open("POST", apiUrl);
+                   xhttp.send(formData);
+                   this.cancelarEnvio()
+                    if (control == false) {
+                         this.sending = false
+                    }
+                    //04123639852 HYn29fZIQ8kVGmZtzqbW
+                    //+51962154918  
+                    
+                    
               }  
           }
      };

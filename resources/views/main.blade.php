@@ -27,6 +27,9 @@
             z-index: 200!important
         }
 
+        .iq-top-navbar{
+            z-index: 7!important
+        }
        
     </style>
     
