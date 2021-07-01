@@ -23,6 +23,8 @@ use App\Models\Servicios\MontoClienteServicio;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Caducidad;
 use stdClass;
+use App\Jobs\AvisoCaducidad;
+
 class ClientesServiciosController extends Controller
 {
 
@@ -465,21 +467,22 @@ class ClientesServiciosController extends Controller
 
         $services = json_decode($request->services);
 
-        
+        $prueba = [];
         $data = [];
-        $obj = new stdClass;
-        $obj->client = null;
-        $obj->service = null;
         foreach ($services as $service) {
-            $obj->client = $service->cliente;
-            $obj->service = $service;
-            $data [] = $obj;
+            // $data [] = $service;
             $email =  json_encode($service->cliente->email);
-            Mail::to($email, env('APP_NAME'))
-            ->queue(new Caducidad(json_encode($data)));
+            
+            if (json_decode($email) != null ) {
+            
+                $data= ['service' => $service, 'email' =>json_decode($email) ];
+
+                dispatch(new AvisoCaducidad($data));
+            }
+           
         }
 
-       
+        return  $services;
         return "mail enviado";
 
     }

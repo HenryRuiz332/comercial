@@ -917,14 +917,14 @@
                                         if (this.clientsServices[i].monto[m]['dias'] <= 30) {
                                              
                                              objMail.push(this.clientsServices[i])
-                                             break
+                                             
                                         }
                                    }
                                        
                                   
                                        
                             } 
-                             console.log(objMail)
+                             
 
                          //crear cron para enviar correos 
                          this.axiosNotificarCaducidad(objMail)

@@ -6,12 +6,49 @@
 </head>
 <body>
 	<p>
-		<strong>Hola </strong>{{$data}}
+		<strong>Hola {!! $service->cliente->nombre !!}</strong> 
 	</p>
 	<p>
-		{{-- @foreach( $service->monto as $monto)
+		Tu servicio tiene cantidades que estan por vencer 
+	</p>
+	<p>
 
-		@endforeach --}}
+		<table border="1">
+			<thead>
+				<th>
+					Gasto
+				</th>
+				<th>
+					Comision
+				</th>
+				<th>
+					Beneficio
+				</th>
+				<th>
+					Fecha Inicio
+				</th>
+				<th>
+					Fecha Fin
+				</th>
+			</thead>
+			<tbody>
+				@foreach($service->monto as $monto)
+
+				<tr @if(isset($monto->dias)) @if($monto->dias) style="background:red"@endif @endif>
+					<th >{{$monto->gasto}}</th>
+					<th>{{$monto->comision}}</th>
+					<th>{{$monto->beneficio}}</th>
+					<th>{{$monto->fecha}}</th>
+					<th>{{$monto->aviso_permanencia}}</th>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		
+
+
+
+		
 	</p>
 
 	<p>
