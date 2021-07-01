@@ -30,6 +30,7 @@
 
           </div>
           <v-data-table  
+                         :item-class="itemRowBackground"
                          style="margin-top:-2.5vw"
                          :search="search"
                          class="elevation-1"
@@ -502,7 +503,8 @@
                          }
                          
                     }
-               }
+               },
+               
               
           },
 
@@ -524,6 +526,14 @@
           },
 
           methods: {
+               itemRowBackground (item){
+
+                  for (var i = 0; i < item.monto.length; i++) {
+                       return item.monto[i].dias <= 30   ? 'permanencia' : ''
+                  }
+                     
+                  
+               },
                axiosNotificarCaducidad(objMail){
 
                     let notify = new FormData()
@@ -888,7 +898,7 @@
                                    var  avisoPermam = moment(this.clientsServices[i].aviso_permanencia)
 
                                    let res = avisoPermam.diff(hoy, 'days')
-                                   this.clientsServices[i]['aviso'] = res
+                                   this.clientsServices[i]['aviso'] = 30
                                    this.clientsServices[i]['rojo'] = false
 
                                    if (this.clientsServices[i]['aviso'] == 30) {
@@ -1067,7 +1077,7 @@
                color: white;
           }
           .permanencia:hover{
-               background: #F44336;
+               background: #F44336!important;
           }
          
 </style>
