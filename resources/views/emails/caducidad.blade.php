@@ -34,7 +34,7 @@
 			<tbody>
 				@foreach($service->monto as $monto)
 
-				<tr @if(isset($monto->dias)) @if($monto->dias) style="background:red"@endif @endif>
+				<tr @if(isset($monto->dias)) @if($monto->dias <= 30) style="background:red"@endif @endif>
 					<th >{{$monto->gasto}}</th>
 					<th>{{$monto->comision}}</th>
 					<th>{{$monto->beneficio}}</th>
@@ -49,6 +49,9 @@
 
 
 		
+	</p>
+	<p>
+		<a href="{{ Request::url() . '/#/dashboard' }}" style="color: #fff; text-decoration: none;">Panel de Control</a>
 	</p>
 
 	<p>
