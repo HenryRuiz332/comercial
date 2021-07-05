@@ -129,13 +129,16 @@
                                                   <small>Comisión</small>
                                              </th>
                                              <th scope="col">
+                                                  <small>Ingreso</small>
+                                             </th>
+                                             <th scope="col">
                                                   <small>Beneficio</small>
                                              </th>
                                              <th scope="col">
-                                                  <small>Fecha Inicio</small>
+                                                  <small>Fecha Ingreso</small>
                                              </th>
                                              <th scope="col">
-                                                  <small>Fecha Fin</small>
+                                                  <small>Fecha Caducidad</small>
                                              </th>
                                              <th scope="col">
                                                   <v-btn @click="addRow" color="success" x-small>
@@ -171,6 +174,14 @@
                                                      <v-text-field
                                                        @change="validarbeneficio"
                                                        v-model="monto.beneficio"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
+                                                   
+                                             </td>
+                                             <td>
+                                                     <v-text-field disabled
+                                                       v-model="monto.beneficio - monto.gasto - monto.comision"
                                                        suffix="€">
                                                       
                                                   </v-text-field>
@@ -226,6 +237,11 @@
                                                   </v-text-field>
                                                    
                                              </td>
+                                             <v-text-field disabled
+                                                       v-model="monto.beneficio - monto.gasto - monto.comision"
+                                                       suffix="€">
+                                                      
+                                                  </v-text-field>
                                              <td>
                                                   
                                                    <input type="date" v-model="monto.fecha" class="form-control" id="exampleInputdate">

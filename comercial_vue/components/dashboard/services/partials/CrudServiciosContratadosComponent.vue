@@ -119,9 +119,6 @@
                     <template v-slot:top>
                          <v-toolbar
                               flat>
-                             
-                          
-                             
                               <v-dialog
                                    v-model="dialog"
                                   
@@ -231,7 +228,7 @@
                                              </p>
                                             
 
-                                                  <span v-else>No se existen documentos relacionados a este servicio</span>
+                                                  <span v-else>No existen documentos relacionados a este servicio</span>
                                         </v-col>
                                         <v-col class="text-center" cols="12" xs="12" sm="12" md="4" lg="4" xl="4" v-for="doc,i in docs" :key="i">
                                              
@@ -325,22 +322,24 @@
                                         
                <v-card>
                     <h5 class="container" v-if="modalMonunts">
-                         {{montosClick.servicio.nombre}}
-                    </h5>
-                    <h5 class="container" v-if="modalMonunts">
                          {{montosClick.cliente.nombre}}
                     </h5>
-                    <p class="container">Información acerca de los montos, fecha de Inicio y Fecha de Caducidad de este servicio.</p>
-                    <p class="container">Los items de la lista marcados en rojo son servicios que estan por caducar.</p>
+                    <h5 class="container" v-if="modalMonunts">
+                         {{montosClick.servicio.nombre}}
+                    </h5>
+                    
+                    <p class="container">Información acerca de los servicios contratados por el cliente.</p>
+                    <!--<p class="container">Los items de la lista marcados en rojo son servicios que estan por caducar.</p>-->
                     <v-card-text>
                     <table class="table">
                       <thead>
                         <tr>
                           <th scope="col"><small>Gasto</small></th>
                           <th scope="col"><small>Comision</small></th>
+                          <th scope="col"><small>Ingreso</small></th>
                           <th scope="col"><small>Beneficio</small></th>
-                          <th scope="col"><small>Fecha</small></th>
-                          <th scope="col"><small>F. Caducidad</small></th>
+                          <th scope="col"><small>Fecha Ingreso</small></th>
+                          <th scope="col"><small>Fecha Contrato</small></th>
                           
                         </tr>
                       </thead>
@@ -353,6 +352,7 @@
                           <td><small>{{m.gasto ? m.gasto+ '€' : 0}}</small></td>
                           <td><small>{{m.comision+ '€'}}</small></td>
                           <td><small>{{m.beneficio+ '€'}}</small></td>
+                          <td><small>{{(m.beneficio - m.gasto - m.comision)  + '€'}}</small></td>
                           <td><small>{{m.fecha}}</small></td>
                           <td><small>{{m.aviso_permanencia}}</small></td>
                         </tr>
@@ -417,7 +417,8 @@
                     { text: 'Producto', value: 'producto.nombre' },
                     { text: 'Gastos (€)', value: 'gasto' },
                     { text: 'Comisiones (€)' , value: 'comision' },
-                    { text: 'Beneficios (€)', value: 'beneficio' },
+                    { text: 'Ingresos (€)', value: 'beneficio' },
+                    { text: 'Beneficios (€)', value: 'ganancia' },
                    
                    
                     { text: 'Opciones', value: 'actions', sortable: false },
@@ -438,6 +439,7 @@
                     gasto: '',
                     comision : '',
                     beneficio: '',
+                    ganancia:'',
                     aviso_permanencia : '',
                     nota_gasto: '',
                     notas: '',
@@ -452,6 +454,7 @@
                     gasto: '',
                     comision : '',
                     beneficio: '',
+                    ganancia:'',
                     aviso_permanencia : '',
                     nota_gasto: '',
                     notas: '',
@@ -469,6 +472,7 @@
                          gasto: '',
                          comision: '',
                          beneficio: '',
+                         ganancia: '',
                          fecha: '',
                          aviso_permanencia :''
                     }
@@ -876,10 +880,12 @@
                                    element.gasto = 0;
                                    element.comision = 0;
                                    element.beneficio = 0;
+                                   element.ganancia = 0;
                                    element.monto.forEach(elementMonto => {
                                         element.gasto = element.gasto + Number(elementMonto.gasto);
                                         element.comision = element.comision + Number(elementMonto.comision);
                                         element.beneficio = element.beneficio + Number(elementMonto.beneficio);
+                                        element.ganancia = element.beneficio - element.gasto - element.comision;
                                    });  
 
 
